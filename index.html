@@ -211,6 +211,13 @@
     .work-card, .term-card, .cert-item, .timeline-content { break-inside: avoid; border: 1px solid #ccc !important; background: #fafafa !important; box-shadow: none !important; }
     a { color: #111 !important; text-decoration: underline; }
     .hero { min-height: auto !important; }
+    /* Content that hasn't scrolled into view yet is still opacity:0 waiting
+       for its reveal animation — without this override, printing/saving as
+       PDF via the native dialog (the fallback path) would render those
+       sections as blank white space. Force everything fully visible. */
+    .reveal, .reveal-stagger, .reveal-stagger > * {
+      opacity: 1 !important; filter: none !important; transform: none !important; transition: none !important;
+    }
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -467,7 +474,7 @@
      passes to the "back" of the ellipse. */
   .avatar-orbit-scene {
     position: absolute; top: 50%; left: 50%; width: 0; height: 0;
-    z-index: 3; pointer-events: none;
+    pointer-events: none;
     opacity: 0; animation: orbitFadeIn 1s .9s ease forwards;
   }
   @keyframes orbitFadeIn { to { opacity: 1; } }
@@ -1629,8 +1636,9 @@
       const mat = new THREE.PointsMaterial({ size, color, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending });
       return new THREE.Points(geo, mat);
     }
-    const fieldA = makeField(500, 16, 0x00F0FF, 0.028);
-    const fieldB = makeField(260, 20, 0xB026FF, 0.024);
+    const isNarrow = window.innerWidth < 640;
+    const fieldA = makeField(isNarrow ? 260 : 500, 16, 0x00F0FF, 0.028);
+    const fieldB = makeField(isNarrow ? 140 : 260, 20, 0xB026FF, 0.024);
     scene.add(fieldA, fieldB);
 
     // Orbit rings — thin tilted toroids around the core, like an atomic / satellite
@@ -1920,7 +1928,10 @@
         const opacity = 0.55 + (depth + 1) / 2 * 0.45;
         b.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
         b.style.opacity = opacity;
-        b.style.zIndex = Math.round(depth * 10) + 10;
+        // avatar-img / avatar-fallback sit at z-index:1 inside .avatar-wrap, so a
+        // badge must drop to 0 the moment it's behind (depth<0) to actually be
+        // occluded by the photo, and rise to 2 the moment it's in front.
+        b.style.zIndex = depth < 0 ? '0' : '2';
       });
       if (!reduceMotion) requestAnimationFrame(frame);
     }
@@ -2413,7 +2424,16 @@
     apply();
   })();
 
-  // --- 4. PRINT / SAVE AS PDF ---
+  // --- 4. DOWNLOAD PORTFOLIO PDF ---
+  // Earlier this used html2canvas/html2pdf.js to screenshot an off-DOM copy
+  // of the page and assemble a PDF directly. On long pages like this one,
+  // that approach hit browser canvas-size limits and silently produced a
+  // blank image (confirmed: the same content printed fine via the native
+  // print dialog, only the html2canvas capture came out empty). The native
+  // browser print pipeline doesn't have that limitation and is already
+  // proven to render every section correctly, so "Unduh Portofolio (PDF)"
+  // now opens that same dialog directly — the person picks "Save as PDF"
+  // as the destination to download a file instead of using a real printer.
   document.getElementById('printBtn')?.addEventListener('click', () => window.print());
   document.getElementById('printPortfolioBtn')?.addEventListener('click', () => window.print());
 
