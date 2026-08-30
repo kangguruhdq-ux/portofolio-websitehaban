@@ -13,7 +13,7 @@
 <meta property="og:title" content="Mahabbah Mahabban Romadhon — Portofolio Profesional">
 <meta property="og:description" content="AI / Machine Learning · Full-Stack Web Dev · Mobile App Dev · Cyber Security Analyst. CBBH Certified, Deep Learning Specialization.">
 <meta property="og:image" content="images/og-cover.jpg">
-<meta property="og:url" content="https://majestic-figolla-ce98e2.netlify.app/">
+<meta property="og:url" content="https://mahabbahmahabbanromadhon.netlify.app/">
 <meta property="og:locale" content="id_ID">
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
@@ -27,7 +27,7 @@
   "name": "Mahabbah Mahabban Romadhon",
   "jobTitle": ["Machine Learning Specialist", "Full-Stack Web Developer", "Mobile App Developer", "Cyber Security Analyst"],
   "email": "mailto:misnosusanto97@gmail.com",
-  "url": "https://majestic-figolla-ce98e2.netlify.app/",
+  "url": "https://mahabbahmahabbanromadhon.netlify.app/",
   "sameAs": ["https://github.com/kangguruhdq-ux"]
 }
 </script>
@@ -544,7 +544,7 @@
   .scroll-hint::after { content: "↓"; font-size: 14px; }
 
   /* SECTION SHARED */
-  section { padding: 120px 40px; max-width: 1100px; margin: 0 auto; position: relative; z-index: 1;}
+  section { padding: clamp(64px, 10vw, 120px) clamp(18px, 5vw, 40px); max-width: 1100px; margin: 0 auto; position: relative; z-index: 1;}
   .eyebrow {
     font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent);
     letter-spacing: 2px; margin-bottom: 12px; display: inline-block;
@@ -774,7 +774,7 @@
   /* CONTACT */
   .contact {
     text-align: center; background: var(--bg-alt); border: 1px solid var(--line);
-    border-radius: 20px; padding: 80px 30px; position: relative; overflow: hidden;
+    border-radius: 20px; padding: clamp(40px, 8vw, 80px) clamp(18px, 5vw, 30px); position: relative; overflow: hidden;
     backdrop-filter: blur(10px);
   }
   .contact::before {
@@ -922,6 +922,18 @@
   .term-fab:hover { transform: translateY(-4px) scale(1.06); box-shadow: 0 0 28px var(--accent-dim); }
   @media (max-width: 640px) { .term-fab { bottom: 18px; right: 18px; width: 46px; height: 46px; } }
 
+  /* Extra fine-tuning for small phones so nothing feels oversized or cramped */
+  @media (max-width: 480px) {
+    .hero { padding: 48px 16px; min-height: 85vh; }
+    .big-btn { padding: 14px 26px; font-size: 13.5px; gap: 8px; }
+    .find-me-card { padding: 14px 14px; gap: 12px; }
+    .find-me-icon { width: 40px; height: 40px; }
+    .logo { font-size: 13px; gap: 8px; }
+    .eyebrow { font-size: 11.5px; padding: 3px 10px; letter-spacing: 1.5px; }
+    .comment-embed-head { padding: 12px 14px; gap: 8px; }
+    .comment-embed-body { padding: 16px 14px 6px; }
+  }
+
   .term-panel {
     position: fixed; bottom: 92px; right: 26px; z-index: 200;
     width: min(400px, calc(100vw - 32px)); height: 380px; max-height: 65vh;
@@ -950,7 +962,7 @@
   .term-panel-body::-webkit-scrollbar { width: 6px; }
   .term-panel-body::-webkit-scrollbar-thumb { background: #2a2f3a; border-radius: 3px; }
   .term-line { margin-bottom: 4px; white-space: pre-wrap; word-break: break-word; }
-  .term-line.cmd::before { content: "guest@mahabbah.dev:~$ "; color: #00F0FF; }
+  .term-line.cmd::before { content: "guest@mahabbah:~$ "; color: #00F0FF; }
   .term-line.ok { color: #00FFA3; }
   .term-line.err { color: #FF6B6B; }
   .term-line.dim { color: #6b7280; }
@@ -969,7 +981,7 @@
 <!-- Boot Sequence -->
 <div id="boot-screen">
   <div class="boot-box">
-    <div class="boot-line" data-line>&gt; connecting to <span style="color:var(--accent)">mahabbah.dev</span> ...</div>
+    <div class="boot-line" data-line>&gt; connecting to <span style="color:var(--accent)">mahabbahmahabbanromadhon.netlify.app</span> ...</div>
     <div class="boot-line" data-line>&gt; verifying credentials <span class="ok">[OK]</span></div>
     <div class="boot-line" data-line>&gt; loading AI / Web / Mobile / Security modules <span class="ok">[OK]</span></div>
     <div class="boot-line" data-line>&gt; access granted — welcome.</div>
@@ -1461,7 +1473,7 @@
       </div>
     </div>
     <div class="qr-card">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fmajestic-figolla-ce98e2.netlify.app%2F" alt="QR Code menuju portofolio ini" loading="lazy" onerror="this.parentElement.style.display='none'">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fmahabbahmahabbanromadhon.netlify.app%2F" alt="QR Code menuju portofolio ini" loading="lazy" onerror="this.parentElement.style.display='none'">
       <span data-i18n="contact.qr">Scan untuk membuka portofolio ini</span>
     </div>
   </div>
@@ -1489,7 +1501,7 @@
         data-host="https://cusdis.com"
         data-app-id="7a632756-9b19-4abd-831b-0fba6221139f"
         data-page-id="portofolio-mahabbah"
-        data-page-url="https://majestic-figolla-ce98e2.netlify.app/"
+        data-page-url="https://mahabbahmahabbanromadhon.netlify.app/"
         data-page-title="Mahabbah Mahabban Romadhon — Portofolio Profesional"
         data-theme="dark">
       </div>
@@ -1545,12 +1557,12 @@
 <div class="term-panel" id="termPanel" role="dialog" aria-modal="true" aria-hidden="true">
   <div class="term-panel-head">
     <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-    <span class="term-panel-title mono">guest@mahabbah.dev: ~</span>
+    <span class="term-panel-title mono">guest@mahabbah: ~</span>
     <button class="term-panel-close" id="termClose" aria-label="Tutup terminal">✕</button>
   </div>
   <div class="term-panel-body mono" id="termBody" tabindex="-1"></div>
   <div class="term-panel-inputrow mono">
-    <span style="color:var(--accent)">guest@mahabbah.dev</span><span class="term-panel-prompt">:~$</span>
+    <span style="color:var(--accent)">guest@mahabbah</span><span class="term-panel-prompt">:~$</span>
     <input type="text" id="termInput" autocomplete="off" spellcheck="false" aria-label="Ketik perintah terminal">
   </div>
 </div>
@@ -1700,10 +1712,16 @@
 
     // Scroll: core recedes and dims as the visitor moves past the hero
     let scrollFactor = 0;
+    let scrollFactorTicking = false;
     window.addEventListener('scroll', () => {
-      const h = document.documentElement;
-      scrollFactor = Math.min(h.scrollTop / (window.innerHeight * 1.1), 1);
-    });
+      if (scrollFactorTicking) return;
+      scrollFactorTicking = true;
+      requestAnimationFrame(() => {
+        const h = document.documentElement;
+        scrollFactor = Math.min(h.scrollTop / (window.innerHeight * 1.1), 1);
+        scrollFactorTicking = false;
+      });
+    }, { passive: true });
 
     const clock = new THREE.Clock();
     let parallaxY = 0, parallaxX = 0;
@@ -1778,10 +1796,14 @@
     // If the context was lost, skip rendering this frame instead of
     // throwing — it resumes automatically once 'webglcontextrestored' fires.
 
+    let resizeDebounce = null;
     window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      clearTimeout(resizeDebounce);
+      resizeDebounce = setTimeout(() => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }, 120);
     });
     } catch (e) { canvas.style.display = 'none'; }
   }
@@ -1853,14 +1875,22 @@
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const targets = document.querySelectorAll('.work-card, .term-card, .cert-item, .timeline-content, .stat, .find-me-card, .comment-embed-wrap');
     targets.forEach(el => {
+      let ticking = false;
+      let pendingEvent = null;
       el.addEventListener('mousemove', (e) => {
-        const r = el.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width - 0.5;
-        const py = (e.clientY - r.top) / r.height - 0.5;
-        el.style.setProperty('--ry', (px * 10).toFixed(2) + 'deg');
-        el.style.setProperty('--rx', (-py * 10).toFixed(2) + 'deg');
-        el.style.setProperty('--mx', ((px + 0.5) * 100).toFixed(1) + '%');
-        el.style.setProperty('--my', ((py + 0.5) * 100).toFixed(1) + '%');
+        pendingEvent = e;
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          const r = el.getBoundingClientRect();
+          const px = (pendingEvent.clientX - r.left) / r.width - 0.5;
+          const py = (pendingEvent.clientY - r.top) / r.height - 0.5;
+          el.style.setProperty('--ry', (px * 10).toFixed(2) + 'deg');
+          el.style.setProperty('--rx', (-py * 10).toFixed(2) + 'deg');
+          el.style.setProperty('--mx', ((px + 0.5) * 100).toFixed(1) + '%');
+          el.style.setProperty('--my', ((py + 0.5) * 100).toFixed(1) + '%');
+          ticking = false;
+        });
       });
       el.addEventListener('mouseleave', () => {
         el.style.setProperty('--rx', '0deg');
@@ -2057,11 +2087,19 @@
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     document.querySelectorAll('.hire-btn, .big-btn').forEach(btn => {
       btn.style.transition = 'transform .35s ' + 'cubic-bezier(0.16,1,0.3,1)';
+      let ticking = false;
+      let pendingEvent = null;
       btn.addEventListener('mousemove', (e) => {
-        const r = btn.getBoundingClientRect();
-        const x = (e.clientX - r.left - r.width / 2) * 0.35;
-        const y = (e.clientY - r.top - r.height / 2) * 0.5;
-        btn.style.transform = `translate(${x}px, ${y}px)`;
+        pendingEvent = e;
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          const r = btn.getBoundingClientRect();
+          const x = (pendingEvent.clientX - r.left - r.width / 2) * 0.35;
+          const y = (pendingEvent.clientY - r.top - r.height / 2) * 0.5;
+          btn.style.transform = `translate(${x}px, ${y}px)`;
+          ticking = false;
+        });
       });
       btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0, 0)'; });
     });
@@ -2260,12 +2298,34 @@
 
   // --- 2. LOGIKA UI LAINNYA ---
 
-  // Scroll progress bar
-  window.addEventListener('scroll', () => {
+  // Scroll progress bar + Active Navigation Link Tracking — merged into a single
+  // rAF-throttled handler so fast/trackpad scrolling on mobile and desktop stays
+  // smooth instead of running layout reads on every raw scroll event.
+  const progressEl = document.getElementById('progress');
+  const sectionsForNav = document.querySelectorAll('section[id]');
+  const navLinksForScroll = document.querySelectorAll('.nav-link');
+  let scrollUiTicking = false;
+  function updateScrollUi() {
     const h = document.documentElement;
     const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
-    document.getElementById('progress').style.width = scrolled + '%';
-  });
+    if (progressEl) progressEl.style.width = scrolled + '%';
+
+    let current = '';
+    sectionsForNav.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top <= 150 && rect.bottom >= 150) current = sec.getAttribute('id');
+    });
+    navLinksForScroll.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+    scrollUiTicking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (scrollUiTicking) return;
+    scrollUiTicking = true;
+    requestAnimationFrame(updateScrollUi);
+  }, { passive: true });
+  updateScrollUi();
 
   // Reveal elements on scroll (Intersection Observer)
   const observer = new IntersectionObserver((entries) => {
@@ -2302,19 +2362,7 @@
   }, { threshold: 0.5 });
   document.querySelectorAll('[data-count]').forEach(el => countObserver.observe(el));
 
-  // Active Navigation Link Tracking
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(sec => {
-      const rect = sec.getBoundingClientRect();
-      if (rect.top <= 150 && rect.bottom >= 150) current = sec.getAttribute('id');
-    });
-    navLinks.forEach(link => {
-      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
-    });
-  });
+  // (Active nav-link tracking now handled together with the progress bar above.)
 
   // Mobile Hamburger Menu
   const burger = document.getElementById('burger');
@@ -2324,7 +2372,7 @@
     burger.classList.toggle('open', isOpen);
     burger.setAttribute('aria-expanded', isOpen);
   });
-  navLinks.forEach(link => {
+  document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', () => {
       navMenu.classList.remove('open');
       burger.classList.remove('open');
@@ -2650,11 +2698,19 @@
     document.querySelectorAll('.logo-mark, .tech-card').forEach(el => {
       el.style.transition = 'transform .3s cubic-bezier(0.16,1,0.3,1)';
       const strength = el.classList.contains('logo-mark') ? 0.4 : 0.18;
+      let ticking = false;
+      let pendingEvent = null;
       el.addEventListener('mousemove', (e) => {
-        const r = el.getBoundingClientRect();
-        const x = (e.clientX - r.left - r.width / 2) * strength;
-        const y = (e.clientY - r.top - r.height / 2) * strength;
-        el.style.transform = `translate(${x}px, ${y}px)`;
+        pendingEvent = e;
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          const r = el.getBoundingClientRect();
+          const x = (pendingEvent.clientX - r.left - r.width / 2) * strength;
+          const y = (pendingEvent.clientY - r.top - r.height / 2) * strength;
+          el.style.transform = `translate(${x}px, ${y}px)`;
+          ticking = false;
+        });
       });
       el.addEventListener('mouseleave', () => { el.style.transform = 'translate(0, 0)'; });
     });
