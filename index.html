@@ -35,6 +35,7 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <!-- Menggunakan Three.js untuk Animasi 3D Background -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous" onerror="this.onerror=null;var s=document.createElement('script');s.src='https://unpkg.com/three@0.128.0/build/three.min.js';s.crossOrigin='anonymous';document.head.appendChild(s);"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" crossorigin="anonymous"></script>
 
 <style>
   :root {
@@ -81,7 +82,7 @@
   }
   .util-btn:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
   .util-btn svg { width: 14px; height: 14px; }
-  @media (max-width: 1300px) { .util-toggles { margin-left: 0; } }
+  @media (max-width: 1550px) { .util-toggles { margin-left: 0; } }
 
   /* Copy-to-clipboard buttons on contact links */
   .copy-btn {
@@ -203,7 +204,8 @@
   @media print {
     #boot-screen, .grain, #bg-canvas, #cursor-dot, #cursor-ring, nav, .scroll-hint,
     .filter-bar, .cmdk-overlay, .modal-overlay, .mini3d, footer .updated-badge,
-    .work-link, .comment-embed-wrap, #commentsSection, .hero-actions .cmdk-trigger { display: none !important; }
+    .work-link, .comment-embed-wrap, #commentsSection, .hero-actions .cmdk-trigger,
+    .term-fab, .term-panel, #matrixCanvas, .egg-toast, .hero-actions #qrBtn { display: none !important; }
     body { background: #fff !important; color: #111 !important; }
     section { padding: 24px 0 !important; max-width: 100% !important; page-break-inside: avoid; }
     .work-card, .term-card, .cert-item, .timeline-content { break-inside: avoid; border: 1px solid #ccc !important; background: #fafafa !important; box-shadow: none !important; }
@@ -218,9 +220,15 @@
     background: var(--bg);
     color: var(--fg);
     font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
     overflow-x: hidden;
     cursor: default;
   }
+  p { line-height: 1.7; }
   body.no-scroll { overflow: hidden; height: 100vh; }
 
   /* Ambient grain overlay — cheap texture that makes flat neon backgrounds feel premium */
@@ -324,9 +332,9 @@
     position: sticky; top: 0; z-index: 50;
     display: flex; align-items: center; justify-content: space-between; gap: 28px;
     padding: 20px 36px;
-    background: rgba(7, 9, 13, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(7, 9, 13, 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
   }
   .logo { display: flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-weight: 700; letter-spacing: 1px; font-size: 15px; flex-shrink: 0; white-space: nowrap; }
@@ -369,7 +377,7 @@
   .burger.open span:nth-child(2) { opacity: 0; }
   .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-  @media(max-width: 1300px) {
+  @media(max-width: 1550px) {
     nav { padding: 16px 24px; }
     .navlinks {
       position: fixed; top: 73px; left: 0; right: 0; z-index: 49;
@@ -383,7 +391,7 @@
     .navlinks a { padding: 16px 30px; width: 100%; border-bottom: 1px solid var(--line); font-size: 14px; white-space: normal; }
     .navlinks a::after { display: none; }
     .burger { display: flex; }
-    .hire-btn { display: none; }
+    nav .hire-btn { display: none; }
   }
 
   /* HERO SECTION */
@@ -485,7 +493,7 @@
     font-size: clamp(28px, 5vw, 52px); letter-spacing: -0.5px;
     opacity: 0; transform: translateY(20px);
     animation: riseUp .8s .3s ease forwards;
-    background: linear-gradient(100deg, #F3F4F6 30%, var(--accent) 62%, var(--accent-2) 100%);
+    background: linear-gradient(100deg, var(--fg) 30%, var(--accent) 62%, var(--accent-2) 100%);
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   }
   @keyframes riseUp { to { opacity: 1; transform: translateY(0); } }
@@ -874,6 +882,86 @@
   .cmdk-item.active .cat, .cmdk-item:hover .cat { color: var(--accent); }
   .cmdk-empty { padding: 24px; text-align: center; color: var(--muted); font-size: 13px; font-family: 'JetBrains Mono', monospace; }
   .kbd { font-size: 11px; padding: 2px 6px; border: 1px solid var(--line); border-radius: 4px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+  /* --- Hero typewriter --- */
+  .hero-typewriter {
+    position: relative; z-index: 2; margin-top: 10px;
+    font-size: clamp(14px, 2vw, 17px); color: var(--accent);
+    letter-spacing: .5px; min-height: 1.4em;
+  }
+  .tw-cursor { display: inline-block; margin-left: 2px; animation: blink 1s step-end infinite; }
+
+  /* --- Smooth circular theme-switch wipe (View Transitions API) --- */
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+  ::view-transition-new(root) {
+    clip-path: circle(0px at var(--vt-x, 50%) var(--vt-y, 50%));
+    animation: themeWipe .55s ease forwards;
+  }
+  ::view-transition-old(root) { z-index: -1; }
+  @keyframes themeWipe { to { clip-path: circle(var(--vt-r, 150%) at var(--vt-x, 50%) var(--vt-y, 50%)); } }
+
+  /* --- Konami / matrix-rain easter egg --- */
+  #matrixCanvas { position: fixed; inset: 0; z-index: 500; pointer-events: none; opacity: 0; transition: opacity .4s ease; }
+  #matrixCanvas.active { opacity: 1; }
+  .egg-toast {
+    position: fixed; top: 90px; left: 50%; transform: translateX(-50%) translateY(-10px);
+    background: var(--bg-alt); border: 1px solid var(--accent); color: var(--fg);
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; padding: 12px 20px; border-radius: 8px;
+    z-index: 501; opacity: 0; pointer-events: none; transition: all .4s var(--ease-out);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4); backdrop-filter: blur(10px); white-space: nowrap;
+  }
+  .egg-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* --- Floating interactive terminal --- */
+  .term-fab {
+    position: fixed; bottom: 26px; right: 26px; z-index: 200;
+    width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--accent);
+    background: var(--bg-alt); backdrop-filter: blur(10px); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    box-shadow: 0 0 20px var(--accent-dim); transition: transform .3s var(--ease-out), box-shadow .3s ease;
+  }
+  .term-fab:hover { transform: translateY(-4px) scale(1.06); box-shadow: 0 0 28px var(--accent-dim); }
+  @media (max-width: 640px) { .term-fab { bottom: 18px; right: 18px; width: 46px; height: 46px; } }
+
+  .term-panel {
+    position: fixed; bottom: 92px; right: 26px; z-index: 200;
+    width: min(400px, calc(100vw - 32px)); height: 380px; max-height: 65vh;
+    background: rgba(7,9,13,0.96); border: 1px solid var(--line); border-radius: 12px;
+    display: flex; flex-direction: column; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+    opacity: 0; visibility: hidden; transform: translateY(16px) scale(.97);
+    transition: all .3s var(--ease-out);
+  }
+  .term-panel.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+  html[data-theme="light"] .term-panel { background: rgba(18,21,28,0.97); }
+  .term-panel-head {
+    display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+    border-bottom: 1px solid var(--line); flex-shrink: 0;
+  }
+  .term-panel-head .dot { width: 10px; height: 10px; border-radius: 50%; background: #3a3f4a; }
+  .term-panel-head .dot:nth-child(1) { background: #FF5F57; }
+  .term-panel-head .dot:nth-child(2) { background: #FEBC2E; }
+  .term-panel-head .dot:nth-child(3) { background: #28C840; }
+  .term-panel-title { margin-left: 8px; font-size: 11.5px; color: #8a93a3; }
+  .term-panel-close { margin-left: auto; background: none; border: none; color: #8a93a3; cursor: pointer; font-size: 14px; padding: 4px; }
+  .term-panel-close:hover { color: #fff; }
+  .term-panel-body {
+    flex: 1; overflow-y: auto; padding: 14px; font-size: 12.5px; line-height: 1.7; color: #d7dbe3;
+  }
+  .term-panel-body::-webkit-scrollbar { width: 6px; }
+  .term-panel-body::-webkit-scrollbar-thumb { background: #2a2f3a; border-radius: 3px; }
+  .term-line { margin-bottom: 4px; white-space: pre-wrap; word-break: break-word; }
+  .term-line.cmd::before { content: "guest@mahabbah.dev:~$ "; color: #00F0FF; }
+  .term-line.ok { color: #00FFA3; }
+  .term-line.err { color: #FF6B6B; }
+  .term-line.dim { color: #6b7280; }
+  .term-panel-inputrow {
+    display: flex; align-items: center; gap: 6px; padding: 10px 12px; border-top: 1px solid var(--line);
+    font-size: 12.5px; color: #8a93a3; flex-shrink: 0;
+  }
+  .term-panel-inputrow input {
+    flex: 1; background: none; border: none; outline: none; color: #fff;
+    font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+  }
 </style>
 </head>
 <body>
@@ -881,7 +969,7 @@
 <!-- Boot Sequence -->
 <div id="boot-screen">
   <div class="boot-box">
-    <div class="boot-line" data-line>&gt; connecting to <span style="color:#F3F4F6">mahabbah.dev</span> ...</div>
+    <div class="boot-line" data-line>&gt; connecting to <span style="color:var(--accent)">mahabbah.dev</span> ...</div>
     <div class="boot-line" data-line>&gt; verifying credentials <span class="ok">[OK]</span></div>
     <div class="boot-line" data-line>&gt; loading AI / Web / Mobile / Security modules <span class="ok">[OK]</span></div>
     <div class="boot-line" data-line>&gt; access granted — welcome.</div>
@@ -951,6 +1039,7 @@
     </div>
   </div>
   <div class="hero-name">Mahabbah Mahabban Romadhon<span class="cursor"></span></div>
+  <div class="hero-typewriter mono" aria-hidden="true"><span id="twText"></span><span class="tw-cursor">_</span></div>
   <div class="hero-role">
     <span data-i18n="hero.role1">Spesialis Machine Learning</span>
     <span data-i18n="hero.role2">Full-Stack Web Dev</span>
@@ -960,6 +1049,8 @@
   <div class="hero-sub" id="heroSub" data-i18n="hero.sub">Praktisi teknologi bersertifikat dengan fokus pada perancangan arsitektur perangkat lunak yang aman, efisien, dan berbasis kecerdasan buatan.</div>
   <div class="hero-actions">
     <a href="CV_Mahabbah_Mahabban_Romadhon.pdf" download class="hire-btn"><span data-i18n="hero.cv">Unduh CV</span> <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg></a>
+    <button class="hire-btn" id="qrBtn" type="button" style="background:transparent;"><span data-i18n="hero.qr">QR Kode CV</span> <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 3h3m3 0h-3m0 3v-6"/></svg></button>
+    <button class="hire-btn" id="printPortfolioBtn" type="button" style="background:transparent;"><span data-i18n="hero.printpdf">Unduh Portofolio (PDF)</span> <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"/></svg></button>
     <button class="cmdk-trigger" id="cmdkTrigger" type="button"><span data-i18n="hero.search">Cari cepat</span> <span class="kbd">⌘K</span></button>
   </div>
   <div class="scroll-hint">SCROLL DOWN</div>
@@ -982,6 +1073,10 @@
       <div class="stat"><div class="num" data-count="6">0</div><div class="lbl" data-i18n="about.stat1">Proyek Industri & Eksplorasi Terpublikasi</div></div>
       <div class="stat"><div class="num" data-count="3">0</div><div class="lbl" data-i18n="about.stat2">Sertifikasi & Penghargaan Profesional</div></div>
       <div class="stat"><div class="num" data-count="4">0</div><div class="lbl" data-i18n="about.stat3">Domain Keahlian Utama (AI, Web, App, Sec)</div></div>
+      <div class="stat" id="ghStatCard">
+        <div class="num" id="ghRepoCount">—</div>
+        <div class="lbl"><span class="dot-live" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent-3);box-shadow:0 0 6px var(--accent-3);margin-right:6px;"></span><span data-i18n="about.ghstat">Repository Publik di GitHub (live)</span></div>
+      </div>
     </div>
   </div>
 </section>
@@ -1336,7 +1431,7 @@
       <div class="find-me-title" data-i18n="findme.title">// Temukan Saya</div>
       <div class="find-me-list">
         <a href="https://github.com/kangguruhdq-ux" target="_blank" rel="noopener" class="find-me-card">
-          <span class="find-me-icon" style="background:rgba(255,255,255,.08);color:#fff;">
+          <span class="find-me-icon" style="background:var(--accent-dim);color:var(--accent);">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           </span>
           <span class="find-me-text">
@@ -1420,6 +1515,17 @@
   </div>
 </div>
 
+<!-- QR Code CV Modal -->
+<div class="modal-overlay" id="qrModal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal-box" style="text-align:center; max-width: 320px;">
+    <button class="modal-close" id="qrModalClose" aria-label="Tutup">✕</button>
+    <div class="modal-tag" data-i18n="qr.tag">SCAN &amp; UNDUH</div>
+    <h3 data-i18n="qr.title">QR Kode CV Saya</h3>
+    <div id="qrcodeBox" style="background:#fff; padding:14px; border-radius: 10px; display:inline-block; margin: 16px 0;"></div>
+    <p data-i18n="qr.desc" style="font-size:13px;">Arahkan kamera HP ke kode ini untuk langsung mengunduh CV — praktis saat networking atau wawancara.</p>
+  </div>
+</div>
+
 <!-- Command Palette -->
 <div class="cmdk-overlay" id="cmdkOverlay" role="dialog" aria-modal="true" aria-hidden="true">
   <div class="cmdk-box">
@@ -1429,6 +1535,23 @@
       <span class="kbd">ESC</span>
     </div>
     <div class="cmdk-list" id="cmdkList"></div>
+  </div>
+</div>
+
+<!-- Floating Interactive Terminal -->
+<button class="term-fab" id="termFab" type="button" aria-label="Buka terminal interaktif" title="Terminal">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+</button>
+<div class="term-panel" id="termPanel" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="term-panel-head">
+    <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    <span class="term-panel-title mono">guest@mahabbah.dev: ~</span>
+    <button class="term-panel-close" id="termClose" aria-label="Tutup terminal">✕</button>
+  </div>
+  <div class="term-panel-body mono" id="termBody" tabindex="-1"></div>
+  <div class="term-panel-inputrow mono">
+    <span style="color:var(--accent)">guest@mahabbah.dev</span><span class="term-panel-prompt">:~$</span>
+    <input type="text" id="termInput" autocomplete="off" spellcheck="false" aria-label="Ketik perintah terminal">
   </div>
 </div>
 
@@ -1456,7 +1579,7 @@
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
     // Guard against WebGL context loss (common on memory-constrained mobile
     // browsers/webviews when several canvases compete for GPU contexts).
@@ -1584,7 +1707,10 @@
 
     const clock = new THREE.Clock();
     let parallaxY = 0, parallaxX = 0;
+    let tabVisible = !document.hidden;
+    document.addEventListener('visibilitychange', () => { tabVisible = !document.hidden; });
     const tick = () => {
+      if (!tabVisible) { window.requestAnimationFrame(tick); return; }
       if (!contextOk) { window.requestAnimationFrame(tick); return; }
       const t = clock.getElapsedTime();
       const baseRotY = reduceMotion ? 0 : t * 0.12;
@@ -1794,8 +1920,8 @@
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(45, 1, 0.1, 10);
         camera.position.z = 3.1;
-        renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
         renderer.setSize(size, size, false);
         canvas.addEventListener('webglcontextlost', onContextLost, false);
 
@@ -2221,15 +2347,27 @@
       // Keep the Cusdis comment widget's own theme in sync with the site
       try { window.CUSDIS && window.CUSDIS.setTheme && window.CUSDIS.setTheme(currentTheme); } catch (e) {}
     }
-    btn?.addEventListener('click', () => {
-      currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-      apply();
+    btn?.addEventListener('click', (e) => {
+      const next = currentTheme === 'light' ? 'dark' : 'light';
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (document.startViewTransition && !reduceMotion) {
+        const rect = btn.getBoundingClientRect();
+        const x = rect.left + rect.width / 2, y = rect.top + rect.height / 2;
+        const r = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+        document.documentElement.style.setProperty('--vt-x', x + 'px');
+        document.documentElement.style.setProperty('--vt-y', y + 'px');
+        document.documentElement.style.setProperty('--vt-r', r + 'px');
+        document.startViewTransition(() => { currentTheme = next; apply(); });
+      } else {
+        currentTheme = next; apply();
+      }
     });
     apply();
   })();
 
   // --- 4. PRINT / SAVE AS PDF ---
   document.getElementById('printBtn')?.addEventListener('click', () => window.print());
+  document.getElementById('printPortfolioBtn')?.addEventListener('click', () => window.print());
 
   // --- 5. COPY TO CLIPBOARD (email / phone) ---
   document.querySelectorAll('.copy-btn').forEach(btn => {
@@ -2272,11 +2410,15 @@
     'hero.role1': { en: 'Machine Learning Specialist' }, 'hero.role2': { en: 'Full-Stack Web Dev' },
     'hero.role3': { en: 'Mobile App Dev' }, 'hero.role4': { en: 'Cyber Security Analyst' },
     'hero.sub': { en: 'Certified technology practitioner focused on designing software architecture that is secure, efficient, and AI-driven.' },
-    'hero.cv': { en: 'Download CV' }, 'hero.search': { en: 'Quick search' },
+    'hero.cv': { en: 'Download CV' }, 'hero.search': { en: 'Quick search' }, 'hero.qr': { en: 'QR Code CV' },
+    'hero.printpdf': { en: 'Download Portfolio (PDF)' },
     'about.eyebrow': { en: '// brief introduction' }, 'about.h2': { en: 'Professional Profile' },
     'about.text': { en: "Hi, I am <strong>Mahabbah Mahabban Romadhon</strong>, a multidisciplinary technology professional combining expertise in <strong>Artificial Intelligence (AI), Software Engineering (Web/Mobile),</strong> and <strong>Cyber Security</strong>. I hold the <strong>HTB Certified Bug Bounty Hunter (CBBH)</strong> certification and graduated from the prestigious <strong>Deep Learning Specialization</strong> program by DeepLearning.AI.<br><br>My main focus is building digital ecosystems end-to-end — from training precise *Machine Learning* models, to designing responsive user interfaces, to securing system architecture against potential vulnerabilities. My dedication to system security is proven through the discovery of a vulnerability bug in <strong>detikcom's</strong> digital infrastructure, which was officially verified and appreciated.<br><br>My background is rooted in <strong>Computer &amp; Network Engineering</strong>, with hands-on experience ranging from fiber optic installation &amp; *splicing* to a *Visual Designer* role managing local web *deployment*. Combined with two years of organizational experience as an Extracurricular Secretary, I'm accustomed to working with precision, structure, and adaptability across technology domains." },
     'about.stat1': { en: 'Published Industry & Exploratory Projects' }, 'about.stat2': { en: 'Professional Certifications & Awards' },
     'about.stat3': { en: 'Core Expertise Domains (AI, Web, App, Sec)' },
+    'about.ghstat': { en: 'Public Repositories on GitHub (live)' },
+    'qr.tag': { en: 'SCAN & DOWNLOAD' }, 'qr.title': { en: 'My CV QR Code' },
+    'qr.desc': { en: 'Point your phone camera at this code to download the CV instantly — handy for networking or interviews.' },
     'edu.eyebrow': { en: '// academic track record' }, 'edu.h2': { en: 'Education History' },
     'edu.major': { en: 'Computer & Network Engineering | 2024 &ndash; 2027' },
     'edu.list': { en: '<li><strong>Web Development:</strong> Competent in *full-stack* web application development using the HTML, CSS, JavaScript, PHP, and Laravel ecosystem, along with skills in designing and managing MySQL relational databases.</li><li><strong>Network Infrastructure:</strong> Experienced in basic-level network (LAN/WAN) administration and configuration, using MikroTik hardware and advanced simulation with Cisco Packet Tracer.</li><li><strong>System Maintenance:</strong> Solid technical skills in assembling, *troubleshooting*, and maintaining computing hardware to ensure optimal operational reliability.</li><li><strong>Leadership &amp; Organization:</strong> Active for two years in the school\'s elite drill team (Pleton Inti) and earned several achievements, including serving as Secretary of the extracurricular &mdash; managing administration, drafting documents, and coordinating with the team.</li>' },
@@ -2576,6 +2718,213 @@
         document.querySelectorAll('.tech-card').forEach(t => t.classList.remove('tech-active'));
         document.getElementById('techFilterPill')?.remove();
       });
+    });
+  })();
+
+  // --- N1. HERO TYPEWRITER — cycles through the role pills, language-aware ---
+  (function initTypewriter() {
+    const el = document.getElementById('twText');
+    if (!el) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function getRoles() {
+      return Array.from(document.querySelectorAll('.hero-role span[data-i18n]')).map(s => s.textContent.trim()).filter(Boolean);
+    }
+    if (reduceMotion) { el.textContent = getRoles()[0] || ''; return; }
+    let ri = 0, ci = 0, deleting = false, timer = null;
+    function tick() {
+      const roles = getRoles();
+      if (!roles.length) { timer = setTimeout(tick, 500); return; }
+      const word = roles[ri % roles.length];
+      if (!deleting) {
+        ci++;
+        el.textContent = word.slice(0, ci);
+        if (ci >= word.length) { deleting = true; timer = setTimeout(tick, 1600); return; }
+        timer = setTimeout(tick, 55);
+      } else {
+        ci--;
+        el.textContent = word.slice(0, ci);
+        if (ci <= 0) { deleting = false; ri++; timer = setTimeout(tick, 350); return; }
+        timer = setTimeout(tick, 26);
+      }
+    }
+    tick();
+  })();
+
+  // --- N2. QR CODE CV MODAL ---
+  (function initQrModal() {
+    const btn = document.getElementById('qrBtn');
+    const modal = document.getElementById('qrModal');
+    const closeBtn = document.getElementById('qrModalClose');
+    const box = document.getElementById('qrcodeBox');
+    if (!btn || !modal) return;
+    let rendered = false;
+    function open() {
+      modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false');
+      if (!rendered) {
+        if (typeof QRCode !== 'undefined') {
+          try {
+            const cvUrl = new URL('CV_Mahabbah_Mahabban_Romadhon.pdf', window.location.href).href;
+            new QRCode(box, { text: cvUrl, width: 200, height: 200, colorDark: '#0A0A0A', colorLight: '#FFFFFF' });
+            rendered = true;
+          } catch (e) { box.textContent = 'QR tidak dapat dibuat.'; }
+        } else {
+          box.textContent = 'Memuat pustaka QR gagal — coba lagi saat online.';
+        }
+      }
+    }
+    function close() { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); }
+    btn.addEventListener('click', open);
+    closeBtn?.addEventListener('click', close);
+    modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('open')) close(); });
+  })();
+
+  // --- N3. LIVE GITHUB STATS ---
+  (function initGithubStats() {
+    const el = document.getElementById('ghRepoCount');
+    if (!el) return;
+    fetch('https://api.github.com/users/kangguruhdq-ux')
+      .then(r => { if (!r.ok) throw new Error('gh api error'); return r.json(); })
+      .then(data => {
+        const target = data.public_repos || 0;
+        let n = 0;
+        const step = Math.max(1, Math.ceil(target / 30));
+        (function count() {
+          n = Math.min(target, n + step);
+          el.textContent = n;
+          if (n < target) requestAnimationFrame(count);
+        })();
+      })
+      .catch(() => { el.textContent = '—'; el.parentElement.style.opacity = '0.5'; });
+  })();
+
+  // --- N4. KONAMI CODE EASTER EGG (matrix rain) ---
+  (function initKonami() {
+    const seq = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    let pos = 0;
+    let toastEl = null;
+    function toast(msg) {
+      if (!toastEl) {
+        toastEl = document.createElement('div');
+        toastEl.className = 'egg-toast';
+        document.body.appendChild(toastEl);
+      }
+      toastEl.textContent = msg;
+      requestAnimationFrame(() => toastEl.classList.add('show'));
+      setTimeout(() => toastEl.classList.remove('show'), 3200);
+    }
+    function runMatrix() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { toast('🎉 Konami Code Activated — Cyber Security Mode'); return; }
+      let canvas = document.getElementById('matrixCanvas');
+      if (!canvas) {
+        canvas = document.createElement('canvas');
+        canvas.id = 'matrixCanvas';
+        document.body.appendChild(canvas);
+      }
+      canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+      const ctx = canvas.getContext('2d');
+      const chars = 'アカサタナ01ABCDEFΣΩ01アカサタナ';
+      const fontSize = 16;
+      const cols = Math.floor(canvas.width / fontSize);
+      const drops = new Array(cols).fill(1);
+      canvas.classList.add('active');
+      toast('🎉 Konami Code Activated — Cyber Security Mode');
+      let frames = 0;
+      const maxFrames = 260; // ~4-5s at 60fps-ish via setInterval below
+      const interval = setInterval(() => {
+        ctx.fillStyle = 'rgba(7,9,13,0.08)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#00F0FF';
+        ctx.font = fontSize + 'px monospace';
+        for (let i = 0; i < drops.length; i++) {
+          const text = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+          drops[i]++;
+        }
+        frames++;
+        if (frames > maxFrames) {
+          clearInterval(interval);
+          canvas.classList.remove('active');
+          setTimeout(() => { ctx.clearRect(0, 0, canvas.width, canvas.height); }, 500);
+        }
+      }, 40);
+    }
+    document.addEventListener('keydown', (e) => {
+      const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      pos = (key === seq[pos]) ? pos + 1 : (key === seq[0] ? 1 : 0);
+      if (pos === seq.length) { pos = 0; runMatrix(); }
+    });
+  })();
+
+  // --- N5. INTERACTIVE TERMINAL WIDGET ---
+  (function initTerminal() {
+    const fab = document.getElementById('termFab');
+    const panel = document.getElementById('termPanel');
+    const closeBtn = document.getElementById('termClose');
+    const body = document.getElementById('termBody');
+    const input = document.getElementById('termInput');
+    if (!fab || !panel) return;
+
+    function printLine(text, cls) {
+      const d = document.createElement('div');
+      d.className = 'term-line' + (cls ? ' ' + cls : '');
+      d.textContent = text;
+      body.appendChild(d);
+      body.scrollTop = body.scrollHeight;
+    }
+    function printCmd(text) {
+      const d = document.createElement('div');
+      d.className = 'term-line cmd';
+      d.textContent = text;
+      body.appendChild(d);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    const COMMANDS = {
+      help: () => { printLine('Perintah tersedia:', 'dim'); ['whoami','skills','projects','contact','sudo hire-me','theme','clear','help'].forEach(c => printLine('  · ' + c)); },
+      whoami: () => { printLine('Mahabbah Mahabban Romadhon', 'ok'); printLine('Machine Learning · Full-Stack Dev · Mobile Dev · Cyber Security', 'dim'); },
+      skills: () => { printLine('AI/ML, Web (Laravel/PHP/JS), Mobile, Cyber Security (CBBH), MikroTik/Cisco Networking.', 'ok'); },
+      projects: () => { printLine('6 proyek terpublikasi — ketik "goto work" atau klik menu Portofolio.', 'ok'); document.querySelector('#work')?.scrollIntoView({ behavior: 'smooth' }); },
+      contact: () => { printLine('misnosusanto97@gmail.com · github.com/kangguruhdq-ux', 'ok'); },
+      theme: () => { document.getElementById('themeToggle')?.click(); printLine('Tema diubah.', 'ok'); },
+      clear: () => { body.innerHTML = ''; },
+      'sudo hire-me': () => {
+        printLine('[sudo] password for guest: ********', 'dim');
+        printLine('Permission granted. Redirecting to contact...', 'ok');
+        setTimeout(() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }), 500);
+      },
+      'ls projects': () => { printLine('AI-Deteksi-APD  OSINT-Tools-Zeta  Web-3D  Pacman-Game  PhotoBooth  BMI-3D', 'ok'); },
+      'goto work': () => { document.querySelector('#work')?.scrollIntoView({ behavior: 'smooth' }); },
+    };
+
+    function run(raw) {
+      const cmd = raw.trim();
+      if (!cmd) return;
+      printCmd(cmd);
+      const key = cmd.toLowerCase();
+      if (COMMANDS[key]) { COMMANDS[key](); }
+      else { printLine(`command not found: ${cmd} — ketik "help"`, 'err'); }
+    }
+
+    function open() {
+      panel.classList.add('open'); panel.setAttribute('aria-hidden', 'false');
+      if (!body.dataset.booted) {
+        body.dataset.booted = '1';
+        printLine('Terminal interaktif — ketik "help" untuk daftar perintah.', 'dim');
+      }
+      setTimeout(() => input.focus(), 200);
+    }
+    function close() { panel.classList.remove('open'); panel.setAttribute('aria-hidden', 'true'); }
+
+    fab.addEventListener('click', () => { panel.classList.contains('open') ? close() : open(); });
+    closeBtn.addEventListener('click', close);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { run(input.value); input.value = ''; }
+      if (e.key === 'Escape') close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && panel.classList.contains('open') && document.activeElement !== input) close();
     });
   })();
 </script>
