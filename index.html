@@ -51,6 +51,111 @@
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
+  /* LIGHT THEME — toggled via [data-theme="light"] on <html> */
+  html[data-theme="light"] {
+    --bg: #F4F6FA;
+    --bg-alt: rgba(255, 255, 255, 0.75);
+    --line: #D7DCE5;
+    --fg: #12151C;
+    --muted: #5B6270;
+    --accent: #007A85;
+    --accent-dim: rgba(0, 122, 133, 0.12);
+    --accent-2: #7A1FCC;
+    --accent-2-dim: rgba(122, 31, 204, 0.12);
+    --accent-3: #00875A;
+  }
+  html[data-theme="light"] body { background: var(--bg); }
+  html[data-theme="light"] #bg-canvas { opacity: 0.25; }
+  html[data-theme="light"] .grain { opacity: 0.02; }
+  html[data-theme="light"] nav { background: rgba(244, 246, 250, 0.85); }
+  html[data-theme="light"] .hero-bg-word { -webkit-text-stroke: 1px rgba(0,0,0,0.06); color: transparent; }
+  html[data-theme="light"] .boot-box { color: #006670; }
+
+  /* Theme / Language / Print toggles */
+  .util-toggles { display: flex; align-items: center; gap: 8px; margin-left: 16px; }
+  .util-btn {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+    border: 1px solid var(--line); color: var(--muted); background: transparent;
+    padding: 8px 12px; border-radius: 6px; cursor: pointer; letter-spacing: .5px;
+    transition: all .25s ease; display: flex; align-items: center; gap: 6px;
+  }
+  .util-btn:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+  .util-btn svg { width: 14px; height: 14px; }
+  @media (max-width: 900px) { .util-toggles { margin-left: 0; } }
+
+  /* Copy-to-clipboard buttons on contact links */
+  .copy-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--line);
+    background: transparent; color: var(--muted); cursor: pointer; margin-left: 8px;
+    transition: all .25s ease; position: relative; vertical-align: middle;
+  }
+  .copy-btn svg { width: 13px; height: 13px; }
+  .copy-btn:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+  .copy-btn .copy-toast {
+    position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px);
+    background: var(--accent); color: #000; font-size: 11px; font-family: 'JetBrains Mono', monospace;
+    padding: 4px 8px; border-radius: 4px; white-space: nowrap; opacity: 0; pointer-events: none;
+    transition: all .25s var(--ease-out);
+  }
+  .copy-btn.copied .copy-toast { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* Image loading skeleton — shimmer placeholder until image loads or errors */
+  .img-loading { position: relative; overflow: hidden; }
+  .img-loading::before {
+    content: ""; position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(100deg, rgba(255,255,255,0.02) 30%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.02) 70%);
+    background-size: 200% 100%; animation: shimmer 1.4s ease-in-out infinite;
+  }
+  @keyframes shimmer { 0% { background-position: 150% 0; } 100% { background-position: -50% 0; } }
+  .img-loading img { opacity: 0; }
+  .avatar-wrap.img-loading::before { border-radius: 50%; }
+
+  /* Last updated badge */
+  .updated-badge {
+    display: inline-flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted); border: 1px solid var(--line); padding: 5px 10px;
+    border-radius: 20px; margin-top: 14px;
+  }
+  .updated-badge .dot-live { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-3); box-shadow: 0 0 6px var(--accent-3); }
+
+  /* Comments section */
+  .comment-form { display: flex; flex-direction: column; gap: 14px; max-width: 640px; margin: 0 auto 40px; }
+  .comment-form input, .comment-form textarea {
+    background: var(--bg-alt); border: 1px solid var(--line); border-radius: 8px; color: var(--fg);
+    padding: 12px 14px; font-family: 'Inter', sans-serif; font-size: 14px; resize: vertical;
+  }
+  .comment-form input:focus, .comment-form textarea:focus { outline: none; border-color: var(--accent); }
+  .comment-form button {
+    align-self: flex-start; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600;
+    border: 1px solid var(--accent); color: var(--accent); background: var(--accent-dim);
+    padding: 10px 22px; border-radius: 6px; cursor: pointer; transition: all .3s ease;
+  }
+  .comment-form button:hover { background: var(--accent); color: #000; }
+  .comment-list { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+  .comment-item {
+    background: var(--bg-alt); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px;
+    backdrop-filter: blur(10px);
+  }
+  .comment-item .c-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .comment-item .c-name { font-weight: 600; color: var(--fg); font-size: 14px; }
+  .comment-item .c-date { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
+  .comment-item .c-body { color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .comment-empty { text-align: center; color: var(--muted); font-size: 13.5px; font-family: 'JetBrains Mono', monospace; margin-bottom: 20px; }
+  .comment-note { text-align: center; color: var(--muted); font-size: 12.5px; margin-top: 24px; max-width: 640px; margin-inline: auto; }
+
+  /* PRINT — clean single-page CV-style view */
+  @media print {
+    #boot-screen, .grain, #bg-canvas, #cursor-dot, #cursor-ring, nav, .scroll-hint,
+    .filter-bar, .cmdk-overlay, .modal-overlay, .mini3d, footer .updated-badge,
+    .work-link, .comment-form, #commentsSection, .hero-actions .cmdk-trigger { display: none !important; }
+    body { background: #fff !important; color: #111 !important; }
+    section { padding: 24px 0 !important; max-width: 100% !important; page-break-inside: avoid; }
+    .work-card, .term-card, .cert-item, .timeline-content { break-inside: avoid; border: 1px solid #ccc !important; background: #fafafa !important; box-shadow: none !important; }
+    a { color: #111 !important; text-decoration: underline; }
+    .hero { min-height: auto !important; }
+  }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   
@@ -97,6 +202,43 @@
     position: fixed; top: 0; left: 0; height: 3px; background: var(--accent);
     width: 0%; z-index: 100; transition: width .1s linear;
     box-shadow: 0 0 10px var(--accent);
+  }
+
+  /* Back to top */
+  .back-to-top {
+    position: fixed; right: 24px; bottom: 24px; width: 46px; height: 46px; border-radius: 50%;
+    background: var(--bg-alt); border: 1px solid var(--line); color: var(--fg); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; z-index: 90; backdrop-filter: blur(10px);
+    opacity: 0; visibility: hidden; transform: translateY(10px);
+    transition: opacity .3s ease, transform .3s ease, visibility .3s ease, border-color .3s ease;
+  }
+  .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+  .back-to-top:hover { border-color: var(--accent); color: var(--accent); }
+  .back-to-top svg { width: 18px; height: 18px; }
+
+  /* Tech <-> Project filter */
+  .tech-card { cursor: pointer; }
+  .tech-card.tech-active { border-color: var(--accent); background: var(--accent-dim); box-shadow: 0 0 0 1px var(--accent) inset; }
+  .tech-filter-pill {
+    display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; color: var(--accent); background: var(--accent-dim); border: 1px solid var(--accent);
+    padding: 6px 10px 6px 14px; border-radius: 20px; margin: 0 0 22px; cursor: pointer;
+  }
+  .tech-filter-pill svg { width: 13px; height: 13px; }
+
+  /* QR code card */
+  .qr-card {
+    display: inline-flex; flex-direction: column; align-items: center; gap: 10px;
+    background: var(--bg-alt); border: 1px solid var(--line); border-radius: 12px; padding: 18px;
+    margin-top: 32px; backdrop-filter: blur(10px);
+  }
+  .qr-card img { width: 128px; height: 128px; border-radius: 6px; background: #fff; padding: 6px; }
+  .qr-card span { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--muted); }
+
+  /* Hero typing cursor (reuses blink keyframe defined below) */
+  .hero-sub .type-cursor {
+    display: inline-block; width: 2px; height: 1em; background: var(--accent);
+    margin-left: 2px; vertical-align: -2px; animation: blink 1s step-end infinite;
   }
 
   /* Background 3D Canvas */
@@ -230,30 +372,30 @@
   @keyframes spin { 100% { transform: rotate(360deg); } }
   .avatar-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; position: relative; z-index: 1; padding: 4px;}
 
-  /* Orbiting 3D badges — a genuine preserve-3d orbit: the ring spins on Y,
-     each badge counter-spins at the same rate so it always faces the viewer
-     while its position still visibly circles the avatar. */
+  /* Orbiting badges — simple, reliable 2D ellipse orbit driven by JS (translate only,
+     never rotateY on the badge itself), so the text can never mirror/flip like a true
+     preserve-3d counter-spin can. Depth is faked with scale + opacity as each badge
+     passes to the "back" of the ellipse. */
   .avatar-orbit-scene {
     position: absolute; top: 50%; left: 50%; width: 0; height: 0;
-    perspective: 700px; z-index: 3; pointer-events: none;
+    z-index: 3; pointer-events: none;
     opacity: 0; animation: orbitFadeIn 1s .9s ease forwards;
   }
   @keyframes orbitFadeIn { to { opacity: 1; } }
-  .orbit-ring { position: absolute; top: 0; left: 0; width: 0; height: 0; transform-style: preserve-3d; animation: orbitSpin 26s linear infinite; }
-  @keyframes orbitSpin { from { transform: rotateX(12deg) rotateY(0deg); } to { transform: rotateX(12deg) rotateY(360deg); } }
-  .orbit-pos { position: absolute; top: 0; left: 0; width: 0; height: 0; transform-style: preserve-3d; }
   .orbit-badge {
-    position: absolute; top: -18px; left: -26px; width: 52px; height: 36px; border-radius: 10px;
+    position: absolute; top: 0; left: 0; width: 54px; height: 36px; margin: -18px 0 0 -27px;
     display: flex; align-items: center; justify-content: center; pointer-events: auto;
     background: rgba(7, 9, 13, 0.85); border: 1px solid var(--accent); color: var(--accent);
+    border-radius: 10px;
     font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: .5px;
     box-shadow: 0 0 16px var(--accent-dim); backdrop-filter: blur(4px);
-    animation: orbitCounter 26s linear infinite; transition: box-shadow .3s ease, transform .3s ease;
+    transition: box-shadow .3s ease;
+    will-change: transform, opacity;
   }
+  html[data-theme="light"] .orbit-badge { background: rgba(255,255,255,0.9); }
   .orbit-badge:hover { box-shadow: 0 0 24px var(--accent); }
   .orbit-badge.alt { border-color: var(--accent-2); color: var(--accent-2); box-shadow: 0 0 16px var(--accent-2-dim); }
   .orbit-badge.alt:hover { box-shadow: 0 0 24px var(--accent-2); }
-  @keyframes orbitCounter { from { transform: rotateX(-12deg) rotateY(0deg); } to { transform: rotateX(-12deg) rotateY(-360deg); } }
   @media (max-width: 640px) { .avatar-orbit-scene { transform: scale(.72); } }
   
   .hero-name {
@@ -303,14 +445,14 @@
   .cmdk-trigger .kbd { font-size: 11px; padding: 2px 6px; border: 1px solid var(--line); border-radius: 4px; color: var(--accent); }
 
   .scroll-hint {
-    position: absolute; right: 40px; bottom: 40px;
-    writing-mode: vertical-rl; font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; letter-spacing: 4px; color: var(--muted);
-    display: flex; align-items: center; gap: 12px;
-    animation: bounceY 2s ease-in-out infinite; z-index: 2;
+    position: relative; z-index: 2; margin-top: 44px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 3px; color: var(--muted);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    opacity: 0; animation: riseUp .8s 1s ease forwards, bounceY 2s 1.8s ease-in-out infinite;
   }
-  @keyframes bounceY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
-  .scroll-hint::after { content: ""; width: 1px; height: 50px; background: linear-gradient(to bottom, var(--muted), transparent); }
+  @keyframes bounceY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+  .scroll-hint::after { content: "↓"; font-size: 14px; }
 
   /* SECTION SHARED */
   section { padding: 120px 40px; max-width: 1100px; margin: 0 auto; position: relative; z-index: 1;}
@@ -401,6 +543,35 @@
   }
   .timeline-content ul li strong { color: var(--fg); font-weight: 600;}
 
+  /* Education — school logo */
+  .timeline-logo {
+    width: 56px; height: 56px; border-radius: 10px; overflow: hidden; flex-shrink: 0;
+    background: rgba(0,0,0,0.25); border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+  }
+  .timeline-logo img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
+  .timeline-head { display: flex; align-items: center; gap: 16px; margin-bottom: 4px; }
+  .timeline-head .timeline-logo { margin-bottom: 0; }
+
+  /* TECH STACK — logo grid */
+  .tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 18px; perspective: 1200px; }
+  .tech-card {
+    background: var(--bg-alt); border: 1px solid var(--line); border-radius: 12px;
+    padding: 22px 14px; text-align: center; backdrop-filter: blur(10px);
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    transition: transform .35s var(--ease-out), border-color .35s ease, box-shadow .35s ease;
+  }
+  .tech-card:hover { transform: translateY(-6px); border-color: var(--accent); box-shadow: 0 14px 30px rgba(0,0,0,0.35); }
+  .tech-card { justify-content: center; min-height: 118px; }
+  .tech-logo { width: 44px; height: 44px; position: relative; flex-shrink: 0; }
+  .tech-logo img { width: 100%; height: 100%; object-fit: contain; position: absolute; inset: 0; opacity: 0; transition: opacity .3s ease; }
+  .tech-fallback {
+    position: absolute; inset: 0; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px;
+  }
+  .tech-name { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--muted); letter-spacing: .3px; }
+  .tech-card:hover .tech-name { color: var(--fg); }
+
   /* SKILLS - Terminal Cards */
   .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; perspective: 1200px; }
   .term-card {
@@ -469,6 +640,7 @@
   .work-link svg { width: 16px; height: 16px; transition: transform .3s ease;}
   .work-link:hover { color: var(--accent); }
   .work-link:hover svg { transform: translate(4px, -4px); color: var(--accent);}
+  button.work-link { background: none; border: none; padding: 0; cursor: pointer; }
   
   .work-subhead {
     margin: 60px 0 24px; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--fg);
@@ -534,12 +706,36 @@
   }
   .big-btn:hover { background: var(--accent); box-shadow: 0 10px 30px rgba(0, 240, 255, 0.3); transform: translateY(-3px);}
   
-  .contact-links { display: flex; gap: 30px; justify-content: center; margin-top: 40px; flex-wrap: wrap; }
-  .contact-links a {
-    font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--muted);
-    transition: all .3s ease; display: flex; align-items: center; gap: 8px;
+  /* "Find Me" cards — GitHub / WhatsApp / Email, icon-badge + label style */
+  .find-me { margin-top: 50px; }
+  .find-me-title {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--fg); text-align: center; margin-bottom: 20px;
   }
-  .contact-links a:hover { color: var(--accent); transform: translateY(-2px);}
+  .find-me-list { display: flex; flex-direction: column; gap: 14px; max-width: 480px; margin: 0 auto; }
+  .find-me-card {
+    display: flex; align-items: center; gap: 16px; padding: 16px 18px;
+    background: var(--bg-alt); border: 1px solid var(--line); border-radius: 14px;
+    text-decoration: none; color: var(--fg); cursor: pointer;
+    transition: transform .3s var(--ease-out), border-color .3s ease, box-shadow .3s ease;
+    position: relative; overflow: hidden; --mx: 50%; --my: 50%;
+  }
+  .find-me-card::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 0;
+    background: radial-gradient(220px circle at var(--mx) var(--my), rgba(255,255,255,.08), transparent 65%);
+    opacity: 0; transition: opacity .35s ease;
+  }
+  .find-me-card:hover::before { opacity: 1; }
+  .find-me-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 16px 32px rgba(0,0,0,.35); }
+  .find-me-icon {
+    width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; position: relative; z-index: 1;
+  }
+  .find-me-icon svg { width: 24px; height: 24px; }
+  .find-me-text { position: relative; z-index: 1; flex: 1; min-width: 0; }
+  .find-me-text strong { display: block; font-size: 16px; font-weight: 700; }
+  .find-me-text span { display: block; font-size: 12.5px; color: var(--muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .find-me-card .copy-btn { position: relative; z-index: 1; margin-left: 0; }
   
   footer { text-align: center; padding: 40px; color: var(--muted); font-size: 13px; font-family: 'JetBrains Mono', monospace; border-top: 1px solid var(--line); margin-top: 40px;}
 
@@ -618,6 +814,9 @@
 
 <!-- Progress Bar -->
 <div id="progress"></div>
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+</button>
 
 <!-- 3D Background Canvas -->
 <canvas id="bg-canvas"></canvas>
@@ -626,13 +825,23 @@
 <nav>
   <div class="logo"><div class="logo-mark">MR</div>MAHABBAH.DEV</div>
   <div class="navlinks" id="navlinks">
-    <a href="#about" class="nav-link"><span>01.</span> Profil</a>
-    <a href="#education" class="nav-link"><span>02.</span> Pendidikan</a>
-    <a href="#skills" class="nav-link"><span>03.</span> Keahlian</a>
-    <a href="#work" class="nav-link"><span>04.</span> Portofolio</a>
-    <a href="#contact" class="nav-link"><span>05.</span> Kontak</a>
+    <a href="#about" class="nav-link"><span>01.</span> <span data-i18n="nav.about">Profil</span></a>
+    <a href="#education" class="nav-link"><span>02.</span> <span data-i18n="nav.education">Pendidikan</span></a>
+    <a href="#skills" class="nav-link"><span>03.</span> <span data-i18n="nav.skills">Keahlian</span></a>
+    <a href="#techstack" class="nav-link"><span>04.</span> Tech Stack</a>
+    <a href="#work" class="nav-link"><span>05.</span> <span data-i18n="nav.work">Portofolio</span></a>
+    <a href="#contact" class="nav-link"><span>06.</span> <span data-i18n="nav.contact">Kontak</span></a>
   </div>
-  <a href="#contact" class="hire-btn">Mulai Diskusi</a>
+  <div class="util-toggles">
+    <button class="util-btn" id="langToggle" type="button" aria-label="Switch language" title="ID / EN">EN</button>
+    <button class="util-btn" id="themeToggle" type="button" aria-label="Toggle light/dark mode" title="Light / Dark mode">
+      <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+    </button>
+    <button class="util-btn" id="printBtn" type="button" aria-label="Print or save as PDF" title="Print / Save as PDF">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a1 1 0 001-1v-4a1 1 0 00-1-1H9a1 1 0 00-1 1v4a1 1 0 001 1zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+    </button>
+  </div>
+  <a href="#contact" class="hire-btn" data-i18n="nav.hire">Mulai Diskusi</a>
   <button class="burger" id="burger" aria-label="Toggle menu">
     <span></span><span></span><span></span>
   </button>
@@ -641,28 +850,26 @@
 <!-- Hero Section -->
 <section class="hero" id="heroSection" style="padding-top:0;">
   <div class="hero-bg-word">INNOVATE.SECURE</div>
-  <div class="avatar-wrap">
-    <img class="avatar-img" src="images/profile.jpg" alt="Foto profil Mahabbah" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOUNBM0FGIiBzdHJva2Utd2lkdGg9IjEiPjxwYXRoIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTE3Ljk4MiAxOC43MjVBNy40ODggNy40ODggMCAwMDEyIDE1Ljc1YTcuNDg4IDcuNDg4IDAgMDAtNS45ODIgMi45NzVtMTEuOTYzIDBhOSA5IDAgMTAtMTEuOTYzIDBtMTEuOTYzIDBBOC45NjYgOC45NjYgMCAwMTEyIDIxYTguOTY2IDguOTY2IDAgMDEtNS45ODItMi4yNzVNMTUgOS43NWEzIDMgMCAxMS02IDAgMyAzIDAgMDE2IDB6Ii8+PC9zdmc+'">
-    <div class="avatar-orbit-scene" aria-hidden="true">
-      <div class="orbit-ring">
-        <div class="orbit-pos" style="transform: rotateY(0deg) translateZ(118px);"><div class="orbit-badge">AI</div></div>
-        <div class="orbit-pos" style="transform: rotateY(90deg) translateZ(118px);"><div class="orbit-badge alt">WEB</div></div>
-        <div class="orbit-pos" style="transform: rotateY(180deg) translateZ(118px);"><div class="orbit-badge">APP</div></div>
-        <div class="orbit-pos" style="transform: rotateY(270deg) translateZ(118px);"><div class="orbit-badge alt">SEC</div></div>
-      </div>
+  <div class="avatar-wrap img-loading" id="avatarWrap">
+    <img class="avatar-img" id="avatarImg" src="images/profile.jpg" alt="Foto profil Mahabbah" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOUNBM0FGIiBzdHJva2Utd2lkdGg9IjEiPjxwYXRoIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTE3Ljk4MiAxOC43MjVBNy40ODggNy40ODggMCAwMDEyIDE1Ljc1YTcuNDg4IDcuNDg4IDAgMDAtNS45ODIgMi45NzVtMTEuOTYzIDBhOSA5IDAgMTAtMTEuOTYzIDBtMTEuOTYzIDBBOC45NjYgOC45NjYgMCAwMTEyIDIxYTguOTY2IDguOTY2IDAgMDEtNS45ODItMi4yNzVNMTUgOS43NWEzIDMgMCAxMS02IDAgMyAzIDAgMDE2IDB6Ii8+PC9zdmc+'">
+    <div class="avatar-orbit-scene" id="orbitScene" aria-hidden="true">
+      <div class="orbit-badge" data-angle="0">AI</div>
+      <div class="orbit-badge alt" data-angle="90">WEB</div>
+      <div class="orbit-badge" data-angle="180">APP</div>
+      <div class="orbit-badge alt" data-angle="270">SEC</div>
     </div>
   </div>
   <div class="hero-name">Mahabbah Mahabban Romadhon<span class="cursor"></span></div>
   <div class="hero-role">
-    <span>Spesialis Machine Learning</span>
-    <span>Full-Stack Web Dev</span>
-    <span>Mobile App Dev</span>
-    <span>Cyber Security Analyst</span>
+    <span data-i18n="hero.role1">Spesialis Machine Learning</span>
+    <span data-i18n="hero.role2">Full-Stack Web Dev</span>
+    <span data-i18n="hero.role3">Mobile App Dev</span>
+    <span data-i18n="hero.role4">Cyber Security Analyst</span>
   </div>
-  <div class="hero-sub">Praktisi teknologi bersertifikat dengan fokus pada perancangan arsitektur perangkat lunak yang aman, efisien, dan berbasis kecerdasan buatan.</div>
+  <div class="hero-sub" id="heroSub" data-i18n="hero.sub">Praktisi teknologi bersertifikat dengan fokus pada perancangan arsitektur perangkat lunak yang aman, efisien, dan berbasis kecerdasan buatan.</div>
   <div class="hero-actions">
-    <a href="CV_Mahabbah_Mahabban_Romadhon.pdf" download class="hire-btn">Unduh CV <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg></a>
-    <button class="cmdk-trigger" id="cmdkTrigger" type="button">Cari cepat <span class="kbd">⌘K</span></button>
+    <a href="CV_Mahabbah_Mahabban_Romadhon.pdf" download class="hire-btn"><span data-i18n="hero.cv">Unduh CV</span> <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg></a>
+    <button class="cmdk-trigger" id="cmdkTrigger" type="button"><span data-i18n="hero.search">Cari cepat</span> <span class="kbd">⌘K</span></button>
   </div>
   <div class="scroll-hint">SCROLL DOWN</div>
 </section>
@@ -670,18 +877,18 @@
 <!-- About Section -->
 <section id="about">
   <canvas class="mini3d" data-shape="tetrahedron" data-color="accent" aria-hidden="true"></canvas>
-  <div class="eyebrow reveal">// pengenalan singkat</div>
-  <h2 class="reveal">Profil Profesional</h2>
+  <div class="eyebrow reveal" data-i18n="about.eyebrow">// pengenalan singkat</div>
+  <h2 class="reveal" data-i18n="about.h2">Profil Profesional</h2>
   <div class="about-wrap reveal">
-    <div class="about-text">
+    <div class="about-text" data-i18n="about.text">
       Halo, saya <strong>Mahabbah Mahabban Romadhon</strong>, seorang profesional teknologi multidisiplin yang memadukan keahlian dalam <strong>Kecerdasan Buatan (AI), Rekayasa Perangkat Lunak (Web/Mobile),</strong> dan <strong>Keamanan Siber</strong>. Saya memegang sertifikasi <strong>HTB Certified Bug Bounty Hunter (CBBH)</strong> dan lulusan program prestisius <strong>Deep Learning Specialization</strong> dari DeepLearning.AI.
       <br><br>
       Fokus utama saya adalah membangun ekosistem digital secara komprehensif—mulai dari melatih model *Machine Learning* yang presisi, merancang antarmuka pengguna yang responsif, hingga mengamankan arsitektur sistem dari potensi kerentanan. Dedikasi saya pada keamanan sistem dibuktikan melalui penemuan kerentanan (vulnerability bug) pada infrastruktur digital <strong>detikcom</strong>, yang telah diverifikasi dan diapresiasi secara resmi.
     </div>
     <div class="stat-box">
-      <div class="stat"><div class="num" data-count="6">0</div><div class="lbl">Proyek Industri & Eksplorasi Terpublikasi</div></div>
-      <div class="stat"><div class="num" data-count="3">0</div><div class="lbl">Sertifikasi & Penghargaan Profesional</div></div>
-      <div class="stat"><div class="num" data-count="4">0</div><div class="lbl">Domain Keahlian Utama (AI, Web, App, Sec)</div></div>
+      <div class="stat"><div class="num" data-count="6">0</div><div class="lbl" data-i18n="about.stat1">Proyek Industri & Eksplorasi Terpublikasi</div></div>
+      <div class="stat"><div class="num" data-count="3">0</div><div class="lbl" data-i18n="about.stat2">Sertifikasi & Penghargaan Profesional</div></div>
+      <div class="stat"><div class="num" data-count="4">0</div><div class="lbl" data-i18n="about.stat3">Domain Keahlian Utama (AI, Web, App, Sec)</div></div>
     </div>
   </div>
 </section>
@@ -689,16 +896,21 @@
 <!-- Education Section (NEW) -->
 <section id="education">
   <canvas class="mini3d" data-shape="octahedron" data-color="accent2" aria-hidden="true"></canvas>
-  <div class="eyebrow reveal">// rekam jejak akademis</div>
-  <h2 class="reveal">Riwayat Pendidikan</h2>
+  <div class="eyebrow reveal" data-i18n="edu.eyebrow">// rekam jejak akademis</div>
+  <h2 class="reveal" data-i18n="edu.h2">Riwayat Pendidikan</h2>
   <div class="timeline reveal-stagger">
     
     <div class="timeline-item">
       <div class="timeline-dot"></div>
       <div class="timeline-content">
-        <h3>SMKN 3 Yogyakarta</h3>
-        <span class="timeline-date">Teknik Komputer dan Jaringan | Nilai Rata-rata: 90</span>
-        <ul>
+        <div class="timeline-head">
+          <div class="timeline-logo img-loading" id="smknLogoWrap"><img id="smknLogoImg" src="images/smkn3-logo.png" alt="Logo SMKN 3 Yogyakarta" onerror="this.closest('.timeline-logo').style.display='none'"></div>
+          <div>
+            <h3>SMKN 3 Yogyakarta</h3>
+            <span class="timeline-date" data-i18n="edu.major">Teknik Komputer dan Jaringan | Nilai Rata-rata: 90</span>
+          </div>
+        </div>
+        <ul data-i18n="edu.list">
           <li><strong>Pengembangan Web:</strong> Kompeten dalam pengembangan aplikasi web *full-stack* menggunakan ekosistem HTML, CSS, JavaScript, PHP, dan Laravel, disertai keahlian dalam merancang dan mengelola basis data relasional MySQL.</li>
           <li><strong>Infrastruktur Jaringan:</strong> Berpengalaman dalam administrasi dan konfigurasi infrastruktur jaringan (LAN/WAN) skala dasar, memanfaatkan perangkat keras MikroTik dan simulasi tingkat lanjut dengan Cisco Packet Tracer.</li>
           <li><strong>Perawatan Sistem:</strong> Memiliki keahlian teknis yang solid dalam perakitan, *troubleshooting*, dan pemeliharaan perangkat keras komputasi guna memastikan reliabilitas operasional sistem secara optimal.</li>
@@ -712,8 +924,8 @@
 <!-- Skills Section -->
 <section id="skills">
   <canvas class="mini3d" data-shape="icosahedron" data-color="accent" aria-hidden="true"></canvas>
-  <div class="eyebrow reveal">// fondasi teknis</div>
-  <h2 class="reveal">Kompetensi Utama</h2>
+  <div class="eyebrow reveal" data-i18n="skills.eyebrow">// fondasi teknis</div>
+  <h2 class="reveal" data-i18n="skills.h2">Kompetensi Utama</h2>
   <div class="skills-grid reveal-stagger">
     
     <div class="term-card">
@@ -721,7 +933,7 @@
       <div class="term-body">
         <div><span class="prompt">$</span> python train.py --architecture resnet50</div>
         <div class="type-line">epoch 12/50 · loss 0.032 · validation_acc 98.7%</div>
-        <p><strong>Machine Learning:</strong> Merancang, melatih, dan mengimplementasikan model *Deep Learning* tingkat lanjut untuk klasifikasi data, prediksi analitik, dan *Computer Vision*.</p>
+        <p data-i18n="skills.ml"><strong>Machine Learning:</strong> Merancang, melatih, dan mengimplementasikan model *Deep Learning* tingkat lanjut untuk klasifikasi data, prediksi analitik, dan *Computer Vision*.</p>
       </div>
     </div>
     
@@ -730,7 +942,7 @@
       <div class="term-body">
         <div><span class="prompt">$</span> npm run build --production</div>
         <div class="type-line">✓ Compiled successfully in 4.2s (Optimized)</div>
-        <p><strong>Web Development:</strong> Membangun aplikasi web *full-stack* dengan performa tinggi, responsif, dan arsitektur yang *scalable* untuk kebutuhan bisnis modern.</p>
+        <p data-i18n="skills.web"><strong>Web Development:</strong> Membangun aplikasi web *full-stack* dengan performa tinggi, responsif, dan arsitektur yang *scalable* untuk kebutuhan bisnis modern.</p>
       </div>
     </div>
     
@@ -739,7 +951,7 @@
       <div class="term-body">
         <div><span class="prompt">$</span> flutter build apk --release --obfuscate</div>
         <div class="type-line">✓ Built app-release.apk (18.4MB)</div>
-        <p><strong>App Development:</strong> Mengembangkan aplikasi *cross-platform* (Android/iOS) dengan fokus pada optimasi performa dan *User Experience* (UX) yang intuitif.</p>
+        <p data-i18n="skills.app"><strong>App Development:</strong> Mengembangkan aplikasi *cross-platform* (Android/iOS) dengan fokus pada optimasi performa dan *User Experience* (UX) yang intuitif.</p>
       </div>
     </div>
     
@@ -748,95 +960,127 @@
       <div class="term-body">
         <div><span class="prompt">$</span> nmap -sC -sV -p- target.internal</div>
         <div class="type-line">[!] Vulnerability detected. Generating report...</div>
-        <p><strong>Cyber Security:</strong> Berpengalaman dalam *Bug Bounty Hunting*, *Penetration Testing*, dan audit keamanan untuk memperkuat postur keamanan sistem (Hardening).</p>
+        <p data-i18n="skills.sec"><strong>Cyber Security:</strong> Berpengalaman dalam *Bug Bounty Hunting*, *Penetration Testing*, dan audit keamanan untuk memperkuat postur keamanan sistem (Hardening).</p>
       </div>
     </div>
 
   </div>
 </section>
 
+<!-- Tech Stack Section (NEW) -->
+<section id="techstack">
+  <canvas class="mini3d" data-shape="cube" data-color="accent2" aria-hidden="true"></canvas>
+  <div class="eyebrow reveal" data-i18n="tech.eyebrow">// perangkat & platform</div>
+  <h2 class="reveal">Tech Stack</h2>
+  <div class="tech-grid reveal-stagger">
+    <div class="tech-card" data-tech="html" role="button" tabindex="0" aria-label="Filter proyek dengan html"><div class="tech-logo"><img loading="lazy" onload="this.style.opacity=1" src="images/tech/html.svg" alt="Logo HTML" onerror="this.style.display='none'"></div><div class="tech-name">HTML</div></div>
+    <div class="tech-card" data-tech="css" role="button" tabindex="0" aria-label="Filter proyek dengan css"><div class="tech-logo"><img loading="lazy" onload="this.style.opacity=1" src="images/tech/css.svg" alt="Logo CSS" onerror="this.style.display='none'"></div><div class="tech-name">CSS</div></div>
+    <div class="tech-card" data-tech="javascript" role="button" tabindex="0" aria-label="Filter proyek dengan javascript"><div class="tech-logo"><img loading="lazy" onload="this.style.opacity=1" src="images/tech/javascript.svg" alt="Logo JavaScript" onerror="this.style.display='none'"></div><div class="tech-name">JavaScript</div></div>
+    <div class="tech-card" data-tech="tailwind" role="button" tabindex="0" aria-label="Filter proyek dengan tailwind"><div class="tech-logo"><img loading="lazy" onload="this.style.opacity=1" src="images/tech/tailwind.svg" alt="Logo Tailwind CSS" onerror="this.style.display='none'"></div><div class="tech-name">Tailwind CSS</div></div>
+    <div class="tech-card" data-tech="react" role="button" tabindex="0" aria-label="Filter proyek dengan react"><div class="tech-logo"><img loading="lazy" onload="this.style.opacity=1" src="images/tech/reactjs.svg" alt="Logo ReactJS" onerror="this.style.display='none'"></div><div class="tech-name">ReactJS</div></div>
+    <div class="tech-card" data-tech="vite" role="button" tabindex="0" aria-label="Filter proyek dengan vite"><div class="tech-logo"><img loading="lazy" onload="this.style.opacity=1" src="images/tech/vite.svg" alt="Logo Vite" onerror="this.style.display='none'"></div><div class="tech-name">Vite</div></div>
+    <div class="tech-card" data-tech="node" role="button" tabindex="0" aria-label="Filter proyek dengan node"><div class="tech-logo"><img loading="lazy" onload="this.style.opacity=1" src="images/tech/nodejs.svg" alt="Logo Node JS" onerror="this.style.display='none'"></div><div class="tech-name">Node JS</div></div>
+    <div class="tech-card" data-tech="bootstrap" role="button" tabindex="0" aria-label="Filter proyek dengan bootstrap"><div class="tech-logo"><img loading="lazy" onload="this.style.opacity=1" src="images/tech/bootstrap.svg" alt="Logo Bootstrap" onerror="this.style.display='none'"></div><div class="tech-name">Bootstrap</div></div>
+    <div class="tech-card" data-tech="supabase" role="button" tabindex="0" aria-label="Filter proyek dengan supabase"><div class="tech-logo"><div class="tech-fallback" style="background:#3FCF8E22;color:#3FCF8E;">Su</div><img src="images/tech/supabase.svg" alt="Logo Supabase" loading="lazy" onload="this.style.opacity=1" onerror="this.remove()"></div><div class="tech-name">Supabase</div></div>
+    <div class="tech-card" data-tech="mui" role="button" tabindex="0" aria-label="Filter proyek dengan mui"><div class="tech-logo"><div class="tech-fallback" style="background:#007FFF22;color:#007FFF;">MUI</div><img src="images/tech/MUI.svg" alt="Logo Material UI" loading="lazy" onload="this.style.opacity=1" onerror="this.remove()"></div><div class="tech-name">Material UI</div></div>
+    <div class="tech-card" data-tech="vercel" role="button" tabindex="0" aria-label="Filter proyek dengan vercel"><div class="tech-logo"><div class="tech-fallback" style="background:#8886;color:var(--fg);">▲</div><img src="images/tech/vercel.svg" alt="Logo Vercel" loading="lazy" onload="this.style.opacity=1" onerror="this.remove()"></div><div class="tech-name">Vercel</div></div>
+    <div class="tech-card" data-tech="figma" role="button" tabindex="0" aria-label="Filter proyek dengan figma"><div class="tech-logo"><div class="tech-fallback" style="background:#F24E1E22;color:#F24E1E;">Fi</div><img src="images/tech/figma.svg" alt="Logo Figma" loading="lazy" onload="this.style.opacity=1" onerror="this.remove()"></div><div class="tech-name">Figma</div></div>
+    <div class="tech-card" data-tech="python" role="button" tabindex="0" aria-label="Filter proyek dengan python"><div class="tech-logo"><div class="tech-fallback" style="background:#3776AB22;color:#3776AB;">Py</div><img src="images/tech/python.svg" alt="Logo Python" loading="lazy" onload="this.style.opacity=1" onerror="this.remove()"></div><div class="tech-name">Python</div></div>
+  </div>
+
+</section>
+
 <!-- Work/Projects Section -->
 <section id="work">
   <canvas class="mini3d" data-shape="torusknot" data-color="accent2" aria-hidden="true"></canvas>
-  <div class="eyebrow reveal">// implementasi & karya</div>
-  <h2 class="reveal">Portofolio Proyek</h2>
+  <div class="eyebrow reveal" data-i18n="work.eyebrow">// implementasi & karya</div>
+  <h2 class="reveal" data-i18n="work.h2">Portofolio Proyek</h2>
 
   <div class="filter-bar reveal" role="group" aria-label="Filter proyek berdasarkan kategori">
-    <button class="filter-btn active" data-filter="all">Semua</button>
+    <button class="filter-btn active" data-filter="all" data-i18n="work.filter.all">Semua</button>
     <button class="filter-btn" data-filter="ai">AI &amp; ML</button>
-    <button class="filter-btn" data-filter="security">Keamanan</button>
+    <button class="filter-btn" data-filter="security" data-i18n="work.filter.security">Keamanan</button>
     <button class="filter-btn" data-filter="web">Web</button>
-    <button class="filter-btn" data-filter="creative">Kreatif</button>
+    <button class="filter-btn" data-filter="creative" data-i18n="work.filter.creative">Kreatif</button>
   </div>
 
-  <div class="work-subhead reveal">IMPLEMENTASI INDUSTRI (SERIUS)</div>
+  <div class="work-subhead reveal" data-i18n="work.subhead1">IMPLEMENTASI INDUSTRI (SERIUS)</div>
   <div class="work-grid reveal-stagger">
     
     <div class="work-card" data-cat="ai" tabindex="0"
-         data-title="Sistem Cerdas Deteksi APD" data-tag="MACHINE LEARNING · COMPUTER VISION"
-         data-desc="Mengembangkan sistem otomasi berbasis AI untuk mendeteksi kepatuhan penggunaan Alat Pelindung Diri (APD) pada lingkungan industri secara real-time, guna menekan angka kecelakaan kerja."
+         data-title="Real-Time APD Safety Detection System" data-tag="ARTIFICIAL INTELLIGENCE · COMPUTER VISION" data-tech="python"
+         data-desc="Sistem pemantauan keselamatan kerja otomatis berbasis kecerdasan buatan (Computer Vision) yang terhubung langsung ke kamera CCTV area proyek. Sistem ini secara real-time mendeteksi kelengkapan Alat Pelindung Diri (APD) seperti helm keselamatan dan rompi pada setiap pekerja, membatasi akses zona merah, serta memberikan peringatan dini jika ditemukan pelanggaran protokol K3. Teknologi & Stack — AI & Computer Vision: Python, YOLO (You Only Look Once), OpenCV, PyTorch/TensorFlow. Processing & Streaming: FFmpeg, RTSP Stream Processing, NVIDIA CUDA/TensorRT Acceleration. Core: Python, C++ untuk inferensi performa tinggi."
+         data-title-en="Real-Time APD Safety Detection System" data-tag-en="ARTIFICIAL INTELLIGENCE · COMPUTER VISION"
+         data-desc-en="An AI-powered (Computer Vision) automated workplace safety monitoring system connected directly to on-site CCTV cameras. It detects Personal Protective Equipment (PPE) compliance — helmets and safety vests — in real time, restricts access to red zones, and issues early warnings when K3 (occupational health & safety) protocol violations are found. Tech Stack — AI & Computer Vision: Python, YOLO (You Only Look Once), OpenCV, PyTorch/TensorFlow. Processing & Streaming: FFmpeg, RTSP Stream Processing, NVIDIA CUDA/TensorRT Acceleration. Core: Python, C++ for high-performance inference."
          data-img="images/project-apd.jpg">
-      <div class="work-thumb"><img src="images/project-apd.jpg" alt="AI Deteksi APD" onerror="this.style.display='none'"></div>
-      <div class="work-tag">MACHINE LEARNING · COMPUTER VISION</div>
-      <h3>Sistem Cerdas Deteksi APD</h3>
-      <p>Mengembangkan sistem otomasi berbasis AI untuk mendeteksi kepatuhan penggunaan Alat Pelindung Diri (APD) pada lingkungan industri secara *real-time*, guna menekan angka kecelakaan kerja.</p>
+      <div class="work-thumb img-loading"><img src="images/project-apd.jpg" alt="AI Deteksi APD" loading="lazy" onerror="this.style.display='none'"></div>
+      <div class="work-tag" data-i18n="work.apd.tag">ARTIFICIAL INTELLIGENCE · COMPUTER VISION</div>
+      <h3 data-i18n="work.apd.title">Real-Time APD Safety Detection System</h3>
+      <p data-i18n="work.apd.desc">Sistem pemantauan keselamatan kerja otomatis berbasis kecerdasan buatan (*Computer Vision*) yang terhubung langsung ke kamera CCTV area proyek, mendeteksi kelengkapan APD secara *real-time* dan memberi peringatan dini pelanggaran protokol K3.</p>
+      <button type="button" class="work-link detail-trigger" data-i18n="work.detailBtn">Lihat Detail <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></button>
     </div>
     
     <div class="work-card" data-cat="security" tabindex="0"
-         data-title="Zeta: OSINT Framework" data-tag="CYBER SECURITY · TOOLING"
-         data-desc="Merancang perangkat lunak Open Source Intelligence (OSINT) kustom untuk mengotomatisasi pengumpulan, agregasi, dan analisis jejak digital dari berbagai sumber data publik."
+         data-title="Cyber Intelligence & OSINT Dashboard (Wanz Xploit)" data-tag="WEB APPLICATION · CYBERSECURITY TOOL" data-tech="python html css javascript tailwind"
+         data-desc="Sistem manajemen dan dasbor analitik berbasis web yang dirancang untuk kebutuhan investigasi Open Source Intelligence (OSINT). Platform ini menyediakan antarmuka terpusat dengan fitur pengelolaan pengguna (Subscription), enkripsi API Key, dokumentasi teknis, serta Admin Dashboard berbasis dark-mode yang futuristik dan intuitif. Teknologi & Stack — Backend: Python (Flask/FastAPI), RESTful API. Frontend: HTML5, CSS3, Tailwind CSS, JavaScript (ES6+). Database & Security: PostgreSQL/SQLite, JWT Authentication, API Key Management."
+         data-title-en="Cyber Intelligence & OSINT Dashboard (Wanz Xploit)" data-tag-en="WEB APPLICATION · CYBERSECURITY TOOL"
+         data-desc-en="A web-based management and analytics dashboard built for Open Source Intelligence (OSINT) investigation needs. The platform provides a centralized interface with user/subscription management, API key encryption, technical documentation, and a futuristic dark-mode Admin Dashboard. Tech Stack — Backend: Python (Flask/FastAPI), RESTful API. Frontend: HTML5, CSS3, Tailwind CSS, JavaScript (ES6+). Database & Security: PostgreSQL/SQLite, JWT Authentication, API Key Management."
          data-img="images/project-osint.jpg">
-      <div class="work-thumb"><img src="images/project-osint.jpg" alt="OSINT Tools Zeta" onerror="this.style.display='none'"></div>
-      <div class="work-tag">CYBER SECURITY · TOOLING</div>
-      <h3>Zeta: OSINT Framework</h3>
-      <p>Merancang perangkat lunak *Open Source Intelligence* (OSINT) kustom untuk mengotomatisasi pengumpulan, agregasi, dan analisis jejak digital dari berbagai sumber data publik.</p>
+      <div class="work-thumb img-loading"><img src="images/project-osint.jpg" alt="OSINT Tools Zeta" loading="lazy" onerror="this.style.display='none'"></div>
+      <div class="work-tag" data-i18n="work.osint.tag">WEB APPLICATION · CYBERSECURITY TOOL</div>
+      <h3 data-i18n="work.osint.title">Cyber Intelligence & OSINT Dashboard (Wanz Xploit)</h3>
+      <p data-i18n="work.osint.desc">Dasbor analitik berbasis web untuk kebutuhan investigasi *Open Source Intelligence* (OSINT), lengkap dengan manajemen pengguna, enkripsi API Key, dan *Admin Dashboard* dark-mode yang futuristik.</p>
+      <button type="button" class="work-link detail-trigger" data-i18n="work.detailBtn">Lihat Detail <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></button>
     </div>
     
     <div class="work-card" data-cat="web" tabindex="0"
-         data-title="Interactive 3D Web Experience" data-tag="WEB DEVELOPMENT · WEBGL"
-         data-desc="Membangun antarmuka web generasi baru yang mengintegrasikan elemen grafis 3D secara native di browser, memberikan dimensi visual baru tanpa mengorbankan performa akses."
+         data-title="Edolus — Planetary Scale AI Interactive Experience" data-tag="CREATIVE WEB DEV · IMMERSIVE 3D" data-tech="javascript react html css tailwind"
+         data-desc="Situs web interaktif 3D imersif bertema futuristik (space-tech) yang dirancang untuk memberikan pengalaman naratif tingkat tinggi. Mengintegrasikan elemen visual bumi 3D beresolusi tinggi, transisi animasi cinematic, serta spatial audio interaktif (Experience with Headphones) untuk memperkenalkan platform AI berskala global secara elegan. Teknologi & Stack — 3D Graphics & Rendering: JavaScript/TypeScript, Three.js, WebGL, GLSL (Custom Shaders). Animation & Audio: GSAP (GreenSock Animation Platform), Web Audio API. Frontend & Architecture: React/Next.js, React Three Fiber (R3F), HTML5, CSS3/Tailwind CSS."
+         data-title-en="Edolus — Planetary Scale AI Interactive Experience" data-tag-en="CREATIVE WEB DEV · IMMERSIVE 3D"
+         data-desc-en="An immersive, futuristic (space-tech themed) interactive 3D website designed to deliver a high-level narrative experience. It integrates high-resolution 3D Earth visuals, cinematic animation transitions, and interactive spatial audio ("Experience with Headphones") to elegantly introduce a planetary-scale AI platform. Tech Stack — 3D Graphics & Rendering: JavaScript/TypeScript, Three.js, WebGL, GLSL (Custom Shaders). Animation & Audio: GSAP (GreenSock Animation Platform), Web Audio API. Frontend & Architecture: React/Next.js, React Three Fiber (R3F), HTML5, CSS3/Tailwind CSS."
          data-img="images/project-web3d.jpg">
-      <div class="work-thumb"><img src="images/project-web3d.jpg" alt="Web 3D" onerror="this.style.display='none'"></div>
-      <div class="work-tag">WEB DEVELOPMENT · WEBGL</div>
-      <h3>Interactive 3D Web Experience</h3>
-      <p>Membangun antarmuka web generasi baru yang mengintegrasikan elemen grafis 3D secara *native* di *browser*, memberikan dimensi visual baru tanpa mengorbankan performa akses.</p>
+      <div class="work-thumb img-loading"><img src="images/project-web3d.jpg" alt="Web 3D" loading="lazy" onerror="this.style.display='none'"></div>
+      <div class="work-tag" data-i18n="work.edolus.tag">CREATIVE WEB DEV · IMMERSIVE 3D</div>
+      <h3 data-i18n="work.edolus.title">Edolus — Planetary Scale AI Interactive Experience</h3>
+      <p data-i18n="work.edolus.desc">Situs web interaktif 3D imersif bertema *space-tech* dengan visual Bumi 3D beresolusi tinggi, animasi *cinematic*, dan *spatial audio* untuk memperkenalkan platform AI berskala global secara elegan.</p>
+      <button type="button" class="work-link detail-trigger" data-i18n="work.detailBtn">Lihat Detail <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></button>
     </div>
   </div>
 
-  <div class="work-subhead reveal">EKSPLORASI INTERAKTIF (KREATIF)</div>
+  <div class="work-subhead reveal" data-i18n="work.subhead2">EKSPLORASI INTERAKTIF (KREATIF)</div>
   <div class="work-grid reveal-stagger">
     
     <div class="work-card" data-cat="creative" tabindex="0"
-         data-title="Web-Based Pacman Engine" data-tag="PENGEMBANGAN GIM · ALGORITMA"
+         data-title="Web-Based Pacman Engine" data-tag="PENGEMBANGAN GIM · ALGORITMA" data-tech="javascript"
          data-desc="Rekreasi gim klasik Pacman menggunakan Vanilla JavaScript murni. Proyek ini mendemonstrasikan pemahaman mendalam terkait manipulasi Canvas, collision detection, dan logika pergerakan entitas."
          data-img="images/project-pacman.jpg" data-link="https://habanpacman.surge.sh/">
-      <div class="work-thumb"><img src="images/project-pacman.jpg" alt="Game Pacman" onerror="this.style.display='none'"></div>
-      <div class="work-tag">PENGEMBANGAN GIM · ALGORITMA</div>
+      <div class="work-thumb img-loading"><img src="images/project-pacman.jpg" alt="Game Pacman" loading="lazy" onerror="this.style.display='none'"></div>
+      <div class="work-tag" data-i18n="work.pacman.tag">PENGEMBANGAN GIM · ALGORITMA</div>
       <h3>Web-Based Pacman Engine</h3>
-      <p>Rekreasi gim klasik Pacman menggunakan Vanilla JavaScript murni. Proyek ini mendemonstrasikan pemahaman mendalam terkait manipulasi *Canvas*, *collision detection*, dan logika pergerakan entitas.</p>
-      <a href="https://habanpacman.surge.sh/" target="_blank" rel="noopener" class="work-link">Tinjau Aplikasi <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
+      <p data-i18n="work.pacman.desc">Rekreasi gim klasik Pacman menggunakan Vanilla JavaScript murni. Proyek ini mendemonstrasikan pemahaman mendalam terkait manipulasi *Canvas*, *collision detection*, dan logika pergerakan entitas.</p>
+      <a href="https://habanpacman.surge.sh/" target="_blank" rel="noopener" class="work-link"><span data-i18n="work.viewApp">Tinjau Aplikasi</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
     </div>
     
     <div class="work-card" data-cat="creative" tabindex="0"
-         data-title="Virtual Photo Booth" data-tag="WEB APP · MEDIA API"
+         data-title="Virtual Photo Booth" data-tag="WEB APP · MEDIA API" data-tech="javascript html css"
          data-desc="Aplikasi web interaktif yang memanfaatkan WebRTC API untuk mengakses kamera pengguna secara aman, mengaplikasikan filter, dan menangkap gambar langsung dari browser."
          data-img="images/project-photobooth.jpg" data-link="https://candid-cactus-ddff7a.netlify.app/">
-      <div class="work-thumb"><img src="images/project-photobooth.jpg" alt="Website photo booth" onerror="this.style.display='none'"></div>
-      <div class="work-tag">WEB APP · MEDIA API</div>
+      <div class="work-thumb img-loading"><img src="images/project-photobooth.jpg" alt="Website photo booth" loading="lazy" onerror="this.style.display='none'"></div>
+      <div class="work-tag" data-i18n="work.photobooth.tag">WEB APP · MEDIA API</div>
       <h3>Virtual Photo Booth</h3>
-      <p>Aplikasi web interaktif yang memanfaatkan WebRTC API untuk mengakses kamera pengguna secara aman, mengaplikasikan filter, dan menangkap gambar langsung dari *browser*.</p>
-      <a href="https://candid-cactus-ddff7a.netlify.app/" target="_blank" rel="noopener" class="work-link">Tinjau Aplikasi <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
+      <p data-i18n="work.photobooth.desc">Aplikasi web interaktif yang memanfaatkan WebRTC API untuk mengakses kamera pengguna secara aman, mengaplikasikan filter, dan menangkap gambar langsung dari *browser*.</p>
+      <a href="https://candid-cactus-ddff7a.netlify.app/" target="_blank" rel="noopener" class="work-link"><span data-i18n="work.viewApp">Tinjau Aplikasi</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
     </div>
     
     <div class="work-card" data-cat="creative" tabindex="0"
-         data-title="Earth 3D Simulation" data-tag="3D RENDERING · THREE.JS"
+         data-title="Earth 3D Simulation" data-tag="3D RENDERING · THREE.JS" data-tech="javascript"
          data-desc="Simulasi model planet Bumi 3D interaktif yang di-render secara real-time di web. Sebuah eksperimen optimalisasi mesh dan pencahayaan dinamis pada lingkungan WebGL."
          data-img="images/project-bmi3d.jpg" data-link="https://neiooooo.surge.sh/">
-      <div class="work-thumb"><img src="images/project-bmi3d.jpg" alt="Bumi 3D" onerror="this.style.display='none'"></div>
+      <div class="work-thumb img-loading"><img src="images/project-bmi3d.jpg" alt="Bumi 3D" loading="lazy" onerror="this.style.display='none'"></div>
       <div class="work-tag">3D RENDERING · THREE.JS</div>
       <h3>Earth 3D Simulation</h3>
-      <p>Simulasi model planet Bumi 3D interaktif yang di-render secara *real-time* di web. Sebuah eksperimen optimalisasi *mesh* dan pencahayaan dinamis pada lingkungan WebGL.</p>
-      <a href="https://neiooooo.surge.sh/" target="_blank" rel="noopener" class="work-link">Tinjau Aplikasi <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
+      <p data-i18n="work.earth3d.desc">Simulasi model planet Bumi 3D interaktif yang di-render secara *real-time* di web. Sebuah eksperimen optimalisasi *mesh* dan pencahayaan dinamis pada lingkungan WebGL.</p>
+      <a href="https://neiooooo.surge.sh/" target="_blank" rel="noopener" class="work-link"><span data-i18n="work.viewApp">Tinjau Aplikasi</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
     </div>
   </div>
 </section>
@@ -844,44 +1088,44 @@
 <!-- Certifications Section -->
 <section id="certifications">
   <canvas class="mini3d" data-shape="torus" data-color="accent" aria-hidden="true"></canvas>
-  <div class="eyebrow reveal">// validasi keahlian</div>
-  <h2 class="reveal">Lisensi & Sertifikasi</h2>
+  <div class="eyebrow reveal" data-i18n="cert.eyebrow">// validasi keahlian</div>
+  <h2 class="reveal" data-i18n="cert.h2">Lisensi & Sertifikasi</h2>
   <div class="cert-list reveal-stagger">
     
     <div class="cert-item">
       <div class="cert-row">
-        <div class="cert-thumb"><img src="images/cert-cbbh.jpg" alt="Sertifikat CBBH" onerror="this.style.display='none'"></div>
+        <div class="cert-thumb img-loading"><img src="images/cert-cbbh.jpg" alt="Sertifikat CBBH" loading="lazy" onerror="this.style.display='none'"></div>
         <div class="cert-main">
           <h4>CBBH — Certified Bug Bounty Hunter</h4>
-          <div class="issuer">Otoritas: Hack The Box</div>
-          <p>Kredensial profesional tingkat lanjut di bidang keamanan siber praktis, mengesahkan kemampuan dalam melakukan identifikasi, eksploitasi, dan pelaporan celah keamanan sistem informasi. Disahkan oleh Charalampos Pyarinos (CEO).</p>
+          <div class="issuer" data-i18n="cert.cbbh.issuer">Otoritas: Hack The Box</div>
+          <p data-i18n="cert.cbbh.desc">Kredensial profesional tingkat lanjut di bidang keamanan siber praktis, mengesahkan kemampuan dalam melakukan identifikasi, eksploitasi, dan pelaporan celah keamanan sistem informasi. Disahkan oleh Charalampos Pyarinos (CEO).</p>
         </div>
       </div>
-      <span class="date">Valid: Hingga April 2026</span>
+      <span class="date" data-i18n="cert.cbbh.date">Valid: Hingga April 2026</span>
     </div>
     
     <div class="cert-item">
       <div class="cert-row">
-        <div class="cert-thumb"><img src="images/cert-deeplearning.jpg" alt="Sertifikat Deep Learning" onerror="this.style.display='none'"></div>
+        <div class="cert-thumb img-loading"><img src="images/cert-deeplearning.jpg" alt="Sertifikat Deep Learning" loading="lazy" onerror="this.style.display='none'"></div>
         <div class="cert-main">
           <h4>Deep Learning Specialization</h4>
-          <div class="issuer">Otoritas: DeepLearning.AI (Coursera)</div>
-          <p>Program spesialisasi intensif di bawah bimbingan Andrew Ng. Menguasai arsitektur *Neural Networks*, *Hyperparameter Tuning*, implementasi *CNNs* (Visual Data), dan *Sequence Models* (NLP/Audio).</p>
+          <div class="issuer" data-i18n="cert.dl.issuer">Otoritas: DeepLearning.AI (Coursera)</div>
+          <p data-i18n="cert.dl.desc">Program spesialisasi intensif di bawah bimbingan Andrew Ng. Menguasai arsitektur *Neural Networks*, *Hyperparameter Tuning*, implementasi *CNNs* (Visual Data), dan *Sequence Models* (NLP/Audio).</p>
         </div>
       </div>
-      <span class="date">Diterbitkan: Juni 2026</span>
+      <span class="date" data-i18n="cert.dl.date">Diterbitkan: Juni 2026</span>
     </div>
     
     <div class="cert-item">
       <div class="cert-row">
-        <div class="cert-thumb"><img src="images/cert-detikcom.jpg" alt="Sertifikat detikcom" onerror="this.style.display='none'"></div>
+        <div class="cert-thumb img-loading"><img src="images/cert-detikcom.jpg" alt="Sertifikat detikcom" loading="lazy" onerror="this.style.display='none'"></div>
         <div class="cert-main">
-          <h4>Penghargaan Pelaporan Kerentanan Sistem</h4>
-          <div class="issuer">Otoritas: detikcom IT Security Division</div>
-          <p>Sertifikat apresiasi resmi (Hall of Fame) yang diterbitkan oleh Bagus Setiawan (Direktur IT detikcom) atas dedikasi dan tanggung jawab dalam menemukan serta melaporkan celah keamanan krusial pada platform detikcom.</p>
+          <h4 data-i18n="cert.detik.title">Penghargaan Pelaporan Kerentanan Sistem</h4>
+          <div class="issuer" data-i18n="cert.detik.issuer">Otoritas: detikcom IT Security Division</div>
+          <p data-i18n="cert.detik.desc">Sertifikat apresiasi resmi (Hall of Fame) yang diterbitkan oleh Bagus Setiawan (Direktur IT detikcom) atas dedikasi dan tanggung jawab dalam menemukan serta melaporkan celah keamanan krusial pada platform detikcom.</p>
         </div>
       </div>
-      <span class="date">Diterbitkan: Juni 2026</span>
+      <span class="date" data-i18n="cert.detik.date">Diterbitkan: Juni 2026</span>
     </div>
 
   </div>
@@ -891,21 +1135,72 @@
 <section id="contact">
   <canvas class="mini3d" data-shape="dodecahedron" data-color="accent2" aria-hidden="true"></canvas>
   <div class="contact reveal">
-    <div class="eyebrow" style="margin-inline:auto;">// mari berkolaborasi</div>
-    <h2>Siap Mengakselerasi Visi Digital Anda?</h2>
-    <p>Saya senantiasa terbuka untuk peluang kolaborasi, konsultasi teknis, pengerjaan proyek *freelance*, maupun tawaran posisi strategis (Full-Time) di industri teknologi.</p>
+    <div class="eyebrow" style="margin-inline:auto;" data-i18n="contact.eyebrow">// mari berkolaborasi</div>
+    <h2 data-i18n="contact.h2">Siap Mengakselerasi Visi Digital Anda?</h2>
+    <p data-i18n="contact.p">Saya senantiasa terbuka untuk peluang kolaborasi, konsultasi teknis, pengerjaan proyek *freelance*, maupun tawaran posisi strategis (Full-Time) di industri teknologi.</p>
     <a href="mailto:misnosusanto97@gmail.com" class="big-btn">
-      Hubungi Saya Sekarang <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+      <span data-i18n="contact.bigbtn">Hubungi Saya Sekarang</span> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
     </a>
-    <div class="contact-links">
-      <a href="mailto:misnosusanto97@gmail.com"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg> misnosusanto97@gmail.com</a>
-      <a href="https://github.com/kangguruhdq-ux" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> github.com/kangguruhdq-ux</a>
-      <a href="tel:+6282265016322"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg> 0822-6501-6322</a>
+    <div class="find-me">
+      <div class="find-me-title" data-i18n="findme.title">// Temukan Saya</div>
+      <div class="find-me-list">
+        <a href="https://github.com/kangguruhdq-ux" target="_blank" rel="noopener" class="find-me-card">
+          <span class="find-me-icon" style="background:rgba(255,255,255,.08);color:#fff;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          </span>
+          <span class="find-me-text">
+            <strong data-i18n="findme.github.title">GitHub</strong>
+            <span>@kangguruhdq-ux</span>
+          </span>
+        </a>
+        <a href="https://wa.me/6287897305696" target="_blank" rel="noopener" class="find-me-card">
+          <span class="find-me-icon" style="background:rgba(37,211,102,.15);color:#25D366;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.001 2C6.478 2 2 6.477 2 12c0 1.9.531 3.68 1.457 5.194L2 22l4.941-1.397A9.955 9.955 0 0012.001 22C17.523 22 22 17.523 22 12S17.523 2 12.001 2zm0 18.03a8.005 8.005 0 01-4.328-1.264l-.31-.186-3.096.875.882-2.994-.203-.318A7.997 7.997 0 014 12c0-4.418 3.582-8 8.001-8C16.419 4 20 7.582 20 12s-3.581 8.03-7.999 8.03z"/></svg>
+          </span>
+          <span class="find-me-text">
+            <strong data-i18n="findme.wa.title">WhatsApp</strong>
+            <span>+62 878-9730-5696</span>
+          </span>
+        </a>
+        <a href="mailto:misnosusanto97@gmail.com" class="find-me-card">
+          <span class="find-me-icon" style="background:var(--accent-dim);color:var(--accent);">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+          </span>
+          <span class="find-me-text">
+            <strong data-i18n="findme.email.title">Email</strong>
+            <span>misnosusanto97@gmail.com</span>
+          </span>
+          <button type="button" class="copy-btn" data-copy="misnosusanto97@gmail.com" aria-label="Copy email" onclick="event.preventDefault();event.stopPropagation();"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg><span class="copy-toast" data-i18n="copy.toast">Tersalin!</span></button>
+        </a>
+      </div>
+    </div>
+    <div class="qr-card">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fmahabbah.dev%2F" alt="QR Code menuju portofolio ini" loading="lazy" onerror="this.parentElement.style.display='none'">
+      <span data-i18n="contact.qr">Scan untuk membuka portofolio ini</span>
     </div>
   </div>
 </section>
+<section id="commentsSection">
+  <canvas class="mini3d" data-shape="icosahedron" data-color="accent" aria-hidden="true"></canvas>
+  <div class="eyebrow reveal" data-i18n="comments.eyebrow">// pendapat pengunjung</div>
+  <h2 class="reveal" data-i18n="comments.h2">Komentar & Masukan</h2>
+  <p class="comment-note" data-i18n="comments.introNote" style="margin-bottom:32px;">Punya masukan tentang portofolio ini? Tinggalkan komentar di bawah.</p>
 
-<footer>© 2026 Mahabbah Mahabban Romadhon — Engineered with passion & precision.</footer>
+  <form class="comment-form reveal" id="commentForm">
+    <input type="text" id="commentName" placeholder="Nama kamu" data-i18n-placeholder="comments.namePh" required>
+    <textarea id="commentBody" rows="3" placeholder="Tulis komentar..." data-i18n-placeholder="comments.bodyPh" required></textarea>
+    <button type="submit" data-i18n="comments.submit">Kirim Komentar</button>
+  </form>
+
+  <div class="comment-list reveal-stagger" id="commentList"></div>
+  <div class="comment-empty" id="commentEmpty" data-i18n="comments.empty">Belum ada komentar. Jadilah yang pertama!</div>
+  <p class="comment-note" data-i18n="comments.storageNote">Catatan: komentar di sini tersimpan sementara di perangkatmu (belum tersambung ke server). Untuk komentar publik permanen, hubungkan bagian ini ke layanan seperti Giscus atau Disqus.</p>
+</section>
+
+<footer>
+  <div data-i18n="footer.text">© 2026 Mahabbah Mahabban Romadhon — Engineered with passion & precision.</div>
+  <div class="updated-badge"><span class="dot-live"></span><span data-i18n="footer.updated">Terakhir diperbarui: 29 Agustus 2026</span></div>
+</footer>
 
 <!-- Project Detail Modal -->
 <div class="modal-overlay" id="projectModal" role="dialog" aria-modal="true" aria-hidden="true">
@@ -945,6 +1240,14 @@
     const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Guard against WebGL context loss (common on memory-constrained mobile
+    // browsers/webviews when several canvases compete for GPU contexts).
+    // Without this, a lost context throws repeated console errors and can
+    // leave the render loop spinning uselessly.
+    let contextOk = true;
+    canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); contextOk = false; }, false);
+    canvas.addEventListener('webglcontextrestored', () => { contextOk = true; }, false);
 
     const group = new THREE.Group();
     scene.add(group);
@@ -1065,6 +1368,7 @@
     const clock = new THREE.Clock();
     let parallaxY = 0, parallaxX = 0;
     const tick = () => {
+      if (!contextOk) { window.requestAnimationFrame(tick); return; }
       const t = clock.getElapsedTime();
       const baseRotY = reduceMotion ? 0 : t * 0.12;
       const baseRotX = reduceMotion ? 0 : Math.sin(t * 0.2) * 0.15;
@@ -1128,6 +1432,9 @@
     };
     tick();
 
+    // If the context was lost, skip rendering this frame instead of
+    // throwing — it resumes automatically once 'webglcontextrestored' fires.
+
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -1189,7 +1496,7 @@
     };
     loop();
 
-    document.querySelectorAll('a, button, .work-card, .term-card, .cert-item, .hero-role span, .filter-btn, .cmdk-item').forEach(el => {
+    document.querySelectorAll('a, button, .work-card, .term-card, .cert-item, .hero-role span, .filter-btn, .cmdk-item, .find-me-card').forEach(el => {
       el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
       el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
     });
@@ -1200,7 +1507,7 @@
   function initTilt() {
     if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const targets = document.querySelectorAll('.work-card, .term-card, .cert-item, .timeline-content, .stat');
+    const targets = document.querySelectorAll('.work-card, .term-card, .cert-item, .timeline-content, .stat, .find-me-card');
     targets.forEach(el => {
       el.addEventListener('mousemove', (e) => {
         const r = el.getBoundingClientRect();
@@ -1219,6 +1526,34 @@
   }
   window.addEventListener('DOMContentLoaded', initTilt);
 
+  // --- 1d-orbit. AVATAR ORBIT BADGES (2D ellipse, JS-driven — never mirrors text) ---
+  function initOrbit() {
+    const scene = document.getElementById('orbitScene');
+    if (!scene) return;
+    const badges = Array.from(scene.querySelectorAll('.orbit-badge'));
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const radiusX = 118, radiusY = 40, speed = 0.012; // deg per ms
+
+    function frame(t) {
+      badges.forEach(b => {
+        const base = parseFloat(b.dataset.angle) || 0;
+        const a = reduceMotion ? base : base + t * speed;
+        const rad = a * Math.PI / 180;
+        const x = Math.cos(rad) * radiusX;
+        const y = Math.sin(rad) * radiusY;
+        const depth = Math.sin(rad); // -1 (back) .. 1 (front)
+        const scale = 0.78 + (depth + 1) / 2 * 0.32;
+        const opacity = 0.55 + (depth + 1) / 2 * 0.45;
+        b.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+        b.style.opacity = opacity;
+        b.style.zIndex = Math.round(depth * 10) + 10;
+      });
+      if (!reduceMotion) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  window.addEventListener('DOMContentLoaded', initOrbit);
+
   // --- 1d2. MINI 3D SHAPES PER SECTION ---
   // A small wireframe polyhedron floats in the corner of each section, echoing the
   // hero's "core" motif. Each canvas gets its own tiny scene, and the render loop
@@ -1233,43 +1568,65 @@
       const shape = canvas.dataset.shape || 'icosahedron';
       const colorHex = canvas.dataset.color === 'accent2' ? 0xB026FF : 0x00F0FF;
       const size = 108;
+      let renderer = null, raf = null, clock = null, mesh = null, scene = null, camera = null;
 
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 10);
-      camera.position.z = 3.1;
-      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setSize(size, size, false);
+      function setup() {
+        if (renderer) return; // already live
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(45, 1, 0.1, 10);
+        camera.position.z = 3.1;
+        renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(size, size, false);
+        canvas.addEventListener('webglcontextlost', onContextLost, false);
 
-      let geo;
-      switch (shape) {
-        case 'tetrahedron': geo = new THREE.TetrahedronGeometry(1.3, 0); break;
-        case 'octahedron': geo = new THREE.OctahedronGeometry(1.25, 0); break;
-        case 'torusknot': geo = new THREE.TorusKnotGeometry(0.75, 0.2, 90, 10); break;
-        case 'torus': geo = new THREE.TorusGeometry(1, 0.3, 8, 48); break;
-        case 'dodecahedron': geo = new THREE.DodecahedronGeometry(1.15, 0); break;
-        case 'icosahedron': default: geo = new THREE.IcosahedronGeometry(1.25, 0);
+        let geo;
+        switch (shape) {
+          case 'tetrahedron': geo = new THREE.TetrahedronGeometry(1.3, 0); break;
+          case 'octahedron': geo = new THREE.OctahedronGeometry(1.25, 0); break;
+          case 'torusknot': geo = new THREE.TorusKnotGeometry(0.75, 0.2, 90, 10); break;
+          case 'torus': geo = new THREE.TorusGeometry(1, 0.3, 8, 48); break;
+          case 'dodecahedron': geo = new THREE.DodecahedronGeometry(1.15, 0); break;
+          case 'icosahedron': default: geo = new THREE.IcosahedronGeometry(1.25, 0);
+        }
+        const mat = new THREE.MeshBasicMaterial({ color: colorHex, wireframe: true, transparent: true, opacity: 0.6 });
+        mesh = new THREE.Mesh(geo, mat);
+        scene.add(mesh);
+        clock = new THREE.Clock();
+
+        if (reduceMotion) { renderer.render(scene, camera); return; }
+        render();
       }
-      const mat = new THREE.MeshBasicMaterial({ color: colorHex, wireframe: true, transparent: true, opacity: 0.6 });
-      const mesh = new THREE.Mesh(geo, mat);
-      scene.add(mesh);
 
-      let raf = null;
-      const clock = new THREE.Clock();
       function render() {
+        if (!renderer) return;
         const t = clock.getElapsedTime();
-        if (!reduceMotion) { mesh.rotation.x = t * 0.35; mesh.rotation.y = t * 0.5; }
+        mesh.rotation.x = t * 0.35; mesh.rotation.y = t * 0.5;
         renderer.render(scene, camera);
         raf = requestAnimationFrame(render);
       }
-      if (reduceMotion) { renderer.render(scene, camera); return; }
+
+      function onContextLost(e) { e.preventDefault(); teardown(); }
+
+      // Fully release the GPU context (not just pause the loop) so idle
+      // off-screen canvases don't keep occupying one of the browser's
+      // limited concurrent WebGL context slots.
+      function teardown() {
+        if (raf) { cancelAnimationFrame(raf); raf = null; }
+        if (renderer) {
+          canvas.removeEventListener('webglcontextlost', onContextLost);
+          renderer.dispose();
+          renderer.forceContextLoss();
+          renderer = null;
+        }
+      }
 
       const io = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          if (entry.isIntersecting && !raf) render();
-          else if (!entry.isIntersecting && raf) { cancelAnimationFrame(raf); raf = null; }
+          if (entry.isIntersecting) setup();
+          else teardown();
         });
-      }, { threshold: 0.05 });
+      }, { threshold: 0.05, rootMargin: '200px 0px' });
       io.observe(canvas);
     });
   }
@@ -1418,6 +1775,12 @@
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(card); }
       });
     });
+    document.querySelectorAll('.detail-trigger').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openModal(btn.closest('.work-card'));
+      });
+    });
     closeBtn.addEventListener('click', closeModal);
     overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
     window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal(); });
@@ -1436,18 +1799,36 @@
       { name: 'Profil', cat: 'Bagian', action: () => scrollToId('about') },
       { name: 'Riwayat Pendidikan', cat: 'Bagian', action: () => scrollToId('education') },
       { name: 'Kompetensi Utama', cat: 'Bagian', action: () => scrollToId('skills') },
+      { name: 'Tech Stack', cat: 'Bagian', action: () => scrollToId('techstack') },
       { name: 'Portofolio Proyek', cat: 'Bagian', action: () => scrollToId('work') },
       { name: 'Lisensi & Sertifikasi', cat: 'Bagian', action: () => scrollToId('certifications') },
       { name: 'Kontak', cat: 'Bagian', action: () => scrollToId('contact') },
-      { name: 'Sistem Cerdas Deteksi APD', cat: 'Proyek', action: () => scrollToId('work') },
-      { name: 'Zeta: OSINT Framework', cat: 'Proyek', action: () => scrollToId('work') },
-      { name: 'Interactive 3D Web Experience', cat: 'Proyek', action: () => scrollToId('work') },
+      { name: 'Real-Time APD Safety Detection System', cat: 'Proyek', action: () => scrollToId('work') },
+      { name: 'Cyber Intelligence & OSINT Dashboard', cat: 'Proyek', action: () => scrollToId('work') },
+      { name: 'Edolus — Planetary Scale AI Interactive Experience', cat: 'Proyek', action: () => scrollToId('work') },
       { name: 'Web-Based Pacman Engine', cat: 'Proyek', action: () => window.open('https://habanpacman.surge.sh/', '_blank') },
       { name: 'Virtual Photo Booth', cat: 'Proyek', action: () => window.open('https://candid-cactus-ddff7a.netlify.app/', '_blank') },
       { name: 'Earth 3D Simulation', cat: 'Proyek', action: () => window.open('https://neiooooo.surge.sh/', '_blank') },
       { name: 'Kirim Email', cat: 'Kontak', action: () => window.location.href = 'mailto:misnosusanto97@gmail.com' },
       { name: 'Buka GitHub', cat: 'Kontak', action: () => window.open('https://github.com/kangguruhdq-ux', '_blank') },
       { name: 'Unduh CV', cat: 'Aksi', action: () => window.location.href = 'CV_Mahabbah_Mahabban_Romadhon.pdf' },
+      { name: 'CBBH — Certified Bug Bounty Hunter', cat: 'Sertifikasi', action: () => scrollToId('certifications') },
+      { name: 'Deep Learning Specialization', cat: 'Sertifikasi', action: () => scrollToId('certifications') },
+      { name: 'Penghargaan Kerentanan detikcom', cat: 'Sertifikasi', action: () => scrollToId('certifications') },
+      { name: 'HTML', cat: 'Tech Stack', action: () => filterByTech('html') },
+      { name: 'CSS', cat: 'Tech Stack', action: () => filterByTech('css') },
+      { name: 'JavaScript', cat: 'Tech Stack', action: () => filterByTech('javascript') },
+      { name: 'Tailwind CSS', cat: 'Tech Stack', action: () => filterByTech('tailwind') },
+      { name: 'ReactJS', cat: 'Tech Stack', action: () => filterByTech('react') },
+      { name: 'Vite', cat: 'Tech Stack', action: () => filterByTech('vite') },
+      { name: 'Node JS', cat: 'Tech Stack', action: () => filterByTech('node') },
+      { name: 'Bootstrap', cat: 'Tech Stack', action: () => filterByTech('bootstrap') },
+      { name: 'Supabase', cat: 'Tech Stack', action: () => filterByTech('supabase') },
+      { name: 'Material UI', cat: 'Tech Stack', action: () => filterByTech('mui') },
+      { name: 'Vercel', cat: 'Tech Stack', action: () => filterByTech('vercel') },
+      { name: 'Figma', cat: 'Tech Stack', action: () => filterByTech('figma') },
+      { name: 'Python', cat: 'Tech Stack', action: () => filterByTech('python') },
+      { name: 'Beri Komentar', cat: 'Aksi', action: () => { scrollToId('commentsSection'); setTimeout(() => document.getElementById('commentName')?.focus(), 500); } },
     ];
 
     function scrollToId(id) {
@@ -1528,21 +1909,24 @@
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => observer.observe(el));
 
-  // Count-up animasi untuk angka statistik
+  // Count-up animasi untuk angka statistik — eased (ease-out cubic) untuk gerakan yang lebih halus
   const countObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const el = entry.target;
         const target = parseInt(el.dataset.count, 10);
-        let current = 0;
-        const step = Math.max(1, Math.ceil(target / 30));
-        const tick = () => {
-          current += step;
-          if (current >= target) { el.textContent = target; return; }
-          el.textContent = current;
-          requestAnimationFrame(tick);
+        const duration = 1400;
+        let start = null;
+        const easeOutCubic = (x) => 1 - Math.pow(1 - x, 3);
+        const tick = (ts) => {
+          if (start === null) start = ts;
+          const progress = Math.min(1, (ts - start) / duration);
+          const eased = easeOutCubic(progress);
+          el.textContent = Math.round(eased * target);
+          if (progress < 1) requestAnimationFrame(tick);
+          else el.textContent = target;
         };
-        tick();
+        requestAnimationFrame(tick);
         countObserver.unobserve(el);
       }
     });
@@ -1578,6 +1962,401 @@
       burger.setAttribute('aria-expanded', 'false');
     });
   });
+
+  // --- 3. THEME TOGGLE (Dark / Light) ---
+  (function initThemeToggle() {
+    let currentTheme = 'dark'; // in-memory only, no localStorage (per artifact constraints)
+    const btn = document.getElementById('themeToggle');
+    const icon = document.getElementById('themeIcon');
+    const sunPath = 'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z';
+    const moonPath = 'M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z';
+    function apply() {
+      document.documentElement.setAttribute('data-theme', currentTheme === 'light' ? 'light' : 'dark');
+      const metaTheme = document.querySelector('meta[name="theme-color"]');
+      if (metaTheme) metaTheme.setAttribute('content', currentTheme === 'light' ? '#F4F6FA' : '#07090D');
+      if (icon) icon.querySelector('path').setAttribute('d', currentTheme === 'light' ? moonPath : sunPath);
+    }
+    btn?.addEventListener('click', () => {
+      currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+      apply();
+    });
+    apply();
+  })();
+
+  // --- 4. PRINT / SAVE AS PDF ---
+  document.getElementById('printBtn')?.addEventListener('click', () => window.print());
+
+  // --- 5. COPY TO CLIPBOARD (email / phone) ---
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const value = btn.dataset.copy || '';
+      try {
+        await navigator.clipboard.writeText(value);
+      } catch (err) {
+        const ta = document.createElement('textarea');
+        ta.value = value; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch (e2) {}
+        document.body.removeChild(ta);
+      }
+      btn.classList.add('copied');
+      setTimeout(() => btn.classList.remove('copied'), 1600);
+    });
+  });
+
+  // --- 6. IMAGE LOADING SKELETON ---
+  document.querySelectorAll('.img-loading').forEach(wrap => {
+    const img = wrap.querySelector('img');
+    if (!img) { wrap.classList.remove('img-loading'); return; }
+    const clear = () => wrap.classList.remove('img-loading');
+    if (img.complete && img.naturalWidth > 0) { clear(); }
+    else { img.addEventListener('load', clear); img.addEventListener('error', clear); }
+  });
+
+  // --- 7. COMMENTS (session-only, in-memory — no backend attached) ---
+  (function initComments() {
+    const form = document.getElementById('commentForm');
+    const list = document.getElementById('commentList');
+    const empty = document.getElementById('commentEmpty');
+    if (!form || !list) return;
+    const comments = [];
+    function render() {
+      list.innerHTML = '';
+      empty.style.display = comments.length ? 'none' : 'block';
+      comments.slice().reverse().forEach(c => {
+        const el = document.createElement('div');
+        el.className = 'comment-item';
+        const nameEl = document.createElement('div');
+        nameEl.className = 'c-name';
+        nameEl.textContent = c.name;
+        const dateEl = document.createElement('span');
+        dateEl.className = 'c-date';
+        dateEl.textContent = c.date;
+        const head = document.createElement('div');
+        head.className = 'c-head';
+        head.appendChild(nameEl); head.appendChild(dateEl);
+        const body = document.createElement('div');
+        body.className = 'c-body';
+        body.textContent = c.body;
+        el.appendChild(head); el.appendChild(body);
+        list.appendChild(el);
+      });
+    }
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('commentName').value.trim();
+      const body = document.getElementById('commentBody').value.trim();
+      if (!name || !body) return;
+      comments.push({ name, body, date: new Date().toLocaleDateString(currentLang === 'en' ? 'en-US' : 'id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) });
+      form.reset();
+      render();
+    });
+    render();
+  })();
+
+  // --- 8. LANGUAGE SWITCHER (ID / EN) ---
+  let currentLang = 'id'; // in-memory only, no localStorage (per artifact constraints)
+  const i18n = {
+    'nav.about': { en: 'Profile' }, 'nav.education': { en: 'Education' }, 'nav.skills': { en: 'Skills' },
+    'nav.work': { en: 'Portfolio' }, 'nav.contact': { en: 'Contact' }, 'nav.hire': { en: "Let's Talk" },
+    'hero.role1': { en: 'Machine Learning Specialist' }, 'hero.role2': { en: 'Full-Stack Web Dev' },
+    'hero.role3': { en: 'Mobile App Dev' }, 'hero.role4': { en: 'Cyber Security Analyst' },
+    'hero.sub': { en: 'Certified technology practitioner focused on designing software architecture that is secure, efficient, and AI-driven.' },
+    'hero.cv': { en: 'Download CV' }, 'hero.search': { en: 'Quick search' },
+    'about.eyebrow': { en: '// brief introduction' }, 'about.h2': { en: 'Professional Profile' },
+    'about.text': { en: "Hi, I am <strong>Mahabbah Mahabban Romadhon</strong>, a multidisciplinary technology professional combining expertise in <strong>Artificial Intelligence (AI), Software Engineering (Web/Mobile),</strong> and <strong>Cyber Security</strong>. I hold the <strong>HTB Certified Bug Bounty Hunter (CBBH)</strong> certification and graduated from the prestigious <strong>Deep Learning Specialization</strong> program by DeepLearning.AI.<br><br>My main focus is building digital ecosystems end-to-end — from training precise *Machine Learning* models, to designing responsive user interfaces, to securing system architecture against potential vulnerabilities. My dedication to system security is proven through the discovery of a vulnerability bug in <strong>detikcom's</strong> digital infrastructure, which was officially verified and appreciated." },
+    'about.stat1': { en: 'Published Industry & Exploratory Projects' }, 'about.stat2': { en: 'Professional Certifications & Awards' },
+    'about.stat3': { en: 'Core Expertise Domains (AI, Web, App, Sec)' },
+    'edu.eyebrow': { en: '// academic track record' }, 'edu.h2': { en: 'Education History' },
+    'edu.major': { en: 'Computer & Network Engineering | Average Score: 90' },
+    'edu.list': { en: '<li><strong>Web Development:</strong> Competent in *full-stack* web application development using the HTML, CSS, JavaScript, PHP, and Laravel ecosystem, along with skills in designing and managing MySQL relational databases.</li><li><strong>Network Infrastructure:</strong> Experienced in basic-level network (LAN/WAN) administration and configuration, using MikroTik hardware and advanced simulation with Cisco Packet Tracer.</li><li><strong>System Maintenance:</strong> Solid technical skills in assembling, *troubleshooting*, and maintaining computing hardware to ensure optimal operational reliability.</li>' },
+    'skills.eyebrow': { en: '// technical foundation' }, 'skills.h2': { en: 'Core Competencies' },
+    'skills.ml': { en: '<strong>Machine Learning:</strong> Designing, training, and implementing advanced *Deep Learning* models for data classification, predictive analytics, and *Computer Vision*.' },
+    'skills.web': { en: '<strong>Web Development:</strong> Building high-performance, responsive *full-stack* web applications with *scalable* architecture for modern business needs.' },
+    'skills.app': { en: '<strong>App Development:</strong> Developing *cross-platform* apps (Android/iOS) with a focus on performance optimization and intuitive *User Experience* (UX).' },
+    'skills.sec': { en: '<strong>Cyber Security:</strong> Experienced in *Bug Bounty Hunting*, *Penetration Testing*, and security audits to strengthen system security posture (Hardening).' },
+    'tech.eyebrow': { en: '// tools & platforms' },
+    'work.eyebrow': { en: '// implementation & work' }, 'work.h2': { en: 'Project Portfolio' },
+    'work.filter.all': { en: 'All' }, 'work.filter.security': { en: 'Security' }, 'work.filter.creative': { en: 'Creative' },
+    'work.subhead1': { en: 'INDUSTRY IMPLEMENTATION (SERIOUS)' }, 'work.subhead2': { en: 'INTERACTIVE EXPLORATION (CREATIVE)' },
+    'work.detailBtn': { en: 'View Details' }, 'work.viewApp': { en: 'View App' },
+    'work.apd.tag': { en: 'ARTIFICIAL INTELLIGENCE · COMPUTER VISION' }, 'work.apd.title': { en: 'Real-Time APD Safety Detection System' },
+    'work.apd.desc': { en: 'An AI-powered (*Computer Vision*) automated workplace safety system connected directly to on-site CCTV cameras, detecting PPE compliance in *real-time* and issuing early warnings for K3 protocol violations.' },
+    'work.osint.tag': { en: 'WEB APPLICATION · CYBERSECURITY TOOL' }, 'work.osint.title': { en: 'Cyber Intelligence & OSINT Dashboard (Wanz Xploit)' },
+    'work.osint.desc': { en: 'A web-based analytics dashboard for *Open Source Intelligence* (OSINT) investigation needs, complete with user management, API key encryption, and a futuristic dark-mode *Admin Dashboard*.' },
+    'work.edolus.tag': { en: 'CREATIVE WEB DEV · IMMERSIVE 3D' }, 'work.edolus.title': { en: 'Edolus — Planetary Scale AI Interactive Experience' },
+    'work.edolus.desc': { en: 'An immersive *space-tech* themed interactive 3D website with high-resolution 3D Earth visuals, *cinematic* animation, and *spatial audio* to introduce a planetary-scale AI platform.' },
+    'work.pacman.tag': { en: 'GAME DEVELOPMENT · ALGORITHMS' },
+    'work.pacman.desc': { en: 'A recreation of the classic Pacman game using pure Vanilla JavaScript. This project demonstrates deep understanding of *Canvas* manipulation, *collision detection*, and entity movement logic.' },
+    'work.photobooth.tag': { en: 'WEB APP · MEDIA API' },
+    'work.photobooth.desc': { en: "An interactive web app that uses the WebRTC API to safely access the user's camera, apply filters, and capture images directly from the *browser*." },
+    'work.earth3d.desc': { en: 'An interactive 3D Earth simulation rendered in *real-time* on the web. An experiment in *mesh* optimization and dynamic lighting within a WebGL environment.' },
+    'cert.eyebrow': { en: '// competency validation' }, 'cert.h2': { en: 'Licenses & Certifications' },
+    'cert.cbbh.issuer': { en: 'Issued by: Hack The Box' },
+    'cert.cbbh.desc': { en: 'An advanced professional credential in practical cyber security, certifying the ability to identify, exploit, and report information system security vulnerabilities. Signed by Charalampos Pyarinos (CEO).' },
+    'cert.cbbh.date': { en: 'Valid: Until April 2026' },
+    'cert.dl.issuer': { en: 'Issued by: DeepLearning.AI (Coursera)' },
+    'cert.dl.desc': { en: 'An intensive specialization program under the guidance of Andrew Ng. Mastered *Neural Network* architectures, *Hyperparameter Tuning*, *CNN* implementation (Visual Data), and *Sequence Models* (NLP/Audio).' },
+    'cert.dl.date': { en: 'Issued: June 2026' },
+    'cert.detik.title': { en: 'System Vulnerability Reporting Award' },
+    'cert.detik.issuer': { en: 'Issued by: detikcom IT Security Division' },
+    'cert.detik.desc': { en: 'An official appreciation certificate (Hall of Fame) issued by Bagus Setiawan (IT Director of detikcom) for dedication and responsibility in finding and reporting a critical security vulnerability on the detikcom platform.' },
+    'cert.detik.date': { en: 'Issued: June 2026' },
+    'contact.eyebrow': { en: "// let's collaborate" }, 'contact.h2': { en: 'Ready to Accelerate Your Digital Vision?' },
+    'contact.p': { en: "I'm always open to collaboration opportunities, technical consulting, *freelance* project work, or strategic full-time positions in the tech industry." },
+    'contact.bigbtn': { en: 'Contact Me Now' },
+    'contact.qr': { en: 'Scan to open this portfolio' },
+    'findme.title': { en: '// Find Me' },
+    'findme.github.title': { en: 'GitHub' },
+    'findme.wa.title': { en: 'WhatsApp' },
+    'findme.email.title': { en: 'Email' },
+    'tech.filterActive': { en: 'Filtering by' },
+    'copy.toast': { en: 'Copied!' },
+    'comments.eyebrow': { en: '// visitor feedback' }, 'comments.h2': { en: 'Comments & Feedback' },
+    'comments.introNote': { en: 'Have feedback about this portfolio? Leave a comment below.' },
+    'comments.namePh': { en: 'Your name' }, 'comments.bodyPh': { en: 'Write a comment...' }, 'comments.submit': { en: 'Post Comment' },
+    'comments.empty': { en: 'No comments yet. Be the first!' },
+    'comments.storageNote': { en: 'Note: comments here are stored temporarily on your device (not yet connected to a server). For permanent public comments, connect this section to a service like Giscus or Disqus.' },
+    'footer.text': { en: '© 2026 Mahabbah Mahabban Romadhon — Engineered with passion & precision.' },
+    'footer.updated': { en: 'Last updated: August 29, 2026' },
+  };
+  const idOriginal = {};
+  document.querySelectorAll('[data-i18n]').forEach(el => { idOriginal[el.dataset.i18n] = el.innerHTML; });
+  const idOriginalPh = {};
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { idOriginalPh[el.dataset.i18nPlaceholder] = el.getAttribute('placeholder'); });
+
+  function applyLanguage() {
+    document.documentElement.setAttribute('lang', currentLang === 'en' ? 'en' : 'id');
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      const entry = i18n[key];
+      if (currentLang === 'en' && entry && entry.en) el.innerHTML = entry.en;
+      else el.innerHTML = idOriginal[key] ?? el.innerHTML;
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.dataset.i18nPlaceholder;
+      const entry = i18n[key];
+      if (currentLang === 'en' && entry && entry.en) el.setAttribute('placeholder', entry.en);
+      else el.setAttribute('placeholder', idOriginalPh[key] ?? el.getAttribute('placeholder'));
+    });
+    // Swap work-card visible data attrs used by the detail modal
+    document.querySelectorAll('.work-card[data-title-en]').forEach(card => {
+      if (currentLang === 'en') {
+        card.dataset._titleId = card.dataset._titleId || card.dataset.title;
+        card.dataset._tagId = card.dataset._tagId || card.dataset.tag;
+        card.dataset._descId = card.dataset._descId || card.dataset.desc;
+        card.dataset.title = card.dataset.titleEn;
+        card.dataset.tag = card.dataset.tagEn;
+        card.dataset.desc = card.dataset.descEn;
+      } else if (card.dataset._titleId) {
+        card.dataset.title = card.dataset._titleId;
+        card.dataset.tag = card.dataset._tagId;
+        card.dataset.desc = card.dataset._descId;
+      }
+    });
+    const langBtn = document.getElementById('langToggle');
+    if (langBtn) langBtn.textContent = currentLang === 'en' ? 'ID' : 'EN';
+  }
+  document.getElementById('langToggle')?.addEventListener('click', () => {
+    currentLang = currentLang === 'en' ? 'id' : 'en';
+    applyLanguage();
+  });
+  applyLanguage();
+
+  // --- 9. BACK TO TOP ---
+  (function initBackToTop() {
+    const btn = document.getElementById('backToTop');
+    if (!btn) return;
+    window.addEventListener('scroll', () => {
+      btn.classList.toggle('show', window.scrollY > window.innerHeight * 0.8);
+    }, { passive: true });
+    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  })();
+
+  // --- 10. PARALLAX ON HERO BACKGROUND WORD ---
+  (function initParallax() {
+    const word = document.querySelector('.hero-bg-word');
+    const hero = document.getElementById('heroSection');
+    if (!word || !hero) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const rect = hero.getBoundingClientRect();
+        const progress = Math.min(1, Math.max(0, -rect.top / (rect.height || 1)));
+        word.style.transform = `translate(-50%, calc(-50% + ${progress * 60}px)) scale(${1 + progress * 0.08})`;
+        ticking = false;
+      });
+    }, { passive: true });
+  })();
+
+  // --- 11. TYPING EFFECT ON HERO SUBTITLE ---
+  (function initTyping() {
+    const el = document.getElementById('heroSub');
+    if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const fullText = el.textContent.trim();
+    if (!fullText) return;
+    el.textContent = '';
+    const cursor = document.createElement('span');
+    cursor.className = 'type-cursor';
+    let i = 0;
+    function type() {
+      if (i <= fullText.length) {
+        el.textContent = fullText.slice(0, i);
+        el.appendChild(cursor);
+        i++;
+        setTimeout(type, 18 + Math.random() * 22);
+      } else {
+        setTimeout(() => cursor.remove(), 2200);
+      }
+    }
+    // Start after the boot sequence has had time to clear (or immediately if it was skipped)
+    const boot = document.getElementById('boot-screen');
+    const delay = (boot && !boot.classList.contains('hidden')) ? 2400 : 400;
+    setTimeout(type, delay);
+    // Re-type whenever the language is switched, using whatever text is currently set
+    document.getElementById('langToggle')?.addEventListener('click', () => {
+      setTimeout(() => {
+        const newText = el.textContent.replace(/\s*$/, '').trim();
+        if (!newText) return;
+        el.textContent = '';
+        i = 0;
+        const t2 = newText;
+        let j = 0;
+        (function retype() {
+          if (j <= t2.length) {
+            el.textContent = t2.slice(0, j);
+            el.appendChild(cursor);
+            j++;
+            setTimeout(retype, 14);
+          } else {
+            setTimeout(() => cursor.remove(), 1800);
+          }
+        })();
+      }, 30);
+    });
+  })();
+
+  // --- 13. CONFETTI BURST ON COMMENT SUBMIT ---
+  function fireConfetti(originEl) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const canvas = document.createElement('canvas');
+    canvas.style.cssText = 'position:fixed;inset:0;z-index:400;pointer-events:none;';
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    const rect = originEl ? originEl.getBoundingClientRect() : { left: window.innerWidth / 2, top: window.innerHeight / 2, width: 0, height: 0 };
+    const originX = rect.left + rect.width / 2, originY = rect.top + rect.height / 2;
+    const colors = ['#00F0FF', '#B026FF', '#00FFA3', '#F3F4F6'];
+    const particles = Array.from({ length: 60 }, () => ({
+      x: originX, y: originY,
+      vx: (Math.random() - 0.5) * 9, vy: (Math.random() - 1.6) * 9,
+      size: 3 + Math.random() * 4, color: colors[Math.floor(Math.random() * colors.length)],
+      life: 0, maxLife: 60 + Math.random() * 30, rot: Math.random() * Math.PI, vr: (Math.random() - 0.5) * 0.3,
+    }));
+    function tick() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let alive = false;
+      particles.forEach(p => {
+        if (p.life >= p.maxLife) return;
+        alive = true;
+        p.vy += 0.22; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life++;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, 1 - p.life / p.maxLife);
+        ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+        ctx.restore();
+      });
+      if (alive) requestAnimationFrame(tick);
+      else canvas.remove();
+    }
+    tick();
+  }
+  document.getElementById('commentForm')?.addEventListener('submit', (e) => {
+    fireConfetti(document.getElementById('commentForm').querySelector('button[type="submit"]'));
+  });
+
+  // --- 14. MAGNETIC EFFECT EXTENDED (logo + tech cards) ---
+  (function initMagneticExtra() {
+    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll('.logo-mark, .tech-card').forEach(el => {
+      el.style.transition = 'transform .3s cubic-bezier(0.16,1,0.3,1)';
+      const strength = el.classList.contains('logo-mark') ? 0.4 : 0.18;
+      el.addEventListener('mousemove', (e) => {
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left - r.width / 2) * strength;
+        const y = (e.clientY - r.top - r.height / 2) * strength;
+        el.style.transform = `translate(${x}px, ${y}px)`;
+      });
+      el.addEventListener('mouseleave', () => { el.style.transform = 'translate(0, 0)'; });
+    });
+  })();
+
+  // --- 15. TECH STACK <-> PROJECT FILTER ---
+  function filterByTech(tech) {
+    scrollToTechFilter(tech);
+  }
+  function scrollToTechFilter(tech) {
+    document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => applyTechFilter(tech), 350);
+  }
+  function applyTechFilter(tech) {
+    const cards = document.querySelectorAll('.work-card');
+    const subheads = document.querySelectorAll('.work-subhead');
+    const buttons = document.querySelectorAll('.filter-btn');
+    buttons.forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tech-card').forEach(t => t.classList.toggle('tech-active', t.dataset.tech === tech));
+
+    cards.forEach(card => {
+      const techs = (card.dataset.tech || '').split(' ');
+      card.classList.toggle('is-hidden', !techs.includes(tech));
+    });
+    subheads.forEach(sub => {
+      const grid = sub.nextElementSibling;
+      if (!grid || !grid.classList.contains('work-grid')) return;
+      const visible = grid.querySelectorAll('.work-card:not(.is-hidden)').length;
+      sub.classList.toggle('is-hidden', visible === 0);
+      grid.classList.toggle('is-hidden', visible === 0);
+    });
+    renderTechPill(tech);
+  }
+  function clearTechFilter() {
+    document.querySelectorAll('.tech-card').forEach(t => t.classList.remove('tech-active'));
+    const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+    allBtn?.click();
+    document.getElementById('techFilterPill')?.remove();
+  }
+  function renderTechPill(tech) {
+    document.getElementById('techFilterPill')?.remove();
+    const bar = document.querySelector('.filter-bar');
+    if (!bar) return;
+    const pill = document.createElement('div');
+    pill.className = 'tech-filter-pill';
+    pill.id = 'techFilterPill';
+    pill.innerHTML = `<span>${tech}</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>`;
+    pill.addEventListener('click', clearTechFilter);
+    bar.insertAdjacentElement('afterend', pill);
+  }
+  (function initTechCardClicks() {
+    document.querySelectorAll('.tech-card[data-tech]').forEach(card => {
+      card.addEventListener('click', () => applyTechFilter(card.dataset.tech));
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); applyTechFilter(card.dataset.tech); }
+      });
+    });
+    // Any manual category filter click clears an active tech filter
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tech-card').forEach(t => t.classList.remove('tech-active'));
+        document.getElementById('techFilterPill')?.remove();
+      });
+    });
+  })();
 </script>
 
 </body>
