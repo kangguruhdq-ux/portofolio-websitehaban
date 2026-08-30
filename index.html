@@ -13,7 +13,7 @@
 <meta property="og:title" content="Mahabbah Mahabban Romadhon — Portofolio Profesional">
 <meta property="og:description" content="AI / Machine Learning · Full-Stack Web Dev · Mobile App Dev · Cyber Security Analyst. CBBH Certified, Deep Learning Specialization.">
 <meta property="og:image" content="images/og-cover.jpg">
-<meta property="og:url" content="https://mahabbah.dev/">
+<meta property="og:url" content="https://majestic-figolla-ce98e2.netlify.app/">
 <meta property="og:locale" content="id_ID">
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
@@ -27,7 +27,7 @@
   "name": "Mahabbah Mahabban Romadhon",
   "jobTitle": ["Machine Learning Specialist", "Full-Stack Web Developer", "Mobile App Developer", "Cyber Security Analyst"],
   "email": "mailto:misnosusanto97@gmail.com",
-  "url": "https://mahabbah.dev/",
+  "url": "https://majestic-figolla-ce98e2.netlify.app/",
   "sameAs": ["https://github.com/kangguruhdq-ux"]
 }
 </script>
@@ -143,14 +143,14 @@
   .comment-item .c-body { color: var(--muted); font-size: 14px; line-height: 1.6; }
   .comment-empty { text-align: center; color: var(--muted); font-size: 13.5px; font-family: 'JetBrains Mono', monospace; margin-bottom: 20px; }
   .comment-note { text-align: center; color: var(--muted); font-size: 12.5px; margin-top: 24px; max-width: 640px; margin-inline: auto; }
-  .giscus-wrap { max-width: 780px; margin: 0 auto; }
-  .giscus-frame { width: 100%; border: none; }
+  .comment-embed-wrap { max-width: 780px; margin: 0 auto; }
+  .comment-embed-frame { width: 100%; border: none; }
 
   /* PRINT — clean single-page CV-style view */
   @media print {
     #boot-screen, .grain, #bg-canvas, #cursor-dot, #cursor-ring, nav, .scroll-hint,
     .filter-bar, .cmdk-overlay, .modal-overlay, .mini3d, footer .updated-badge,
-    .work-link, .giscus-wrap, #commentsSection, .hero-actions .cmdk-trigger { display: none !important; }
+    .work-link, .comment-embed-wrap, #commentsSection, .hero-actions .cmdk-trigger { display: none !important; }
     body { background: #fff !important; color: #111 !important; }
     section { padding: 24px 0 !important; max-width: 100% !important; page-break-inside: avoid; }
     .work-card, .term-card, .cert-item, .timeline-content { break-inside: avoid; border: 1px solid #ccc !important; background: #fafafa !important; box-shadow: none !important; }
@@ -1177,7 +1177,7 @@
       </div>
     </div>
     <div class="qr-card">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fmahabbah.dev%2F" alt="QR Code menuju portofolio ini" loading="lazy" onerror="this.parentElement.style.display='none'">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fmajestic-figolla-ce98e2.netlify.app%2F" alt="QR Code menuju portofolio ini" loading="lazy" onerror="this.parentElement.style.display='none'">
       <span data-i18n="contact.qr">Scan untuk membuka portofolio ini</span>
     </div>
   </div>
@@ -1186,25 +1186,18 @@
   <canvas class="mini3d" data-shape="icosahedron" data-color="accent" aria-hidden="true"></canvas>
   <div class="eyebrow reveal" data-i18n="comments.eyebrow">// pendapat pengunjung</div>
   <h2 class="reveal" data-i18n="comments.h2">Komentar & Masukan</h2>
-  <p class="comment-note" data-i18n="comments.introNote" style="margin-bottom:32px;">Punya masukan tentang portofolio ini? Tinggalkan komentar di bawah — login dengan akun GitHub, komentarmu langsung tampil untuk semua pengunjung.</p>
+  <p class="comment-note" data-i18n="comments.introNote" style="margin-bottom:32px;">Punya masukan tentang portofolio ini? Tinggalkan komentar di bawah — cukup isi nama, tanpa perlu login.</p>
 
-  <div class="giscus-wrap reveal" id="giscusWrap">
-    <script src="https://giscus.app/client.js"
-      data-repo="kangguruhdq-ux/portofolio-websitehaban"
-      data-repo-id="R_kgDOUH7ZrQ"
-      data-category="General"
-      data-category-id="DIC_kwDOUH7Zrc4DEeuf"
-      data-mapping="pathname"
-      data-strict="0"
-      data-reactions-enabled="1"
-      data-emit-metadata="0"
-      data-input-position="bottom"
-      data-theme="dark_dimmed"
-      data-lang="id"
-      data-loading="lazy"
-      crossorigin="anonymous"
-      async>
-    </script>
+  <div class="comment-embed-wrap reveal" id="cusdisWrap">
+    <div id="cusdis_thread"
+      data-host="https://cusdis.com"
+      data-app-id="7a632756-9b19-4abd-831b-0fba6221139f"
+      data-page-id="portofolio-mahabbah"
+      data-page-url="https://majestic-figolla-ce98e2.netlify.app/"
+      data-page-title="Mahabbah Mahabban Romadhon — Portofolio Profesional"
+      data-theme="dark">
+    </div>
+    <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
   </div>
 </section>
 
@@ -1986,13 +1979,6 @@
       const metaTheme = document.querySelector('meta[name="theme-color"]');
       if (metaTheme) metaTheme.setAttribute('content', currentTheme === 'light' ? '#F4F6FA' : '#07090D');
       if (icon) icon.querySelector('path').setAttribute('d', currentTheme === 'light' ? moonPath : sunPath);
-      const giscusFrame = document.querySelector('iframe.giscus-frame');
-      if (giscusFrame) {
-        giscusFrame.contentWindow.postMessage(
-          { giscus: { setConfig: { theme: currentTheme === 'light' ? 'light' : 'dark_dimmed' } } },
-          'https://giscus.app'
-        );
-      }
     }
     btn?.addEventListener('click', () => {
       currentTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -2031,9 +2017,10 @@
     else { img.addEventListener('load', clear); img.addEventListener('error', clear); }
   });
 
-  // --- 7. COMMENTS: handled by the Giscus embed (see #commentsSection).
-  // Giscus talks to GitHub Discussions directly, so there's nothing to wire
-  // up here — new comments are visible to every visitor, no backend of ours.
+  // --- 7. COMMENTS: handled by the Cusdis embed (see #commentsSection).
+  // Cusdis talks to its own hosted API directly, so there's nothing to wire
+  // up here. New comments go through one-click moderator approval, then
+  // become visible to every visitor — no backend of ours.
 
   // --- 8. LANGUAGE SWITCHER (ID / EN) ---
   let currentLang = 'id'; // in-memory only, no localStorage (per artifact constraints)
@@ -2097,7 +2084,6 @@
     'comments.introNote': { en: 'Have feedback about this portfolio? Leave a comment below — sign in with GitHub and it shows up instantly for everyone.' },
     'comments.namePh': { en: 'Your name' }, 'comments.bodyPh': { en: 'Write a comment...' }, 'comments.submit': { en: 'Post Comment' },
     'comments.empty': { en: 'No comments yet. Be the first!' },
-    'comments.storageNote': { en: 'Note: comments here are stored temporarily on your device (not yet connected to a server). For permanent public comments, connect this section to a service like Giscus or Disqus.' },
     'footer.text': { en: '© 2026 Mahabbah Mahabban Romadhon — Engineered with passion & precision.' },
     'footer.updated': { en: 'Last updated: August 29, 2026' },
   };
@@ -2257,14 +2243,6 @@
     }
     tick();
   }
-  // Confetti on new comment: Giscus posts a message when a discussion/comment
-  // is created, so we hook that instead of the old (now removed) local form.
-  window.addEventListener('message', (e) => {
-    if (e.origin !== 'https://giscus.app') return;
-    if (e.data?.giscus?.discussion) {
-      fireConfetti(document.getElementById('giscusWrap'));
-    }
-  });
 
   // --- 14. MAGNETIC EFFECT EXTENDED (logo + tech cards) ---
   (function initMagneticExtra() {
