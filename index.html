@@ -143,12 +143,14 @@
   .comment-item .c-body { color: var(--muted); font-size: 14px; line-height: 1.6; }
   .comment-empty { text-align: center; color: var(--muted); font-size: 13.5px; font-family: 'JetBrains Mono', monospace; margin-bottom: 20px; }
   .comment-note { text-align: center; color: var(--muted); font-size: 12.5px; margin-top: 24px; max-width: 640px; margin-inline: auto; }
+  .giscus-wrap { max-width: 780px; margin: 0 auto; }
+  .giscus-frame { width: 100%; border: none; }
 
   /* PRINT — clean single-page CV-style view */
   @media print {
     #boot-screen, .grain, #bg-canvas, #cursor-dot, #cursor-ring, nav, .scroll-hint,
     .filter-bar, .cmdk-overlay, .modal-overlay, .mini3d, footer .updated-badge,
-    .work-link, .comment-form, #commentsSection, .hero-actions .cmdk-trigger { display: none !important; }
+    .work-link, .giscus-wrap, #commentsSection, .hero-actions .cmdk-trigger { display: none !important; }
     body { background: #fff !important; color: #111 !important; }
     section { padding: 24px 0 !important; max-width: 100% !important; page-break-inside: avoid; }
     .work-card, .term-card, .cert-item, .timeline-content { break-inside: avoid; border: 1px solid #ccc !important; background: #fafafa !important; box-shadow: none !important; }
@@ -1184,17 +1186,26 @@
   <canvas class="mini3d" data-shape="icosahedron" data-color="accent" aria-hidden="true"></canvas>
   <div class="eyebrow reveal" data-i18n="comments.eyebrow">// pendapat pengunjung</div>
   <h2 class="reveal" data-i18n="comments.h2">Komentar & Masukan</h2>
-  <p class="comment-note" data-i18n="comments.introNote" style="margin-bottom:32px;">Punya masukan tentang portofolio ini? Tinggalkan komentar di bawah.</p>
+  <p class="comment-note" data-i18n="comments.introNote" style="margin-bottom:32px;">Punya masukan tentang portofolio ini? Tinggalkan komentar di bawah — login dengan akun GitHub, komentarmu langsung tampil untuk semua pengunjung.</p>
 
-  <form class="comment-form reveal" id="commentForm">
-    <input type="text" id="commentName" placeholder="Nama kamu" data-i18n-placeholder="comments.namePh" required>
-    <textarea id="commentBody" rows="3" placeholder="Tulis komentar..." data-i18n-placeholder="comments.bodyPh" required></textarea>
-    <button type="submit" data-i18n="comments.submit">Kirim Komentar</button>
-  </form>
-
-  <div class="comment-list reveal-stagger" id="commentList"></div>
-  <div class="comment-empty" id="commentEmpty" data-i18n="comments.empty">Belum ada komentar. Jadilah yang pertama!</div>
-  <p class="comment-note" data-i18n="comments.storageNote">Catatan: komentar di sini tersimpan sementara di perangkatmu (belum tersambung ke server). Untuk komentar publik permanen, hubungkan bagian ini ke layanan seperti Giscus atau Disqus.</p>
+  <div class="giscus-wrap reveal" id="giscusWrap">
+    <script src="https://giscus.app/client.js"
+      data-repo="kangguruhdq-ux/portofolio-websitehaban"
+      data-repo-id="R_kgDOUH7ZrQ"
+      data-category="General"
+      data-category-id="DIC_kwDOUH7Zrc4DEeuf"
+      data-mapping="pathname"
+      data-strict="0"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="bottom"
+      data-theme="dark_dimmed"
+      data-lang="id"
+      data-loading="lazy"
+      crossorigin="anonymous"
+      async>
+    </script>
+  </div>
 </section>
 
 <footer>
@@ -1828,7 +1839,7 @@
       { name: 'Vercel', cat: 'Tech Stack', action: () => filterByTech('vercel') },
       { name: 'Figma', cat: 'Tech Stack', action: () => filterByTech('figma') },
       { name: 'Python', cat: 'Tech Stack', action: () => filterByTech('python') },
-      { name: 'Beri Komentar', cat: 'Aksi', action: () => { scrollToId('commentsSection'); setTimeout(() => document.getElementById('commentName')?.focus(), 500); } },
+      { name: 'Beri Komentar', cat: 'Aksi', action: () => scrollToId('commentsSection') },
     ];
 
     function scrollToId(id) {
@@ -1975,6 +1986,13 @@
       const metaTheme = document.querySelector('meta[name="theme-color"]');
       if (metaTheme) metaTheme.setAttribute('content', currentTheme === 'light' ? '#F4F6FA' : '#07090D');
       if (icon) icon.querySelector('path').setAttribute('d', currentTheme === 'light' ? moonPath : sunPath);
+      const giscusFrame = document.querySelector('iframe.giscus-frame');
+      if (giscusFrame) {
+        giscusFrame.contentWindow.postMessage(
+          { giscus: { setConfig: { theme: currentTheme === 'light' ? 'light' : 'dark_dimmed' } } },
+          'https://giscus.app'
+        );
+      }
     }
     btn?.addEventListener('click', () => {
       currentTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -2013,46 +2031,9 @@
     else { img.addEventListener('load', clear); img.addEventListener('error', clear); }
   });
 
-  // --- 7. COMMENTS (session-only, in-memory — no backend attached) ---
-  (function initComments() {
-    const form = document.getElementById('commentForm');
-    const list = document.getElementById('commentList');
-    const empty = document.getElementById('commentEmpty');
-    if (!form || !list) return;
-    const comments = [];
-    function render() {
-      list.innerHTML = '';
-      empty.style.display = comments.length ? 'none' : 'block';
-      comments.slice().reverse().forEach(c => {
-        const el = document.createElement('div');
-        el.className = 'comment-item';
-        const nameEl = document.createElement('div');
-        nameEl.className = 'c-name';
-        nameEl.textContent = c.name;
-        const dateEl = document.createElement('span');
-        dateEl.className = 'c-date';
-        dateEl.textContent = c.date;
-        const head = document.createElement('div');
-        head.className = 'c-head';
-        head.appendChild(nameEl); head.appendChild(dateEl);
-        const body = document.createElement('div');
-        body.className = 'c-body';
-        body.textContent = c.body;
-        el.appendChild(head); el.appendChild(body);
-        list.appendChild(el);
-      });
-    }
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('commentName').value.trim();
-      const body = document.getElementById('commentBody').value.trim();
-      if (!name || !body) return;
-      comments.push({ name, body, date: new Date().toLocaleDateString(currentLang === 'en' ? 'en-US' : 'id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) });
-      form.reset();
-      render();
-    });
-    render();
-  })();
+  // --- 7. COMMENTS: handled by the Giscus embed (see #commentsSection).
+  // Giscus talks to GitHub Discussions directly, so there's nothing to wire
+  // up here — new comments are visible to every visitor, no backend of ours.
 
   // --- 8. LANGUAGE SWITCHER (ID / EN) ---
   let currentLang = 'id'; // in-memory only, no localStorage (per artifact constraints)
@@ -2113,7 +2094,7 @@
     'tech.filterActive': { en: 'Filtering by' },
     'copy.toast': { en: 'Copied!' },
     'comments.eyebrow': { en: '// visitor feedback' }, 'comments.h2': { en: 'Comments & Feedback' },
-    'comments.introNote': { en: 'Have feedback about this portfolio? Leave a comment below.' },
+    'comments.introNote': { en: 'Have feedback about this portfolio? Leave a comment below — sign in with GitHub and it shows up instantly for everyone.' },
     'comments.namePh': { en: 'Your name' }, 'comments.bodyPh': { en: 'Write a comment...' }, 'comments.submit': { en: 'Post Comment' },
     'comments.empty': { en: 'No comments yet. Be the first!' },
     'comments.storageNote': { en: 'Note: comments here are stored temporarily on your device (not yet connected to a server). For permanent public comments, connect this section to a service like Giscus or Disqus.' },
@@ -2276,8 +2257,13 @@
     }
     tick();
   }
-  document.getElementById('commentForm')?.addEventListener('submit', (e) => {
-    fireConfetti(document.getElementById('commentForm').querySelector('button[type="submit"]'));
+  // Confetti on new comment: Giscus posts a message when a discussion/comment
+  // is created, so we hook that instead of the old (now removed) local form.
+  window.addEventListener('message', (e) => {
+    if (e.origin !== 'https://giscus.app') return;
+    if (e.data?.giscus?.discussion) {
+      fireConfetti(document.getElementById('giscusWrap'));
+    }
   });
 
   // --- 14. MAGNETIC EFFECT EXTENDED (logo + tech cards) ---
