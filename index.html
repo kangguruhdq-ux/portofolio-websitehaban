@@ -202,7 +202,7 @@
 
   /* PRINT — clean single-page CV-style view */
   @media print {
-    #boot-screen, .grain, #bg-canvas, #cursor-dot, #cursor-ring, nav, .scroll-hint,
+    #boot-screen, .grain, #bg-canvas, .meteor-layer, .ember-layer, .cursor-trail, .live-clock, #cursor-dot, #cursor-ring, nav, .scroll-hint,
     .filter-bar, .cmdk-overlay, .modal-overlay, .mini3d, footer .updated-badge,
     .work-link, .comment-embed-wrap, #commentsSection, .hero-actions .cmdk-trigger,
     .term-fab, .term-panel, #matrixCanvas, .egg-toast, .hero-actions #qrBtn { display: none !important; }
@@ -243,6 +243,60 @@
     position: fixed; inset: 0; z-index: 3; pointer-events: none; opacity: 0.035; mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
+
+  /* Meteor shower — the odd shooting star drifting across the sky, keeps the
+     starfield background feeling alive instead of static. */
+  .meteor-layer { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+  .meteor {
+    position: absolute; top: 0; left: 0; width: 130px; height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg, rgba(0,240,255,0) 0%, rgba(0,240,255,.75) 75%, #fff 100%);
+    box-shadow: 0 0 10px 1px rgba(0,240,255,.55);
+    opacity: 0; animation-name: meteorFall; animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); animation-fill-mode: forwards;
+  }
+  .meteor.alt { background: linear-gradient(90deg, rgba(176,38,255,0) 0%, rgba(176,38,255,.75) 75%, #fff 100%); box-shadow: 0 0 10px 1px rgba(176,38,255,.55); }
+  @keyframes meteorFall {
+    0% { opacity: 0; transform: translate(0, 0) rotate(var(--angle)); }
+    10% { opacity: 1; }
+    78% { opacity: .85; }
+    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--angle)); }
+  }
+  @media (prefers-reduced-motion: reduce) { .meteor-layer { display: none !important; } }
+
+  /* Ambient floating particles — slow drifting "embers/fireflies" that keep
+     the page feeling alive continuously, not just during the odd meteor. */
+  .ember-layer { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+  .ember {
+    position: absolute; bottom: -10px; width: 3px; height: 3px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 6px 1px var(--accent-dim);
+    opacity: 0; animation-name: emberDrift; animation-timing-function: linear; animation-iteration-count: infinite;
+  }
+  .ember.alt { background: var(--accent-2); box-shadow: 0 0 6px 1px var(--accent-2-dim); }
+  @keyframes emberDrift {
+    0% { opacity: 0; transform: translate(0, 0); }
+    8% { opacity: .8; }
+    92% { opacity: .5; }
+    100% { opacity: 0; transform: translate(var(--drift-x), var(--drift-y)); }
+  }
+  @media (prefers-reduced-motion: reduce) { .ember-layer { display: none !important; } }
+
+  /* Cursor sparkle trail — desktop only, adds a light trailing glow to the
+     custom cursor as it moves instead of a plain static dot. */
+  .cursor-trail {
+    position: fixed; top: 0; left: 0; width: 4px; height: 4px; border-radius: 50%;
+    background: var(--accent); z-index: 309; pointer-events: none;
+    transform: translate(-50%, -50%); animation: trailFade .7s ease-out forwards;
+  }
+  @keyframes trailFade { to { opacity: 0; transform: translate(-50%, -50%) scale(.2); } }
+  @media (hover: none), (pointer: coarse) { .cursor-trail { display: none !important; } }
+  @media (prefers-reduced-motion: reduce) { .cursor-trail { display: none !important; } }
+
+  /* Live system clock in the footer */
+  .live-clock {
+    display: inline-flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted); border: 1px solid var(--line); padding: 5px 10px;
+    border-radius: 20px; margin-top: 10px;
+  }
+  .live-clock .dot-live { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px var(--accent); }
 
   /* Custom cursor — desktop only, replaces default pointer for a more deliberate, premium feel */
   #cursor-dot, #cursor-ring { position: fixed; top: 0; left: 0; z-index: 310; pointer-events: none; border-radius: 50%; transform: translate(-50%, -50%); will-change: transform; }
@@ -1084,9 +1138,9 @@
     <div class="about-text" data-i18n="about.text">
       Halo, saya <strong>Mahabbah Mahabban Romadhon</strong>, seorang profesional teknologi multidisiplin yang memadukan keahlian dalam <strong>Kecerdasan Buatan (AI), Rekayasa Perangkat Lunak (Web/Mobile),</strong> dan <strong>Keamanan Siber</strong>. Saya memegang sertifikasi <strong>HTB Certified Bug Bounty Hunter (CBBH)</strong> dan lulusan program prestisius <strong>Deep Learning Specialization</strong> dari DeepLearning.AI.
       <br><br>
-      Fokus utama saya adalah membangun ekosistem digital secara komprehensif—mulai dari melatih model *Machine Learning* yang presisi, merancang antarmuka pengguna yang responsif, hingga mengamankan arsitektur sistem dari potensi kerentanan. Dedikasi saya pada keamanan sistem dibuktikan melalui penemuan kerentanan (vulnerability bug) pada infrastruktur digital <strong>detikcom</strong>, yang telah diverifikasi dan diapresiasi secara resmi.
+      Fokus utama saya adalah membangun ekosistem digital secara komprehensif—mulai dari melatih model Machine Learning yang presisi, merancang antarmuka pengguna yang responsif, hingga mengamankan arsitektur sistem dari potensi kerentanan. Dedikasi saya pada keamanan sistem dibuktikan melalui penemuan kerentanan (vulnerability bug) pada infrastruktur digital <strong>detikcom</strong>, yang telah diverifikasi dan diapresiasi secara resmi.
       <br><br>
-      Latar belakang saya berakar dari <strong>Teknik Komputer dan Jaringan</strong>, mencakup pengalaman langsung dalam instalasi &amp; *splicing* fiber optic hingga peran sebagai *Visual Designer* yang mengelola *deployment* web lokal. Ditambah dua tahun pengalaman organisasi sebagai Sekretaris Ekstrakurikuler, saya terbiasa bekerja presisi, terstruktur, dan adaptif di berbagai lini teknologi.
+      Latar belakang saya berakar dari <strong>Teknik Komputer dan Jaringan</strong>, mencakup pengalaman langsung dalam instalasi &amp; splicing fiber optic hingga peran sebagai Visual Designer yang mengelola deployment web lokal. Ditambah pengalaman organisasi di PMR (Palang Merah Remaja) dan English Club, saya terbiasa bekerja presisi, terstruktur, dan adaptif di berbagai lini teknologi.
     </div>
     <div class="stat-box">
       <div class="stat"><div class="num" data-count="6">0</div><div class="lbl" data-i18n="about.stat1">Proyek Industri & Eksplorasi Terpublikasi</div></div>
@@ -1118,10 +1172,10 @@
           </div>
         </div>
         <ul data-i18n="edu.list">
-          <li><strong>Pengembangan Web:</strong> Kompeten dalam pengembangan aplikasi web *full-stack* menggunakan ekosistem HTML, CSS, JavaScript, PHP, dan Laravel, disertai keahlian dalam merancang dan mengelola basis data relasional MySQL.</li>
+          <li><strong>Pengembangan Web:</strong> Kompeten dalam pengembangan aplikasi web full-stack menggunakan ekosistem HTML, CSS, JavaScript, PHP, dan Laravel, disertai keahlian dalam merancang dan mengelola basis data relasional MySQL.</li>
           <li><strong>Infrastruktur Jaringan:</strong> Berpengalaman dalam administrasi dan konfigurasi infrastruktur jaringan (LAN/WAN) skala dasar, memanfaatkan perangkat keras MikroTik dan simulasi tingkat lanjut dengan Cisco Packet Tracer.</li>
-          <li><strong>Perawatan Sistem:</strong> Memiliki keahlian teknis yang solid dalam perakitan, *troubleshooting*, dan pemeliharaan perangkat keras komputasi guna memastikan reliabilitas operasional sistem secara optimal.</li>
-          <li><strong>Kepemimpinan &amp; Organisasi:</strong> Aktif selama dua tahun di Pleton Inti dan meraih sejumlah prestasi, termasuk menjabat sebagai Sekretaris Ekstrakurikuler &mdash; mengelola administrasi, menyusun dokumen, dan berkoordinasi dengan tim.</li>
+          <li><strong>Perawatan Sistem:</strong> Memiliki keahlian teknis yang solid dalam perakitan, troubleshooting, dan pemeliharaan perangkat keras komputasi guna memastikan reliabilitas operasional sistem secara optimal.</li>
+          <li><strong>Organisasi &amp; Ekstrakurikuler:</strong> Aktif mengikuti kegiatan ekstrakurikuler PMR (Palang Merah Remaja) dan English Club, yang mengasah kemampuan kerja sama tim, kepedulian sosial, serta komunikasi dalam bahasa Inggris.</li>
         </ul>
       </div>
     </div>
@@ -1146,10 +1200,10 @@
           </div>
         </div>
         <ul data-i18n="exp.job2.list">
-          <li>Mengembangkan arah visual untuk berbagai kebutuhan *branding*, promosi, dan kampanye kreatif.</li>
+          <li>Mengembangkan arah visual untuk berbagai kebutuhan branding, promosi, dan kampanye kreatif.</li>
           <li>Membimbing tim desain dalam menghasilkan karya yang sesuai dengan identitas dan tujuan merek.</li>
-          <li>Mengonfigurasi dan mengelola server lokal (*Localhost*/Web Server) untuk kebutuhan *deployment* sistem web dan penayangan iklan digital perusahaan.</li>
-          <li>Melakukan pemantauan sistem, pengujian konektivitas, serta *troubleshooting* dari sisi software untuk memastikan web lokal dapat diakses tanpa kendala.</li>
+          <li>Mengonfigurasi dan mengelola server lokal (Localhost/Web Server) untuk kebutuhan deployment sistem web dan penayangan iklan digital perusahaan.</li>
+          <li>Melakukan pemantauan sistem, pengujian konektivitas, serta troubleshooting dari sisi software untuk memastikan web lokal dapat diakses tanpa kendala.</li>
         </ul>
       </div>
     </div>
@@ -1165,7 +1219,7 @@
         </div>
         <ul data-i18n="exp.job1.list">
           <li>Melakukan instalasi dan penarikan kabel jaringan (Tembaga dan Fiber Optic) untuk kebutuhan infrastruktur internet pelanggan.</li>
-          <li>Melaksanakan penyambungan inti kabel serat optik (*splicing*) dengan tingkat ketelitian tinggi untuk meminimalisir redaman (*loss*).</li>
+          <li>Melaksanakan penyambungan inti kabel serat optik (splicing) dengan tingkat ketelitian tinggi untuk meminimalisir redaman (loss).</li>
           <li>Menguji dan memastikan kualitas konektivitas jaringan pada seluruh instalasi menggunakan alat ukur seperti OPM dan LAN Tester.</li>
         </ul>
       </div>
@@ -1186,7 +1240,7 @@
       <div class="term-body">
         <div><span class="prompt">$</span> python train.py --architecture resnet50</div>
         <div class="type-line">epoch 12/50 · loss 0.032 · validation_acc 98.7%</div>
-        <p data-i18n="skills.ml"><strong>Machine Learning:</strong> Merancang, melatih, dan mengimplementasikan model *Deep Learning* tingkat lanjut untuk klasifikasi data, prediksi analitik, dan *Computer Vision*.</p>
+        <p data-i18n="skills.ml"><strong>Machine Learning:</strong> Merancang, melatih, dan mengimplementasikan model Deep Learning tingkat lanjut untuk klasifikasi data, prediksi analitik, dan Computer Vision.</p>
       </div>
     </div>
     
@@ -1195,7 +1249,7 @@
       <div class="term-body">
         <div><span class="prompt">$</span> npm run build --production</div>
         <div class="type-line">✓ Compiled successfully in 4.2s (Optimized)</div>
-        <p data-i18n="skills.web"><strong>Web Development:</strong> Membangun aplikasi web *full-stack* dengan performa tinggi, responsif, dan arsitektur yang *scalable* untuk kebutuhan bisnis modern.</p>
+        <p data-i18n="skills.web"><strong>Web Development:</strong> Membangun aplikasi web full-stack dengan performa tinggi, responsif, dan arsitektur yang scalable untuk kebutuhan bisnis modern.</p>
       </div>
     </div>
     
@@ -1204,7 +1258,7 @@
       <div class="term-body">
         <div><span class="prompt">$</span> flutter build apk --release --obfuscate</div>
         <div class="type-line">✓ Built app-release.apk (18.4MB)</div>
-        <p data-i18n="skills.app"><strong>App Development:</strong> Mengembangkan aplikasi *cross-platform* (Android/iOS) dengan fokus pada optimasi performa dan *User Experience* (UX) yang intuitif.</p>
+        <p data-i18n="skills.app"><strong>App Development:</strong> Mengembangkan aplikasi cross-platform (Android/iOS) dengan fokus pada optimasi performa dan User Experience (UX) yang intuitif.</p>
       </div>
     </div>
     
@@ -1213,7 +1267,7 @@
       <div class="term-body">
         <div><span class="prompt">$</span> burpsuite --scan target.internal --active</div>
         <div class="type-line">[!] Vulnerability detected. Generating report...</div>
-        <p data-i18n="skills.sec"><strong>Cyber Security:</strong> Berpengalaman dalam *Bug Bounty Hunting*, *Penetration Testing* menggunakan Burp Suite, dan audit keamanan untuk memperkuat postur keamanan sistem (Hardening).</p>
+        <p data-i18n="skills.sec"><strong>Cyber Security:</strong> Berpengalaman dalam Bug Bounty Hunting, Penetration Testing menggunakan Burp Suite, dan audit keamanan untuk memperkuat postur keamanan sistem (Hardening).</p>
       </div>
     </div>
 
@@ -1222,7 +1276,7 @@
       <div class="term-body">
         <div><span class="prompt">$</span> fusion-splicer --align-core --check-loss</div>
         <div class="type-line">splice_loss: 0.02dB · OPM: -21.4dBm · LINK OK</div>
-        <p data-i18n="skills.net"><strong>Jaringan &amp; Infrastruktur:</strong> Instalasi dan *splicing* kabel tembaga &amp; fiber optic, konfigurasi jaringan LAN dan server lokal, serta perakitan dan *troubleshooting* hardware PC dengan ketelitian tinggi.</p>
+        <p data-i18n="skills.net"><strong>Jaringan &amp; Infrastruktur:</strong> Instalasi dan splicing kabel tembaga &amp; fiber optic, konfigurasi jaringan LAN dan server lokal, serta perakitan dan troubleshooting hardware PC dengan ketelitian tinggi.</p>
       </div>
     </div>
 
@@ -1278,7 +1332,7 @@
       <div class="work-thumb img-loading"><img src="images/project-apd.jpg" alt="AI Deteksi APD" loading="lazy" onerror="this.style.display='none'"></div>
       <div class="work-tag" data-i18n="work.apd.tag">ARTIFICIAL INTELLIGENCE · COMPUTER VISION</div>
       <h3 data-i18n="work.apd.title">Real-Time APD Safety Detection System</h3>
-      <p data-i18n="work.apd.desc">Sistem pemantauan keselamatan kerja otomatis berbasis kecerdasan buatan (*Computer Vision*) yang terhubung langsung ke kamera CCTV area proyek, mendeteksi kelengkapan APD secara *real-time* dan memberi peringatan dini pelanggaran protokol K3.</p>
+      <p data-i18n="work.apd.desc">Sistem pemantauan keselamatan kerja otomatis berbasis kecerdasan buatan (Computer Vision) yang terhubung langsung ke kamera CCTV area proyek, mendeteksi kelengkapan APD secara real-time dan memberi peringatan dini pelanggaran protokol K3.</p>
       <button type="button" class="work-link detail-trigger" data-i18n="work.detailBtn">Lihat Detail <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></button>
     </div>
     
@@ -1291,7 +1345,7 @@
       <div class="work-thumb img-loading"><img src="images/project-osint.jpg" alt="OSINT Tools Zeta" loading="lazy" onerror="this.style.display='none'"></div>
       <div class="work-tag" data-i18n="work.osint.tag">WEB APPLICATION · CYBERSECURITY TOOL</div>
       <h3 data-i18n="work.osint.title">Cyber Intelligence & OSINT Dashboard (Wanz Xploit)</h3>
-      <p data-i18n="work.osint.desc">Dasbor analitik berbasis web untuk kebutuhan investigasi *Open Source Intelligence* (OSINT), lengkap dengan manajemen pengguna, enkripsi API Key, dan *Admin Dashboard* dark-mode yang futuristik.</p>
+      <p data-i18n="work.osint.desc">Dasbor analitik berbasis web untuk kebutuhan investigasi Open Source Intelligence (OSINT), lengkap dengan manajemen pengguna, enkripsi API Key, dan Admin Dashboard dark-mode yang futuristik.</p>
       <button type="button" class="work-link detail-trigger" data-i18n="work.detailBtn">Lihat Detail <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></button>
     </div>
     
@@ -1304,7 +1358,7 @@
       <div class="work-thumb img-loading"><img src="images/project-web3d.jpg" alt="Web 3D" loading="lazy" onerror="this.style.display='none'"></div>
       <div class="work-tag" data-i18n="work.edolus.tag">CREATIVE WEB DEV · IMMERSIVE 3D</div>
       <h3 data-i18n="work.edolus.title">Edolus — Planetary Scale AI Interactive Experience</h3>
-      <p data-i18n="work.edolus.desc">Situs web interaktif 3D imersif bertema *space-tech* dengan visual Bumi 3D beresolusi tinggi, animasi *cinematic*, dan *spatial audio* untuk memperkenalkan platform AI berskala global secara elegan.</p>
+      <p data-i18n="work.edolus.desc">Situs web interaktif 3D imersif bertema space-tech dengan visual Bumi 3D beresolusi tinggi, animasi cinematic, dan spatial audio untuk memperkenalkan platform AI berskala global secara elegan.</p>
       <button type="button" class="work-link detail-trigger" data-i18n="work.detailBtn">Lihat Detail <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></button>
     </div>
   </div>
@@ -1319,7 +1373,7 @@
       <div class="work-thumb img-loading"><img src="images/project-pacman.jpg" alt="Game Pacman" loading="lazy" onerror="this.style.display='none'"></div>
       <div class="work-tag" data-i18n="work.pacman.tag">PENGEMBANGAN GIM · ALGORITMA</div>
       <h3>Web-Based Pacman Engine</h3>
-      <p data-i18n="work.pacman.desc">Rekreasi gim klasik Pacman menggunakan Vanilla JavaScript murni. Proyek ini mendemonstrasikan pemahaman mendalam terkait manipulasi *Canvas*, *collision detection*, dan logika pergerakan entitas.</p>
+      <p data-i18n="work.pacman.desc">Rekreasi gim klasik Pacman menggunakan Vanilla JavaScript murni. Proyek ini mendemonstrasikan pemahaman mendalam terkait manipulasi Canvas, collision detection, dan logika pergerakan entitas.</p>
       <a href="https://habanpacman.surge.sh/" target="_blank" rel="noopener" class="work-link"><span data-i18n="work.viewApp">Tinjau Aplikasi</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
     </div>
     
@@ -1330,7 +1384,7 @@
       <div class="work-thumb img-loading"><img src="images/project-photobooth.jpg" alt="Website photo booth" loading="lazy" onerror="this.style.display='none'"></div>
       <div class="work-tag" data-i18n="work.photobooth.tag">WEB APP · MEDIA API</div>
       <h3>Virtual Photo Booth</h3>
-      <p data-i18n="work.photobooth.desc">Aplikasi web interaktif yang memanfaatkan WebRTC API untuk mengakses kamera pengguna secara aman, mengaplikasikan filter, dan menangkap gambar langsung dari *browser*.</p>
+      <p data-i18n="work.photobooth.desc">Aplikasi web interaktif yang memanfaatkan WebRTC API untuk mengakses kamera pengguna secara aman, mengaplikasikan filter, dan menangkap gambar langsung dari browser.</p>
       <a href="https://candid-cactus-ddff7a.netlify.app/" target="_blank" rel="noopener" class="work-link"><span data-i18n="work.viewApp">Tinjau Aplikasi</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
     </div>
     
@@ -1341,7 +1395,7 @@
       <div class="work-thumb img-loading"><img src="images/project-bmi3d.jpg" alt="Bumi 3D" loading="lazy" onerror="this.style.display='none'"></div>
       <div class="work-tag">3D RENDERING · THREE.JS</div>
       <h3>Earth 3D Simulation</h3>
-      <p data-i18n="work.earth3d.desc">Simulasi model planet Bumi 3D interaktif yang di-render secara *real-time* di web. Sebuah eksperimen optimalisasi *mesh* dan pencahayaan dinamis pada lingkungan WebGL.</p>
+      <p data-i18n="work.earth3d.desc">Simulasi model planet Bumi 3D interaktif yang di-render secara real-time di web. Sebuah eksperimen optimalisasi mesh dan pencahayaan dinamis pada lingkungan WebGL.</p>
       <a href="https://neiooooo.surge.sh/" target="_blank" rel="noopener" class="work-link"><span data-i18n="work.viewApp">Tinjau Aplikasi</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
     </div>
   </div>
@@ -1372,7 +1426,7 @@
         <div class="cert-main">
           <h4>Deep Learning Specialization</h4>
           <div class="issuer" data-i18n="cert.dl.issuer">Otoritas: DeepLearning.AI (Coursera)</div>
-          <p data-i18n="cert.dl.desc">Program spesialisasi intensif di bawah bimbingan Andrew Ng. Menguasai arsitektur *Neural Networks*, *Hyperparameter Tuning*, implementasi *CNNs* (Visual Data), dan *Sequence Models* (NLP/Audio).</p>
+          <p data-i18n="cert.dl.desc">Program spesialisasi intensif di bawah bimbingan Andrew Ng. Menguasai arsitektur Neural Networks, Hyperparameter Tuning, implementasi CNNs (Visual Data), dan Sequence Models (NLP/Audio).</p>
         </div>
       </div>
       <span class="date" data-i18n="cert.dl.date">Diterbitkan: Juni 2026</span>
@@ -1411,7 +1465,7 @@
       <div class="timeline-dot"></div>
       <div class="timeline-content">
         <h3 data-i18n="process.step2.title">02 · Desain &amp; Arsitektur</h3>
-        <p data-i18n="process.step2.desc">Merancang arsitektur sistem, alur data, dan struktur antarmuka yang skalabel — termasuk pertimbangan keamanan sejak tahap perencanaan (*security by design*).</p>
+        <p data-i18n="process.step2.desc">Merancang arsitektur sistem, alur data, dan struktur antarmuka yang skalabel — termasuk pertimbangan keamanan sejak tahap perencanaan (security by design).</p>
       </div>
     </div>
 
@@ -1419,7 +1473,7 @@
       <div class="timeline-dot"></div>
       <div class="timeline-content">
         <h3 data-i18n="process.step3.title">03 · Development &amp; Testing</h3>
-        <p data-i18n="process.step3.desc">Implementasi iteratif dengan pengujian berkelanjutan — mencakup *unit testing*, *penetration testing* dasar, dan optimasi performa di setiap tahap.</p>
+        <p data-i18n="process.step3.desc">Implementasi iteratif dengan pengujian berkelanjutan — mencakup unit testing, penetration testing dasar, dan optimasi performa di setiap tahap.</p>
       </div>
     </div>
 
@@ -1441,7 +1495,7 @@
     <div class="contact-intro">
       <div class="eyebrow" style="margin-inline:auto;" data-i18n="contact.eyebrow">// mari berkolaborasi</div>
       <h2 data-i18n="contact.h2">Siap Mengakselerasi Visi Digital Anda?</h2>
-      <p data-i18n="contact.p">Saya senantiasa terbuka untuk peluang kolaborasi, konsultasi teknis, pengerjaan proyek *freelance*, maupun tawaran posisi strategis (Full-Time) di industri teknologi.</p>
+      <p data-i18n="contact.p">Saya senantiasa terbuka untuk peluang kolaborasi, konsultasi teknis, pengerjaan proyek freelance, maupun tawaran posisi strategis (Full-Time) di industri teknologi.</p>
       <a href="mailto:misnosusanto97@gmail.com" class="big-btn">
         <span data-i18n="contact.bigbtn">Hubungi Saya Sekarang</span> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
       </a>
@@ -1520,6 +1574,7 @@
 <footer>
   <div data-i18n="footer.text">© 2026 Mahabbah Mahabban Romadhon — Engineered with passion & precision.</div>
   <div class="updated-badge"><span class="dot-live"></span><span data-i18n="footer.updated">Terakhir diperbarui: 29 Agustus 2026</span></div>
+  <div class="live-clock" id="liveClock"><span class="dot-live"></span><span id="liveClockText">--:--:--</span></div>
 </footer>
 
 <!-- Project Detail Modal -->
@@ -2021,6 +2076,110 @@
   }
   window.addEventListener('DOMContentLoaded', initMiniShapes);
 
+  // --- METEOR SHOWER: occasional shooting stars drifting across the sky ---
+  function initMeteors() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const layer = document.createElement('div');
+    layer.className = 'meteor-layer';
+    layer.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(layer);
+
+    function spawnMeteor() {
+      const meteor = document.createElement('div');
+      meteor.className = 'meteor' + (Math.random() < 0.35 ? ' alt' : '');
+      const startX = Math.random() * window.innerWidth;
+      const startY = -40 - Math.random() * (window.innerHeight * 0.35);
+      // Two diagonal "families" for variety: down-left or down-right.
+      const goingLeft = Math.random() < 0.5;
+      const angle = goingLeft ? (155 + Math.random() * 20) : (5 + Math.random() * 20);
+      const distance = 480 + Math.random() * 320;
+      const dur = 1000 + Math.random() * 900;
+      const rad = angle * Math.PI / 180;
+      const dx = Math.cos(rad) * distance;
+      const dy = Math.sin(rad) * distance;
+      meteor.style.left = startX + 'px';
+      meteor.style.top = startY + 'px';
+      meteor.style.setProperty('--dx', dx + 'px');
+      meteor.style.setProperty('--dy', dy + 'px');
+      meteor.style.setProperty('--angle', angle + 'deg');
+      meteor.style.animationDuration = dur + 'ms';
+      layer.appendChild(meteor);
+      meteor.addEventListener('animationend', () => meteor.remove());
+    }
+
+    function scheduleNext() {
+      const delay = 5000 + Math.random() * 9000; // roughly every 5–14s
+      setTimeout(() => {
+        if (!document.hidden) {
+          spawnMeteor();
+          if (Math.random() < 0.25) setTimeout(spawnMeteor, 300 + Math.random() * 500); // occasional pair
+        }
+        scheduleNext();
+      }, delay);
+    }
+    scheduleNext();
+  }
+  window.addEventListener('DOMContentLoaded', initMeteors);
+
+  // --- AMBIENT EMBERS: slow drifting particles for continuous ambient motion ---
+  function initEmbers() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const layer = document.createElement('div');
+    layer.className = 'ember-layer';
+    layer.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(layer);
+
+    const count = window.innerWidth < 640 ? 10 : 18;
+    for (let i = 0; i < count; i++) {
+      const ember = document.createElement('div');
+      ember.className = 'ember' + (Math.random() < 0.4 ? ' alt' : '');
+      const startX = Math.random() * window.innerWidth;
+      const driftX = (Math.random() - 0.5) * 160;
+      const driftY = -(window.innerHeight * (0.6 + Math.random() * 0.6));
+      const dur = 14000 + Math.random() * 16000;
+      const delay = Math.random() * dur;
+      ember.style.left = startX + 'px';
+      ember.style.setProperty('--drift-x', driftX + 'px');
+      ember.style.setProperty('--drift-y', driftY + 'px');
+      ember.style.animationDuration = dur + 'ms';
+      ember.style.animationDelay = '-' + delay + 'ms';
+      layer.appendChild(ember);
+    }
+  }
+  window.addEventListener('DOMContentLoaded', initEmbers);
+
+  // --- CURSOR SPARKLE TRAIL: light trailing dots as the cursor moves (desktop only) ---
+  function initCursorTrail() {
+    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let last = 0;
+    window.addEventListener('mousemove', (e) => {
+      const now = performance.now();
+      if (now - last < 45) return; // throttle so it stays a light trail, not a solid line
+      last = now;
+      const dot = document.createElement('div');
+      dot.className = 'cursor-trail';
+      dot.style.left = e.clientX + 'px';
+      dot.style.top = e.clientY + 'px';
+      document.body.appendChild(dot);
+      dot.addEventListener('animationend', () => dot.remove());
+    });
+  }
+  window.addEventListener('DOMContentLoaded', initCursorTrail);
+
+  // --- LIVE FOOTER CLOCK ---
+  function initLiveClock() {
+    const el = document.getElementById('liveClockText');
+    if (!el) return;
+    function tick() {
+      const now = new Date();
+      el.textContent = now.toLocaleTimeString(currentLang === 'en' ? 'en-US' : 'id-ID', { hour12: false }) + ' WIB';
+    }
+    tick();
+    setInterval(tick, 1000);
+  }
+  window.addEventListener('DOMContentLoaded', initLiveClock);
+
   // --- 1d3. CURSOR PARTICLE TRAIL ---
   // A light 2D-canvas trail of fading neon dots follows the pointer, layered under
   // the custom cursor. Desktop + motion-enabled only.
@@ -2481,7 +2640,7 @@
     'hero.cv': { en: 'Download CV' }, 'hero.search': { en: 'Quick search' }, 'hero.qr': { en: 'QR Code CV' },
     'hero.printpdf': { en: 'Download Portfolio (PDF)' },
     'about.eyebrow': { en: '// brief introduction' }, 'about.h2': { en: 'Professional Profile' },
-    'about.text': { en: "Hi, I am <strong>Mahabbah Mahabban Romadhon</strong>, a multidisciplinary technology professional combining expertise in <strong>Artificial Intelligence (AI), Software Engineering (Web/Mobile),</strong> and <strong>Cyber Security</strong>. I hold the <strong>HTB Certified Bug Bounty Hunter (CBBH)</strong> certification and graduated from the prestigious <strong>Deep Learning Specialization</strong> program by DeepLearning.AI.<br><br>My main focus is building digital ecosystems end-to-end — from training precise *Machine Learning* models, to designing responsive user interfaces, to securing system architecture against potential vulnerabilities. My dedication to system security is proven through the discovery of a vulnerability bug in <strong>detikcom's</strong> digital infrastructure, which was officially verified and appreciated.<br><br>My background is rooted in <strong>Computer &amp; Network Engineering</strong>, with hands-on experience ranging from fiber optic installation &amp; *splicing* to a *Visual Designer* role managing local web *deployment*. Combined with two years of organizational experience as an Extracurricular Secretary, I'm accustomed to working with precision, structure, and adaptability across technology domains." },
+    'about.text': { en: "Hi, I am <strong>Mahabbah Mahabban Romadhon</strong>, a multidisciplinary technology professional combining expertise in <strong>Artificial Intelligence (AI), Software Engineering (Web/Mobile),</strong> and <strong>Cyber Security</strong>. I hold the <strong>HTB Certified Bug Bounty Hunter (CBBH)</strong> certification and graduated from the prestigious <strong>Deep Learning Specialization</strong> program by DeepLearning.AI.<br><br>My main focus is building digital ecosystems end-to-end — from training precise Machine Learning models, to designing responsive user interfaces, to securing system architecture against potential vulnerabilities. My dedication to system security is proven through the discovery of a vulnerability bug in <strong>detikcom's</strong> digital infrastructure, which was officially verified and appreciated.<br><br>My background is rooted in <strong>Computer &amp; Network Engineering</strong>, with hands-on experience ranging from fiber optic installation &amp; splicing to a Visual Designer role managing local web deployment. Combined with organizational experience in PMR (Youth Red Cross) and English Club, I'm accustomed to working with precision, structure, and adaptability across technology domains." },
     'about.stat1': { en: 'Published Industry & Exploratory Projects' }, 'about.stat2': { en: 'Professional Certifications & Awards' },
     'about.stat3': { en: 'Core Expertise Domains (AI, Web, App, Sec)' },
     'about.ghstat': { en: 'Public Repositories on GitHub (live)' },
@@ -2489,47 +2648,47 @@
     'qr.desc': { en: 'Point your phone camera at this code to download the CV instantly — handy for networking or interviews.' },
     'edu.eyebrow': { en: '// academic track record' }, 'edu.h2': { en: 'Education History' },
     'edu.major': { en: 'Computer & Network Engineering | 2024 &ndash; 2027' },
-    'edu.list': { en: '<li><strong>Web Development:</strong> Competent in *full-stack* web application development using the HTML, CSS, JavaScript, PHP, and Laravel ecosystem, along with skills in designing and managing MySQL relational databases.</li><li><strong>Network Infrastructure:</strong> Experienced in basic-level network (LAN/WAN) administration and configuration, using MikroTik hardware and advanced simulation with Cisco Packet Tracer.</li><li><strong>System Maintenance:</strong> Solid technical skills in assembling, *troubleshooting*, and maintaining computing hardware to ensure optimal operational reliability.</li><li><strong>Leadership &amp; Organization:</strong> Active for two years in the school\'s elite drill team (Pleton Inti) and earned several achievements, including serving as Secretary of the extracurricular &mdash; managing administration, drafting documents, and coordinating with the team.</li>' },
+    'edu.list': { en: '<li><strong>Web Development:</strong> Competent in full-stack web application development using the HTML, CSS, JavaScript, PHP, and Laravel ecosystem, along with skills in designing and managing MySQL relational databases.</li><li><strong>Network Infrastructure:</strong> Experienced in basic-level network (LAN/WAN) administration and configuration, using MikroTik hardware and advanced simulation with Cisco Packet Tracer.</li><li><strong>System Maintenance:</strong> Solid technical skills in assembling, troubleshooting, and maintaining computing hardware to ensure optimal operational reliability.</li><li><strong>Organizations &amp; Extracurriculars:</strong> Actively participated in PMR (Youth Red Cross) and English Club extracurricular activities, which honed teamwork, social awareness, and English communication skills.</li>' },
     'exp.eyebrow': { en: '// professional track record' }, 'exp.h2': { en: 'Work Experience' },
     'exp.job2.title': { en: 'Visual Designer' }, 'exp.job2.meta': { en: 'PT Imersa Solusi Teknologi | 2026 &ndash; 2027' },
-    'exp.job2.list': { en: '<li>Developed visual direction for various branding, promotional, and creative campaign needs.</li><li>Guided the design team in producing work aligned with brand identity and objectives.</li><li>Configured and managed a local server (*Localhost*/Web Server) for web system *deployment* and the company\'s digital ad delivery needs.</li><li>Performed system monitoring, connectivity testing, and software-side *troubleshooting* to ensure the local web was accessible without issues.</li>' },
+    'exp.job2.list': { en: '<li>Developed visual direction for various branding, promotional, and creative campaign needs.</li><li>Guided the design team in producing work aligned with brand identity and objectives.</li><li>Configured and managed a local server (Localhost/Web Server) for web system deployment and the company\'s digital ad delivery needs.</li><li>Performed system monitoring, connectivity testing, and software-side troubleshooting to ensure the local web was accessible without issues.</li>' },
     'exp.job1.title': { en: 'Fiber Optic Network Installation &amp; Splicing Technician' }, 'exp.job1.meta': { en: 'Customer Internet Network &amp; Infrastructure' },
-    'exp.job1.list': { en: '<li>Performed installation and running of network cabling (Copper and Fiber Optic) for customer internet infrastructure needs.</li><li>Carried out fiber optic core *splicing* with a high level of precision to minimize signal loss.</li><li>Tested and ensured network connectivity quality across all installations using measurement tools such as OPM and LAN Testers.</li>' },
+    'exp.job1.list': { en: '<li>Performed installation and running of network cabling (Copper and Fiber Optic) for customer internet infrastructure needs.</li><li>Carried out fiber optic core splicing with a high level of precision to minimize signal loss.</li><li>Tested and ensured network connectivity quality across all installations using measurement tools such as OPM and LAN Testers.</li>' },
     'skills.eyebrow': { en: '// technical foundation' }, 'skills.h2': { en: 'Core Competencies' },
-    'skills.ml': { en: '<strong>Machine Learning:</strong> Designing, training, and implementing advanced *Deep Learning* models for data classification, predictive analytics, and *Computer Vision*.' },
-    'skills.web': { en: '<strong>Web Development:</strong> Building high-performance, responsive *full-stack* web applications with *scalable* architecture for modern business needs.' },
-    'skills.app': { en: '<strong>App Development:</strong> Developing *cross-platform* apps (Android/iOS) with a focus on performance optimization and intuitive *User Experience* (UX).' },
-    'skills.sec': { en: '<strong>Cyber Security:</strong> Experienced in *Bug Bounty Hunting*, *Penetration Testing* using Burp Suite, and security audits to strengthen system security posture (Hardening).' },
-    'skills.net': { en: '<strong>Networking &amp; Infrastructure:</strong> Installation and *splicing* of copper &amp; fiber optic cabling, LAN and local server configuration, plus PC hardware assembly and *troubleshooting* with high precision.' },
+    'skills.ml': { en: '<strong>Machine Learning:</strong> Designing, training, and implementing advanced Deep Learning models for data classification, predictive analytics, and Computer Vision.' },
+    'skills.web': { en: '<strong>Web Development:</strong> Building high-performance, responsive full-stack web applications with scalable architecture for modern business needs.' },
+    'skills.app': { en: '<strong>App Development:</strong> Developing cross-platform apps (Android/iOS) with a focus on performance optimization and intuitive User Experience (UX).' },
+    'skills.sec': { en: '<strong>Cyber Security:</strong> Experienced in Bug Bounty Hunting, Penetration Testing using Burp Suite, and security audits to strengthen system security posture (Hardening).' },
+    'skills.net': { en: '<strong>Networking &amp; Infrastructure:</strong> Installation and splicing of copper &amp; fiber optic cabling, LAN and local server configuration, plus PC hardware assembly and troubleshooting with high precision.' },
     'tech.eyebrow': { en: '// tools & platforms' },
     'work.eyebrow': { en: '// implementation & work' }, 'work.h2': { en: 'Project Portfolio' },
     'work.filter.all': { en: 'All' }, 'work.filter.security': { en: 'Security' }, 'work.filter.creative': { en: 'Creative' },
     'work.subhead1': { en: 'INDUSTRY IMPLEMENTATION (SERIOUS)' }, 'work.subhead2': { en: 'INTERACTIVE EXPLORATION (CREATIVE)' },
     'work.detailBtn': { en: 'View Details' }, 'work.viewApp': { en: 'View App' },
     'work.apd.tag': { en: 'ARTIFICIAL INTELLIGENCE · COMPUTER VISION' }, 'work.apd.title': { en: 'Real-Time APD Safety Detection System' },
-    'work.apd.desc': { en: 'An AI-powered (*Computer Vision*) automated workplace safety system connected directly to on-site CCTV cameras, detecting PPE compliance in *real-time* and issuing early warnings for K3 protocol violations.' },
+    'work.apd.desc': { en: 'An AI-powered (Computer Vision) automated workplace safety system connected directly to on-site CCTV cameras, detecting PPE compliance in real-time and issuing early warnings for K3 protocol violations.' },
     'work.osint.tag': { en: 'WEB APPLICATION · CYBERSECURITY TOOL' }, 'work.osint.title': { en: 'Cyber Intelligence & OSINT Dashboard (Wanz Xploit)' },
-    'work.osint.desc': { en: 'A web-based analytics dashboard for *Open Source Intelligence* (OSINT) investigation needs, complete with user management, API key encryption, and a futuristic dark-mode *Admin Dashboard*.' },
+    'work.osint.desc': { en: 'A web-based analytics dashboard for Open Source Intelligence (OSINT) investigation needs, complete with user management, API key encryption, and a futuristic dark-mode Admin Dashboard.' },
     'work.edolus.tag': { en: 'CREATIVE WEB DEV · IMMERSIVE 3D' }, 'work.edolus.title': { en: 'Edolus — Planetary Scale AI Interactive Experience' },
-    'work.edolus.desc': { en: 'An immersive *space-tech* themed interactive 3D website with high-resolution 3D Earth visuals, *cinematic* animation, and *spatial audio* to introduce a planetary-scale AI platform.' },
+    'work.edolus.desc': { en: 'An immersive space-tech themed interactive 3D website with high-resolution 3D Earth visuals, cinematic animation, and spatial audio to introduce a planetary-scale AI platform.' },
     'work.pacman.tag': { en: 'GAME DEVELOPMENT · ALGORITHMS' },
-    'work.pacman.desc': { en: 'A recreation of the classic Pacman game using pure Vanilla JavaScript. This project demonstrates deep understanding of *Canvas* manipulation, *collision detection*, and entity movement logic.' },
+    'work.pacman.desc': { en: 'A recreation of the classic Pacman game using pure Vanilla JavaScript. This project demonstrates deep understanding of Canvas manipulation, collision detection, and entity movement logic.' },
     'work.photobooth.tag': { en: 'WEB APP · MEDIA API' },
-    'work.photobooth.desc': { en: "An interactive web app that uses the WebRTC API to safely access the user's camera, apply filters, and capture images directly from the *browser*." },
-    'work.earth3d.desc': { en: 'An interactive 3D Earth simulation rendered in *real-time* on the web. An experiment in *mesh* optimization and dynamic lighting within a WebGL environment.' },
+    'work.photobooth.desc': { en: "An interactive web app that uses the WebRTC API to safely access the user's camera, apply filters, and capture images directly from the browser." },
+    'work.earth3d.desc': { en: 'An interactive 3D Earth simulation rendered in real-time on the web. An experiment in mesh optimization and dynamic lighting within a WebGL environment.' },
     'cert.eyebrow': { en: '// competency validation' }, 'cert.h2': { en: 'Licenses & Certifications' },
     'cert.cbbh.issuer': { en: 'Issued by: Hack The Box' },
     'cert.cbbh.desc': { en: 'An advanced professional credential in practical cyber security, certifying the ability to identify, exploit, and report information system security vulnerabilities. Signed by Charalampos Pyarinos (CEO).' },
     'cert.cbbh.date': { en: 'Valid: Until April 2026' },
     'cert.dl.issuer': { en: 'Issued by: DeepLearning.AI (Coursera)' },
-    'cert.dl.desc': { en: 'An intensive specialization program under the guidance of Andrew Ng. Mastered *Neural Network* architectures, *Hyperparameter Tuning*, *CNN* implementation (Visual Data), and *Sequence Models* (NLP/Audio).' },
+    'cert.dl.desc': { en: 'An intensive specialization program under the guidance of Andrew Ng. Mastered Neural Network architectures, Hyperparameter Tuning, CNN implementation (Visual Data), and Sequence Models (NLP/Audio).' },
     'cert.dl.date': { en: 'Issued: June 2026' },
     'cert.detik.title': { en: 'System Vulnerability Reporting Award' },
     'cert.detik.issuer': { en: 'Issued by: detikcom IT Security Division' },
     'cert.detik.desc': { en: 'An official appreciation certificate (Hall of Fame) issued by Bagus Setiawan (IT Director of detikcom) for dedication and responsibility in finding and reporting a critical security vulnerability on the detikcom platform.' },
     'cert.detik.date': { en: 'Issued: June 2026' },
     'contact.eyebrow': { en: "// let's collaborate" }, 'contact.h2': { en: 'Ready to Accelerate Your Digital Vision?' },
-    'contact.p': { en: "I'm always open to collaboration opportunities, technical consulting, *freelance* project work, or strategic full-time positions in the tech industry." },
+    'contact.p': { en: "I'm always open to collaboration opportunities, technical consulting, freelance project work, or strategic full-time positions in the tech industry." },
     'contact.bigbtn': { en: 'Contact Me Now' },
     'contact.qr': { en: 'Scan to open this portfolio' },
     'findme.title': { en: '// Find Me' },
@@ -2548,9 +2707,9 @@
     'process.step1.title': { en: '01 · Discovery &amp; Research' },
     'process.step1.desc': { en: 'Deeply understanding requirements, target users, and technical constraints before a single line of code is written — ensuring the solution actually hits the mark.' },
     'process.step2.title': { en: '02 · Design &amp; Architecture' },
-    'process.step2.desc': { en: 'Designing system architecture, data flow, and a scalable interface structure — including security considerations from the planning stage (*security by design*).' },
+    'process.step2.desc': { en: 'Designing system architecture, data flow, and a scalable interface structure — including security considerations from the planning stage (security by design).' },
     'process.step3.title': { en: '03 · Development &amp; Testing' },
-    'process.step3.desc': { en: 'Iterative implementation with continuous testing — including *unit testing*, basic *penetration testing*, and performance optimization at every stage.' },
+    'process.step3.desc': { en: 'Iterative implementation with continuous testing — including unit testing, basic penetration testing, and performance optimization at every stage.' },
     'process.step4.title': { en: '04 · Deploy &amp; Support' },
     'process.step4.desc': { en: 'Launch to the production environment, post-release monitoring, and ongoing support for fixes and further feature development.' },
   };
