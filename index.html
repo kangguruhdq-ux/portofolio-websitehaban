@@ -496,6 +496,12 @@
   }
   @keyframes spin { 100% { transform: rotate(360deg); } }
   .avatar-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; position: relative; z-index: 1; padding: 4px;}
+  .avatar-robot {
+    position: absolute; inset: 4px; width: calc(100% - 8px); height: calc(100% - 8px);
+    object-fit: cover; border-radius: 50%; z-index: 2; pointer-events: none;
+    clip-path: circle(0% at 50% 50%);
+  }
+  .avatar-wrap { cursor: pointer; }
   .avatar-fallback {
     position: absolute; inset: 6px; border-radius: 50%; overflow: hidden; z-index: 1;
     display: flex; align-items: center; justify-content: center;
@@ -1105,6 +1111,7 @@
   <div class="hero-bg-word">INNOVATE.SECURE</div>
   <div class="avatar-wrap img-loading" id="avatarWrap">
     <img class="avatar-img" id="avatarImg" src="images/profile.jpg" alt="Foto profil Mahabbah" onerror="this.style.display='none'; this.closest('.avatar-wrap').classList.add('avatar-fallback-active');">
+    <img class="avatar-robot" id="avatarRobot" src="images/avatar-robot.jpg" alt="" aria-hidden="true" onerror="this.style.display='none'; this.dataset.failed='1';">
     <div class="avatar-fallback" aria-hidden="true">
       <span>MR</span>
       <div class="avatar-scanline"></div>
@@ -3271,6 +3278,51 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && panel.classList.contains('open') && document.activeElement !== input) close();
     });
+  })();
+
+  // --- N6. AVATAR HOVER-REVEAL (fluid circular mask, smooth inertia — desktop hover + mobile touch) ---
+  (function initAvatarReveal() {
+    const wrap = document.getElementById('avatarWrap');
+    const robot = document.getElementById('avatarRobot');
+    if (!wrap || !robot) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouch = window.matchMedia('(hover: none)').matches;
+    let targetX = 50, targetY = 50, curX = 50, curY = 50;
+    let targetR = 0, curR = 0;
+
+    function setTargetFromPoint(clientX, clientY) {
+      const rect = wrap.getBoundingClientRect();
+      targetX = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+      targetY = Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100));
+    }
+
+    function loop() {
+      if (robot.dataset.failed) return; // image missing — skip silently
+      const ease = reduceMotion ? 1 : 0.15;
+      curX += (targetX - curX) * ease;
+      curY += (targetY - curY) * ease;
+      curR += (targetR - curR) * ease;
+      robot.style.clipPath = `circle(${curR}% at ${curX}% ${curY}%)`;
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    if (!isTouch) {
+      wrap.addEventListener('mouseenter', () => { targetR = 78; });
+      wrap.addEventListener('mousemove', (e) => setTargetFromPoint(e.clientX, e.clientY));
+      wrap.addEventListener('mouseleave', () => { targetR = 0; });
+    } else {
+      wrap.addEventListener('touchstart', (e) => {
+        const t = e.touches[0];
+        setTargetFromPoint(t.clientX, t.clientY);
+        targetR = 78;
+      }, { passive: true });
+      wrap.addEventListener('touchmove', (e) => {
+        const t = e.touches[0];
+        setTargetFromPoint(t.clientX, t.clientY);
+      }, { passive: true });
+      wrap.addEventListener('touchend', () => { targetR = 0; });
+    }
   })();
 </script>
 
