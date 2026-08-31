@@ -349,6 +349,7 @@
     padding: 6px 10px 6px 14px; border-radius: 20px; margin: 0 0 22px; cursor: pointer;
   }
   .tech-filter-pill svg { width: 13px; height: 13px; }
+  .tech-filter-hint { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--muted); margin-top: 18px; }
 
   /* QR code card */
   .qr-card {
@@ -821,10 +822,11 @@
   }
   .cert-item:hover { border-color: var(--accent); transform: translateX(8px) rotateX(var(--rx)) rotateY(var(--ry)); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
   .cert-thumb {
-    width: 70px; height: 70px; border-radius: 10px; overflow: hidden; flex-shrink: 0;
+    width: 108px; height: 108px; border-radius: 10px; overflow: hidden; flex-shrink: 0;
     background: #111; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center;
   }
   .cert-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  @media (max-width: 640px) { .cert-thumb { width: 84px; height: 84px; } }
   .cert-item .cert-row { display: flex; align-items: center; gap: 20px; flex: 1; min-width: 280px; }
   .cert-item .cert-main { flex: 1; }
   .cert-item h4 { font-size: 17px; font-weight: 600; margin-bottom: 6px; color: var(--fg);}
@@ -915,6 +917,8 @@
   .modal-thumb { width: 100%; height: 220px; border-radius: 10px; overflow: hidden; margin-bottom: 20px; background: linear-gradient(135deg, #1A1F29, #0D0F14); }
   .modal-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .modal-thumb img[src=""], .modal-thumb img:not([src]) { display: none; }
+  .modal-video { width: 100%; aspect-ratio: 16/9; border-radius: 10px; overflow: hidden; margin-bottom: 20px; background: #000; }
+  .modal-video iframe { width: 100%; height: 100%; border: 0; display: block; }
   .modal-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 1px; margin-bottom: 8px; font-weight: 600; }
   .modal-box h3 { font-size: 22px; margin-bottom: 14px; color: var(--fg); }
   .modal-box p { color: var(--muted); font-size: 14.5px; line-height: 1.75; margin-bottom: 20px; }
@@ -1074,10 +1078,11 @@
     <a href="#experience" class="nav-link"><span>03.</span> <span data-i18n="nav.experience">Pengalaman</span></a>
     <a href="#skills" class="nav-link"><span>04.</span> <span data-i18n="nav.skills">Keahlian</span></a>
     <a href="#techstack" class="nav-link"><span>05.</span> Tech Stack</a>
-    <a href="#work" class="nav-link"><span>06.</span> <span data-i18n="nav.work">Portofolio</span></a>
-    <a href="#certifications" class="nav-link"><span>07.</span> <span data-i18n="nav.cert">Sertifikasi</span></a>
-    <a href="#process" class="nav-link"><span>08.</span> <span data-i18n="nav.process">Proses</span></a>
-    <a href="#contact" class="nav-link"><span>09.</span> <span data-i18n="nav.contact">Kontak</span></a>
+    <a href="#animsoftware" class="nav-link"><span>06.</span> <span data-i18n="nav.animsoftware">Software Animasi</span></a>
+    <a href="#work" class="nav-link"><span>07.</span> <span data-i18n="nav.work">Portofolio</span></a>
+    <a href="#certifications" class="nav-link"><span>08.</span> <span data-i18n="nav.cert">Sertifikasi</span></a>
+    <a href="#process" class="nav-link"><span>09.</span> <span data-i18n="nav.process">Proses</span></a>
+    <a href="#contact" class="nav-link"><span>10.</span> <span data-i18n="nav.contact">Kontak</span></a>
   </div>
 
   <div class="util-toggles">
@@ -1140,11 +1145,11 @@
       <br><br>
       Fokus utama saya adalah membangun ekosistem digital secara komprehensif—mulai dari melatih model Machine Learning yang presisi, merancang antarmuka pengguna yang responsif, hingga mengamankan arsitektur sistem dari potensi kerentanan. Dedikasi saya pada keamanan sistem dibuktikan melalui penemuan kerentanan (vulnerability bug) pada infrastruktur digital <strong>detikcom</strong>, yang telah diverifikasi dan diapresiasi secara resmi.
       <br><br>
-      Latar belakang saya berakar dari <strong>Teknik Komputer dan Jaringan</strong>, mencakup pengalaman langsung dalam instalasi &amp; splicing fiber optic hingga peran sebagai Visual Designer yang mengelola deployment web lokal. Ditambah pengalaman organisasi di PMR (Palang Merah Remaja) dan English Club, saya terbiasa bekerja presisi, terstruktur, dan adaptif di berbagai lini teknologi.
+      Latar belakang saya berakar dari <strong>Teknik Komputer dan Jaringan</strong>, mencakup pengalaman langsung dalam instalasi &amp; splicing fiber optic hingga peran sebagai Visual Designer yang mengelola deployment web lokal. Ditambah pengalaman organisasi di PMR (Palang Merah Remaja) dan English Club, saya terbiasa bekerja presisi, terstruktur, dan adaptif di berbagai lini teknologi. Di sisi kreatif, saya juga menekuni animasi 3D menggunakan <strong>Source Filmmaker (SFM)</strong> dan <strong>Prisma3D</strong>, mulai dari character rigging hingga penataan gerak dan pencahayaan adegan.
     </div>
     <div class="stat-box">
       <div class="stat"><div class="num" data-count="6">0</div><div class="lbl" data-i18n="about.stat1">Proyek Industri & Eksplorasi Terpublikasi</div></div>
-      <div class="stat"><div class="num" data-count="3">0</div><div class="lbl" data-i18n="about.stat2">Sertifikasi & Penghargaan Profesional</div></div>
+      <div class="stat"><div class="num" data-count="6">0</div><div class="lbl" data-i18n="about.stat2">Sertifikasi & Penghargaan Profesional</div></div>
       <div class="stat"><div class="num" data-count="4">0</div><div class="lbl" data-i18n="about.stat3">Domain Keahlian Utama (AI, Web, App, Sec)</div></div>
       <div class="stat" id="ghStatCard">
         <div class="num" id="ghRepoCount">—</div>
@@ -1306,6 +1311,18 @@
 
 </section>
 
+<!-- Animation Software Section (NEW) -->
+<section id="animsoftware">
+  <canvas class="mini3d" data-shape="octahedron" data-color="accent" aria-hidden="true"></canvas>
+  <div class="eyebrow reveal" data-i18n="anim.eyebrow">// perangkat animasi 3D</div>
+  <h2 class="reveal" data-i18n="anim.h2">Software Animasi</h2>
+  <div class="tech-grid reveal-stagger">
+    <div class="tech-card" data-tech="sfm" role="button" tabindex="0" aria-label="Filter proyek dengan sfm"><div class="tech-logo"><div class="tech-fallback" style="background:#E4402522;color:#E44025;">SFM</div><img src="images/tech/sfm.svg" alt="Logo Source Filmmaker" loading="lazy" onload="this.style.opacity=1" onerror="this.remove()"></div><div class="tech-name">Source Filmmaker</div></div>
+    <div class="tech-card" data-tech="prisma" role="button" tabindex="0" aria-label="Filter proyek dengan prisma"><div class="tech-logo"><div class="tech-fallback" style="background:#8B5CF622;color:#8B5CF6;">Pr</div><img src="images/tech/prisma3d.svg" alt="Logo Prisma3D" loading="lazy" onload="this.style.opacity=1" onerror="this.remove()"></div><div class="tech-name">Prisma3D</div></div>
+  </div>
+  <p class="tech-filter-hint" data-i18n="anim.hint">Tip: klik salah satu logo di atas untuk memfilter proyek yang memakai software tersebut.</p>
+</section>
+
 <!-- Work/Projects Section -->
 <section id="work">
   <canvas class="mini3d" data-shape="torusknot" data-color="accent2" aria-hidden="true"></canvas>
@@ -1360,6 +1377,19 @@
       <h3 data-i18n="work.edolus.title">Edolus — Planetary Scale AI Interactive Experience</h3>
       <p data-i18n="work.edolus.desc">Situs web interaktif 3D imersif bertema space-tech dengan visual Bumi 3D beresolusi tinggi, animasi cinematic, dan spatial audio untuk memperkenalkan platform AI berskala global secara elegan.</p>
       <button type="button" class="work-link detail-trigger" data-i18n="work.detailBtn">Lihat Detail <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></button>
+    </div>
+    
+    <div class="work-card" data-cat="creative" tabindex="0"
+         data-title="Karya Animasi 3D — SFM & Prisma3D" data-tag="3D ANIMATION · CHARACTER ACTING" data-tech="sfm prisma"
+         data-desc="Karya animasi pendek yang dikerjakan menggunakan Source Filmmaker (SFM) dan Prisma3D, mencakup character rigging, blocking pose-to-pose, penataan pencahayaan (lighting) adegan, hingga timing dan polish gerakan agar terasa hidup dan ekspresif."
+         data-title-en="3D Animation Reel — SFM & Prisma3D" data-tag-en="3D ANIMATION · CHARACTER ACTING"
+         data-desc-en="A short animation piece created using Source Filmmaker (SFM) and Prisma3D, covering character rigging, pose-to-pose blocking, scene lighting, and movement timing and polish to make it feel alive and expressive."
+         data-img="images/project-anim3d.jpg" data-video="82TktIzInIs" data-link="https://youtu.be/82TktIzInIs">
+      <div class="work-thumb img-loading"><img src="images/project-anim3d.jpg" alt="Karya Animasi 3D SFM Prisma3D" loading="lazy" onerror="this.style.display='none'"></div>
+      <div class="work-tag" data-i18n="work.anim3d.tag">3D ANIMATION · CHARACTER ACTING</div>
+      <h3 data-i18n="work.anim3d.title">Karya Animasi 3D — SFM &amp; Prisma3D</h3>
+      <p data-i18n="work.anim3d.desc">Karya animasi pendek yang dikerjakan menggunakan Source Filmmaker (SFM) dan Prisma3D, mencakup character rigging, blocking pose-to-pose, penataan pencahayaan adegan, hingga timing dan polish gerakan agar terasa hidup dan ekspresif.</p>
+      <button type="button" class="work-link detail-trigger" data-i18n="work.watchVideo">Tonton Video <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></button>
     </div>
   </div>
 
@@ -1442,6 +1472,42 @@
         </div>
       </div>
       <span class="date" data-i18n="cert.detik.date">Diterbitkan: Juni 2026</span>
+    </div>
+
+    <div class="cert-item">
+      <div class="cert-row">
+        <div class="cert-thumb img-loading"><img src="images/cert-gcp-mle.jpg" alt="Sertifikat Google Cloud Professional Machine Learning Engineer" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="cert-main">
+          <h4 data-i18n="cert.gcpmle.title">Professional Machine Learning Engineer</h4>
+          <div class="issuer" data-i18n="cert.gcpmle.issuer">Otoritas: Google Cloud</div>
+          <p data-i18n="cert.gcpmle.desc">Sertifikasi profesional industri yang mengesahkan keahlian tingkat lanjut dalam merancang, membangun, dan memproduksi (production-izing) model Machine Learning di atas infrastruktur Google Cloud. Ditandatangani oleh Thomas Kurian (CEO Google Cloud). ID Sertifikasi: J8M0K.</p>
+        </div>
+      </div>
+      <span class="date" data-i18n="cert.gcpmle.date">Diterbitkan: 21 April 2026 · Berlaku hingga 27 Maret 2028</span>
+    </div>
+
+    <div class="cert-item">
+      <div class="cert-row">
+        <div class="cert-thumb img-loading"><img src="images/cert-nn-deeplearning.jpg" alt="Sertifikat Neural Networks and Deep Learning" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="cert-main">
+          <h4 data-i18n="cert.nndl.title">Neural Networks and Deep Learning</h4>
+          <div class="issuer" data-i18n="cert.nndl.issuer">Otoritas: DeepLearning.AI (Coursera)</div>
+          <p data-i18n="cert.nndl.desc">Sertifikat penyelesaian kursus yang berfokus pada konsep dasar jaringan saraf tiruan (neural networks) dan deep learning. Ditandatangani oleh Andrew Ng. Kode Verifikasi Coursera: KL349UPMCLWW.</p>
+        </div>
+      </div>
+      <span class="date" data-i18n="cert.nndl.date">Diterbitkan: 25 Desember 2025</span>
+    </div>
+
+    <div class="cert-item">
+      <div class="cert-row">
+        <div class="cert-thumb img-loading"><img src="images/cert-hvac-thermo.jpg" alt="Sertifikat Thermodynamics of Refrigeration" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="cert-main">
+          <h4 data-i18n="cert.hvac.title">Thermodynamics of Refrigeration</h4>
+          <div class="issuer" data-i18n="cert.hvac.issuer">Otoritas: The Training Center (Terakreditasi EPA)</div>
+          <p data-i18n="cert.hvac.desc">Sertifikat penyelesaian pelatihan teknik yang mengonfirmasi pemahaman tentang teori dasar perpindahan panas dan siklus pendinginan untuk industri HVAC (Heating, Ventilation, and Air Conditioning). Ditandatangani oleh Rob Roy (Direktur Program HVAC).</p>
+        </div>
+      </div>
+      <span class="date" data-i18n="cert.hvac.date">Diterbitkan: 10 Januari 2025</span>
     </div>
 
   </div>
@@ -1581,11 +1647,12 @@
 <div class="modal-overlay" id="projectModal" role="dialog" aria-modal="true" aria-hidden="true">
   <div class="modal-box">
     <button class="modal-close" id="modalClose" aria-label="Tutup">✕</button>
-    <div class="modal-thumb"><img id="modalImg" src="" alt=""></div>
+    <div class="modal-thumb" id="modalThumbWrap"><img id="modalImg" src="" alt=""></div>
+    <div class="modal-video" id="modalVideoWrap" style="display:none;"><iframe id="modalVideoFrame" src="" title="Video proyek" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
     <div class="modal-tag" id="modalTag"></div>
     <h3 id="modalTitle"></h3>
     <p id="modalDesc"></p>
-    <a href="#" target="_blank" rel="noopener" class="work-link" id="modalLink" style="display:none;">Tinjau Aplikasi <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
+    <a href="#" target="_blank" rel="noopener" class="work-link" id="modalLink" style="display:none;"><span id="modalLinkText">Tinjau Aplikasi</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
   </div>
 </div>
 
@@ -2313,22 +2380,43 @@
     const closeBtn = document.getElementById('modalClose');
     if (!overlay) return;
     const img = document.getElementById('modalImg');
+    const thumbWrap = document.getElementById('modalThumbWrap');
+    const videoWrap = document.getElementById('modalVideoWrap');
+    const videoFrame = document.getElementById('modalVideoFrame');
     const tag = document.getElementById('modalTag');
     const title = document.getElementById('modalTitle');
     const desc = document.getElementById('modalDesc');
     const link = document.getElementById('modalLink');
+    const linkText = document.getElementById('modalLinkText');
 
     function openModal(card) {
       title.textContent = card.dataset.title || '';
       tag.textContent = card.dataset.tag || '';
       desc.textContent = card.dataset.desc || '';
-      const src = card.dataset.img || '';
-      img.src = src;
-      img.alt = card.dataset.title || '';
-      img.onerror = () => { img.removeAttribute('src'); };
+      const videoId = card.dataset.video || '';
+      if (videoId) {
+        // Video projects (e.g. SFM/Prisma3D animation) show an embedded
+        // YouTube player instead of a static thumbnail. The iframe src is
+        // only set while the modal is open so the video doesn't keep
+        // loading/playing in the background once closed.
+        videoFrame.src = 'https://www.youtube-nocookie.com/embed/' + videoId + '?rel=0';
+        videoWrap.style.display = 'block';
+        thumbWrap.style.display = 'none';
+      } else {
+        videoFrame.src = '';
+        videoWrap.style.display = 'none';
+        thumbWrap.style.display = '';
+        const src = card.dataset.img || '';
+        img.src = src;
+        img.alt = card.dataset.title || '';
+        img.onerror = () => { img.removeAttribute('src'); };
+      }
       if (card.dataset.link) {
         link.href = card.dataset.link;
         link.style.display = 'inline-flex';
+        if (linkText) linkText.textContent = videoId
+          ? (currentLang === 'en' ? 'Watch on YouTube' : 'Tonton di YouTube')
+          : (currentLang === 'en' ? 'View App' : 'Tinjau Aplikasi');
       } else {
         link.style.display = 'none';
       }
@@ -2340,6 +2428,7 @@
       overlay.classList.remove('open');
       overlay.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('no-scroll');
+      videoFrame.src = ''; // stop any playing video once the modal closes
     }
 
     document.querySelectorAll('.work-card').forEach(card => {
@@ -2377,6 +2466,7 @@
       { name: 'Pengalaman Kerja', cat: 'Bagian', action: () => scrollToId('experience') },
       { name: 'Kompetensi Utama', cat: 'Bagian', action: () => scrollToId('skills') },
       { name: 'Tech Stack', cat: 'Bagian', action: () => scrollToId('techstack') },
+      { name: 'Software Animasi', cat: 'Bagian', action: () => scrollToId('animsoftware') },
       { name: 'Portofolio Proyek', cat: 'Bagian', action: () => scrollToId('work') },
       { name: 'Lisensi & Sertifikasi', cat: 'Bagian', action: () => scrollToId('certifications') },
       { name: 'Kontak', cat: 'Bagian', action: () => scrollToId('contact') },
@@ -2405,6 +2495,8 @@
       { name: 'Vercel', cat: 'Tech Stack', action: () => filterByTech('vercel') },
       { name: 'Figma', cat: 'Tech Stack', action: () => filterByTech('figma') },
       { name: 'Python', cat: 'Tech Stack', action: () => filterByTech('python') },
+      { name: 'Source Filmmaker (SFM)', cat: 'Software Animasi', action: () => filterByTech('sfm') },
+      { name: 'Prisma3D', cat: 'Software Animasi', action: () => filterByTech('prisma') },
       { name: 'Beri Komentar', cat: 'Aksi', action: () => scrollToId('commentsSection') },
     ];
 
@@ -2633,6 +2725,7 @@
   const i18n = {
     'nav.about': { en: 'Profile' }, 'nav.education': { en: 'Education' }, 'nav.experience': { en: 'Experience' }, 'nav.skills': { en: 'Skills' },
     'nav.work': { en: 'Portfolio' }, 'nav.contact': { en: 'Contact' }, 'nav.hire': { en: "Let's Talk" },
+    'nav.animsoftware': { en: 'Animation Software' },
     'nav.cert': { en: 'Certifications' }, 'nav.process': { en: 'Process' },
     'hero.role1': { en: 'Machine Learning Specialist' }, 'hero.role2': { en: 'Full-Stack Web Dev' },
     'hero.role3': { en: 'Mobile App Dev' }, 'hero.role4': { en: 'Cyber Security Analyst' },
@@ -2640,7 +2733,7 @@
     'hero.cv': { en: 'Download CV' }, 'hero.search': { en: 'Quick search' }, 'hero.qr': { en: 'QR Code CV' },
     'hero.printpdf': { en: 'Download Portfolio (PDF)' },
     'about.eyebrow': { en: '// brief introduction' }, 'about.h2': { en: 'Professional Profile' },
-    'about.text': { en: "Hi, I am <strong>Mahabbah Mahabban Romadhon</strong>, a multidisciplinary technology professional combining expertise in <strong>Artificial Intelligence (AI), Software Engineering (Web/Mobile),</strong> and <strong>Cyber Security</strong>. I hold the <strong>HTB Certified Bug Bounty Hunter (CBBH)</strong> certification and graduated from the prestigious <strong>Deep Learning Specialization</strong> program by DeepLearning.AI.<br><br>My main focus is building digital ecosystems end-to-end — from training precise Machine Learning models, to designing responsive user interfaces, to securing system architecture against potential vulnerabilities. My dedication to system security is proven through the discovery of a vulnerability bug in <strong>detikcom's</strong> digital infrastructure, which was officially verified and appreciated.<br><br>My background is rooted in <strong>Computer &amp; Network Engineering</strong>, with hands-on experience ranging from fiber optic installation &amp; splicing to a Visual Designer role managing local web deployment. Combined with organizational experience in PMR (Youth Red Cross) and English Club, I'm accustomed to working with precision, structure, and adaptability across technology domains." },
+    'about.text': { en: "Hi, I am <strong>Mahabbah Mahabban Romadhon</strong>, a multidisciplinary technology professional combining expertise in <strong>Artificial Intelligence (AI), Software Engineering (Web/Mobile),</strong> and <strong>Cyber Security</strong>. I hold the <strong>HTB Certified Bug Bounty Hunter (CBBH)</strong> certification and graduated from the prestigious <strong>Deep Learning Specialization</strong> program by DeepLearning.AI.<br><br>My main focus is building digital ecosystems end-to-end — from training precise Machine Learning models, to designing responsive user interfaces, to securing system architecture against potential vulnerabilities. My dedication to system security is proven through the discovery of a vulnerability bug in <strong>detikcom's</strong> digital infrastructure, which was officially verified and appreciated.<br><br>My background is rooted in <strong>Computer &amp; Network Engineering</strong>, with hands-on experience ranging from fiber optic installation &amp; splicing to a Visual Designer role managing local web deployment. Combined with organizational experience in PMR (Youth Red Cross) and English Club, I'm accustomed to working with precision, structure, and adaptability across technology domains. On the creative side, I also do 3D animation using <strong>Source Filmmaker (SFM)</strong> and <strong>Prisma3D</strong>, from character rigging to movement timing and scene lighting." },
     'about.stat1': { en: 'Published Industry & Exploratory Projects' }, 'about.stat2': { en: 'Professional Certifications & Awards' },
     'about.stat3': { en: 'Core Expertise Domains (AI, Web, App, Sec)' },
     'about.ghstat': { en: 'Public Repositories on GitHub (live)' },
@@ -2665,6 +2758,11 @@
     'work.filter.all': { en: 'All' }, 'work.filter.security': { en: 'Security' }, 'work.filter.creative': { en: 'Creative' },
     'work.subhead1': { en: 'INDUSTRY IMPLEMENTATION (SERIOUS)' }, 'work.subhead2': { en: 'INTERACTIVE EXPLORATION (CREATIVE)' },
     'work.detailBtn': { en: 'View Details' }, 'work.viewApp': { en: 'View App' },
+    'work.watchVideo': { en: 'Watch Video' },
+    'anim.eyebrow': { en: '// 3D animation tools' }, 'anim.h2': { en: 'Animation Software' },
+    'anim.hint': { en: 'Tip: tap a logo above to filter projects using that software.' },
+    'work.anim3d.tag': { en: '3D ANIMATION · CHARACTER ACTING' }, 'work.anim3d.title': { en: '3D Animation Reel — SFM &amp; Prisma3D' },
+    'work.anim3d.desc': { en: 'A short animation piece created using Source Filmmaker (SFM) and Prisma3D, covering character rigging, pose-to-pose blocking, scene lighting, and movement timing and polish to make it feel alive and expressive.' },
     'work.apd.tag': { en: 'ARTIFICIAL INTELLIGENCE · COMPUTER VISION' }, 'work.apd.title': { en: 'Real-Time APD Safety Detection System' },
     'work.apd.desc': { en: 'An AI-powered (Computer Vision) automated workplace safety system connected directly to on-site CCTV cameras, detecting PPE compliance in real-time and issuing early warnings for K3 protocol violations.' },
     'work.osint.tag': { en: 'WEB APPLICATION · CYBERSECURITY TOOL' }, 'work.osint.title': { en: 'Cyber Intelligence & OSINT Dashboard (Wanz Xploit)' },
@@ -2687,6 +2785,18 @@
     'cert.detik.issuer': { en: 'Issued by: detikcom IT Security Division' },
     'cert.detik.desc': { en: 'An official appreciation certificate (Hall of Fame) issued by Bagus Setiawan (IT Director of detikcom) for dedication and responsibility in finding and reporting a critical security vulnerability on the detikcom platform.' },
     'cert.detik.date': { en: 'Issued: June 2026' },
+    'cert.gcpmle.title': { en: 'Professional Machine Learning Engineer' },
+    'cert.gcpmle.issuer': { en: 'Issuer: Google Cloud' },
+    'cert.gcpmle.desc': { en: 'An industry professional certification validating advanced expertise in designing, building, and productionizing Machine Learning models on Google Cloud infrastructure. Signed by Thomas Kurian (CEO, Google Cloud). Certification ID: J8M0K.' },
+    'cert.gcpmle.date': { en: 'Issued: April 21, 2026 · Valid until March 27, 2028' },
+    'cert.nndl.title': { en: 'Neural Networks and Deep Learning' },
+    'cert.nndl.issuer': { en: 'Issuer: DeepLearning.AI (Coursera)' },
+    'cert.nndl.desc': { en: 'A course completion certificate focused on the fundamental concepts of neural networks and deep learning. Signed by Andrew Ng. Coursera Verification Code: KL349UPMCLWW.' },
+    'cert.nndl.date': { en: 'Issued: December 25, 2025' },
+    'cert.hvac.title': { en: 'Thermodynamics of Refrigeration' },
+    'cert.hvac.issuer': { en: 'Issuer: The Training Center (EPA-accredited)' },
+    'cert.hvac.desc': { en: 'A technical training completion certificate confirming an understanding of the fundamental theory of heat transfer and refrigeration cycles for the HVAC (Heating, Ventilation, and Air Conditioning) industry. Signed by Rob Roy (HVAC Program Director).' },
+    'cert.hvac.date': { en: 'Issued: January 10, 2025' },
     'contact.eyebrow': { en: "// let's collaborate" }, 'contact.h2': { en: 'Ready to Accelerate Your Digital Vision?' },
     'contact.p': { en: "I'm always open to collaboration opportunities, technical consulting, freelance project work, or strategic full-time positions in the tech industry." },
     'contact.bigbtn': { en: 'Contact Me Now' },
