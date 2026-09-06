@@ -1,0 +1,760 @@
+/* ==========================================================================
+   SPACE EXPLORATION THEME & CYBERNETIC AVATAR LASER SCANNER
+   Mahabbah Mahabban Romadhon — Portfolio Deep Space HUD System
+   ========================================================================== */
+
+/* --- 1. DEEP SPACE COSMIC VARIABLES & AMBIENT ATMOSPHERE --- */
+:root {
+  --space-deep: #05060A;
+  --space-void: #07090F;
+  --space-nebula-cyan: rgba(0, 240, 255, 0.08);
+  --space-nebula-violet: rgba(139, 92, 246, 0.09);
+  --laser-cyan: #00F0FF;
+  --laser-violet: #A855F7;
+  --laser-glow: 0 0 16px rgba(0, 240, 255, 0.8), 0 0 32px rgba(0, 240, 255, 0.45);
+  --laser-glow-violet: 0 0 16px rgba(168, 85, 247, 0.8), 0 0 32px rgba(168, 85, 247, 0.45);
+  --hud-border: rgba(0, 240, 255, 0.18);
+  --hud-bg: rgba(9, 12, 20, 0.82);
+  --hud-bg-elevated: rgba(14, 19, 32, 0.92);
+  --hud-text-bright: #E8EDF8;
+  --hud-text-dim: #7E899D;
+  --starlight: rgba(255, 255, 255, 0.85);
+}
+
+html[data-theme="light"] {
+  --space-deep: #F5F7FB;
+  --space-void: #EBF0F8;
+  --space-nebula-cyan: rgba(0, 125, 138, 0.06);
+  --space-nebula-violet: rgba(109, 40, 217, 0.06);
+  --laser-cyan: #007D8A;
+  --laser-violet: #6D28D9;
+  --laser-glow: 0 0 12px rgba(0, 125, 138, 0.5);
+  --hud-border: rgba(0, 125, 138, 0.22);
+  --hud-bg: rgba(255, 255, 255, 0.9);
+  --hud-bg-elevated: #FFFFFF;
+  --hud-text-bright: #10141C;
+  --hud-text-dim: #545D6E;
+}
+
+/* Cosmic Ambient Nebula Glow Behind Key Zones */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 15%;
+  right: 5%;
+  width: min(580px, 80vw);
+  height: min(580px, 80vw);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--space-nebula-cyan) 0%, var(--space-nebula-violet) 45%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(50px);
+  animation: cosmicPulse 14s ease-in-out infinite alternate;
+}
+@keyframes cosmicPulse {
+  0% { transform: scale(0.9) translate(0, 0); opacity: 0.7; }
+  50% { transform: scale(1.1) translate(-20px, 15px); opacity: 1; }
+  100% { transform: scale(0.95) translate(15px, -10px); opacity: 0.8; }
+}
+
+/* HUD Telemetry Top Ribbon Upgrade */
+.status-ribbon {
+  background: rgba(10, 14, 22, 0.65);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 20px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+}
+.status-ribbon-item .hud-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--accent);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* --- 2. ADVANCED CYBERNETIC AVATAR LASER SCANNER --- */
+.avatar-space-hud {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  padding: 22px 20px 20px;
+  background: var(--hud-bg);
+  border: 1px solid var(--hud-border);
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), 0 0 30px rgba(0, 240, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Corner HUD Target Markers */
+.hud-corner {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--laser-cyan);
+  opacity: 0.85;
+  pointer-events: none;
+}
+.hud-corner.tl { top: 8px; left: 8px; border-top: 2px solid; border-left: 2px solid; border-radius: 4px 0 0 0; }
+.hud-corner.tr { top: 8px; right: 8px; border-top: 2px solid; border-right: 2px solid; border-radius: 0 4px 0 0; }
+.hud-corner.bl { bottom: 8px; left: 8px; border-bottom: 2px solid; border-left: 2px solid; border-radius: 0 0 0 4px; }
+.hud-corner.br { bottom: 8px; right: 8px; border-bottom: 2px solid; border-right: 2px solid; border-radius: 0 0 4px 0; }
+
+/* Top Header Bar inside Avatar Card */
+.avatar-hud-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  color: var(--hud-text-dim);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--line);
+}
+.avatar-hud-header .hud-live-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--accent-3);
+  font-weight: 700;
+}
+.avatar-hud-header .hud-live-tag .dot-live {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-3);
+  box-shadow: 0 0 8px var(--accent-3);
+}
+
+/* The Core Circular Viewport */
+.avatar-scanner-viewport {
+  position: relative;
+  width: clamp(210px, 24vw, 250px);
+  height: clamp(210px, 24vw, 250px);
+  border-radius: 50%;
+  overflow: hidden;
+  background: #030407;
+  border: 2px solid var(--line-strong);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 0, 0, 0.8);
+  cursor: ew-resize;
+  touch-action: none;
+  will-change: transform;
+}
+
+/* Orbiting Gyro Ring Around Avatar */
+.avatar-gyro-ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px dashed var(--laser-cyan);
+  opacity: 0.4;
+  pointer-events: none;
+  animation: gyroSpin 22s linear infinite;
+}
+@keyframes gyroSpin { 100% { transform: rotate(360deg); } }
+
+/* Human Portrait Layer (Base) */
+.avatar-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.avatar-human-img,
+.avatar-cyber-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+.avatar-human-img {
+  filter: contrast(1.04) brightness(0.98);
+}
+
+/* Cyber Robot Layer (Top with Clip Path) */
+.avatar-cyber-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  will-change: clip-path;
+  filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.4));
+}
+.avatar-cyber-img {
+  filter: contrast(1.1) brightness(1.05);
+}
+
+/* Holographic Matrix Grid Scanline Texture over Cyber Half */
+.avatar-cyber-layer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: 
+    linear-gradient(rgba(0, 240, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.08) 1px, transparent 1px);
+  background-size: 10px 10px;
+  mix-blend-mode: screen;
+  z-index: 3;
+}
+
+/* Energetic Laser Scan Beam Line */
+.scanner-laser-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  z-index: 10;
+  background: linear-gradient(180deg, transparent 0%, var(--laser-cyan) 15%, #FFFFFF 50%, var(--laser-violet) 85%, transparent 100%);
+  box-shadow: var(--laser-glow);
+  pointer-events: none;
+  will-change: left, transform;
+  transform: translateX(-50%);
+}
+
+/* Center Diamond Handle on Laser Line */
+.scanner-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--hud-bg-elevated);
+  border: 1.5px solid var(--laser-cyan);
+  box-shadow: var(--laser-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--laser-cyan);
+  pointer-events: none;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.scanner-handle svg {
+  width: 14px;
+  height: 14px;
+  animation: handlePulse 2s ease-in-out infinite alternate;
+}
+@keyframes handlePulse {
+  0% { transform: scale(0.9); }
+  100% { transform: scale(1.15); }
+}
+
+/* Laser Energy Flare Sparks */
+.scanner-laser-flare {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,240,255,0.8) 0%, rgba(168,85,247,0.4) 40%, transparent 70%);
+  pointer-events: none;
+  mix-blend-mode: screen;
+  animation: flareSpark 1.6s ease-in-out infinite alternate;
+}
+@keyframes flareSpark {
+  0% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.85); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+/* Real-Time Bio / Neural Telemetry Readout Bar */
+.scanner-telemetry-bar {
+  width: 100%;
+  margin-top: 14px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.telemetry-col { display: flex; flex-direction: column; gap: 2px; }
+.telemetry-col.left { text-align: left; }
+.telemetry-col.right { text-align: right; }
+.telemetry-label { font-size: 9.5px; color: var(--hud-text-dim); letter-spacing: 0.8px; }
+.telemetry-val { font-weight: 700; color: var(--fg); font-size: 11.5px; }
+.telemetry-val.human { color: var(--accent-3); }
+.telemetry-val.cyber { color: var(--accent); }
+
+/* Center Interactive Gesture Hint */
+.scanner-hint-tag {
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--hud-text-dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.5px;
+}
+.scanner-hint-tag .hint-icon {
+  color: var(--accent);
+  display: inline-block;
+  animation: sweepHint 2.4s ease-in-out infinite alternate;
+}
+@keyframes sweepHint {
+  0% { transform: translateX(-4px); }
+  100% { transform: translateX(4px); }
+}
+
+/* --- 3. SPACE MISSION HUD HEADINGS & SECTOR MARKERS --- */
+.sector-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 4px 12px;
+  background: var(--accent-dim);
+  border: 1px solid var(--hud-border);
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+.sector-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* Space HUD Cards Subtle Corner Accents */
+.work-card-flagship,
+.telemetry-card,
+.term-card,
+.cert-item,
+.editorial-timeline-card,
+.contact-box {
+  position: relative;
+}
+.work-card-flagship::after,
+.editorial-timeline-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-top: 1px solid var(--accent);
+  border-left: 1px solid var(--accent);
+  border-radius: 4px 0 0 0;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* --- 4. COSMIC AUDIO TOGGLE BUTTON IN NAVBAR --- */
+.audio-toggle-btn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: transparent;
+  padding: 7px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all .25s ease;
+}
+.audio-toggle-btn:hover,
+.audio-toggle-btn.active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+.audio-waves {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+.audio-wave-bar {
+  width: 2px;
+  height: 4px;
+  background: currentColor;
+  border-radius: 1px;
+  transition: height 0.2s ease;
+}
+.audio-toggle-btn.active .audio-wave-bar:nth-child(1) { animation: waveBar 1.1s ease-in-out infinite; }
+.audio-toggle-btn.active .audio-wave-bar:nth-child(2) { animation: waveBar 0.9s 0.2s ease-in-out infinite; }
+.audio-toggle-btn.active .audio-wave-bar:nth-child(3) { animation: waveBar 1.3s 0.4s ease-in-out infinite; }
+@keyframes waveBar {
+  0%, 100% { height: 4px; }
+  50% { height: 12px; }
+}
+
+/* --- 5. RESPONSIVE OPTIMIZATIONS (MOBILE & TABLET) --- */
+@media (max-width: 640px) {
+  .avatar-space-hud {
+    max-width: 290px;
+    padding: 16px 14px 16px;
+  }
+  .avatar-scanner-viewport {
+    width: 220px;
+    height: 220px;
+  }
+  .scanner-telemetry-bar {
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+  .scanner-hint-tag {
+    font-size: 10px;
+  }
+  .status-ribbon {
+    font-size: 10px;
+    padding: 8px 14px;
+    gap: 8px;
+  }
+  .hanging-card-track {
+    margin: 0 auto 30px;
+    padding: 12px 0 6px;
+  }
+  .hanging-card-wrapper {
+    transform: translateX(min(92vw, 360px)) rotate(3deg);
+    max-width: 300px;
+  }
+  .hanging-profile-card {
+    max-width: 285px;
+    padding: 18px 14px 14px;
+  }
+  .hanging-photo-frame {
+    width: 100px;
+    height: 100px;
+  }
+  .hanging-card-name {
+    font-size: 16px;
+  }
+  .hanging-cord {
+    height: 34px;
+  }
+  #solarSystemSvg {
+    max-height: 480px;
+  }
+}
+
+/* --- 6. CELESTIAL SOLAR SYSTEM & TRAJECTORY HUD --- */
+.hero-solar-system {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.88;
+}
+
+#solarSystemSvg {
+  width: 100%;
+  height: 100%;
+  max-width: 1320px;
+  max-height: 640px;
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.06));
+}
+
+.orbit-guide-line {
+  fill: none;
+  stroke: rgba(0, 240, 255, 0.08);
+  stroke-width: 1;
+  stroke-dasharray: 4 6;
+}
+
+html[data-theme="light"] .orbit-guide-line {
+  stroke: rgba(0, 125, 138, 0.12);
+}
+
+.trajectory-active-line {
+  will-change: stroke-dashoffset, opacity;
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.solar-core-glow {
+  animation: sunGlowPulse 4s ease-in-out infinite alternate;
+}
+@keyframes sunGlowPulse {
+  0% { transform: scale(0.96); opacity: 0.7; }
+  100% { transform: scale(1.06); opacity: 0.95; }
+}
+
+.planet-node {
+  will-change: transform;
+}
+
+.planet-body {
+  cursor: default;
+  transition: r 0.25s ease;
+}
+
+.planet-label {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  opacity: 0.65;
+  letter-spacing: 1.5px;
+  user-select: none;
+}
+
+/* --- 7. HANGING PROFILE CARD RIGHT-SIDE SCROLL ANIMATION --- */
+.hanging-card-track {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin: 0 auto 40px;
+  padding: 16px 0 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.hanging-card-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 340px;
+  z-index: 5;
+  transform-origin: top center;
+  will-change: transform, opacity;
+  opacity: 0;
+  transform: translateX(min(100vw, 680px)) rotate(4.5deg);
+}
+
+/* Suspended Lanyard Cord from Section Top */
+.hanging-cord {
+  width: 2px;
+  height: 48px;
+  background: linear-gradient(180deg, var(--accent) 0%, rgba(0, 240, 255, 0.35) 100%);
+  box-shadow: 0 0 8px var(--accent-glow);
+  margin: 0 auto;
+}
+
+/* Attachment Metal Clasp Grommet */
+.hanging-grommet {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: var(--bg);
+  box-shadow: 0 0 10px var(--accent);
+  margin: -6px auto 0;
+  position: relative;
+  z-index: 2;
+}
+.hanging-grommet::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* The Hanging Profile Card */
+.hanging-profile-card {
+  position: relative;
+  width: 100%;
+  max-width: 330px;
+  margin-top: -3px;
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: 18px;
+  padding: 24px 20px 20px;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5), 0 0 24px rgba(0, 240, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transform-origin: top center;
+  will-change: transform;
+  user-select: none;
+}
+
+/* Card Slot Punch Hole */
+.hanging-card-slot {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 6px;
+  border-radius: 4px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+
+/* Right-Side Entrance Animation with Momentum Overshoot */
+.hanging-card-wrapper.is-entering {
+  animation: rightSideEntrySwing 2.2s cubic-bezier(0.2, 1, 0.35, 1) forwards;
+}
+
+@keyframes rightSideEntrySwing {
+  0% {
+    opacity: 0;
+    transform: translateX(min(100vw, 680px)) rotate(4.5deg);
+  }
+  16% {
+    opacity: 1;
+  }
+  56% {
+    transform: translateX(-16px) rotate(-2.8deg);
+  }
+  74% {
+    transform: translateX(7px) rotate(1.4deg);
+  }
+  88% {
+    transform: translateX(-2px) rotate(-0.6deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
+.hanging-card-wrapper.is-settled {
+  opacity: 1;
+  transform: translateX(0) rotate(0deg);
+}
+
+/* Settled Ambient Breeze Swing */
+.hanging-profile-card.is-settled {
+  animation: hangingBreezeSwing 5.2s ease-in-out infinite alternate;
+}
+
+@keyframes hangingBreezeSwing {
+  0% {
+    transform: rotate(-0.55deg);
+  }
+  50% {
+    transform: rotate(0.55deg);
+  }
+  100% {
+    transform: rotate(-0.55deg);
+  }
+}
+
+.hanging-profile-card.paused {
+  animation-play-state: paused !important;
+}
+
+/* Card Content Structure */
+.hanging-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  color: var(--muted);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--line);
+}
+.hanging-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--accent-3);
+}
+
+.hanging-photo-frame {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  padding: 4px;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.25);
+  background: var(--bg);
+  overflow: hidden;
+}
+.hanging-photo-frame img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.hanging-identity-body {
+  text-align: center;
+}
+.hanging-card-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.3px;
+  color: var(--fg);
+  margin-bottom: 4px;
+}
+.hanging-card-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.hanging-card-creds {
+  font-size: 11px;
+  color: var(--fg-dim);
+  line-height: 1.45;
+  margin-bottom: 14px;
+}
+.hanging-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--muted);
+}
+.hanging-barcode {
+  letter-spacing: 2px;
+  color: var(--fg-dim);
+  font-weight: 700;
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  .hanging-profile-card,
+  .hanging-profile-card.is-entering,
+  .hanging-profile-card.is-settled {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
