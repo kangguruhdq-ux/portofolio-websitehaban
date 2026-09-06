@@ -152,18 +152,6 @@ html[data-theme="light"] {
   will-change: transform;
 }
 
-/* Orbiting Gyro Ring Around Avatar */
-.avatar-gyro-ring {
-  position: absolute;
-  inset: -8px;
-  border-radius: 50%;
-  border: 1px dashed var(--laser-cyan);
-  opacity: 0.4;
-  pointer-events: none;
-  animation: gyroSpin 22s linear infinite;
-}
-@keyframes gyroSpin { 100% { transform: rotate(360deg); } }
-
 /* Human Portrait Layer (Base) */
 .avatar-layer {
   position: absolute;
@@ -413,114 +401,68 @@ html[data-theme="light"] {
 /* --- 5. RESPONSIVE OPTIMIZATIONS (MOBILE & TABLET) --- */
 @media (max-width: 640px) {
   .avatar-space-hud {
-    max-width: 290px;
-    padding: 16px 14px 16px;
+    max-width: min(275px, 92vw);
+    padding: 14px 10px 14px;
+    margin: 0 auto;
   }
   .avatar-scanner-viewport {
-    width: 220px;
-    height: 220px;
+    width: 175px;
+    height: 175px;
   }
   .scanner-telemetry-bar {
-    padding: 6px 10px;
-    font-size: 10px;
+    padding: 4px 6px;
+    font-size: 9px;
   }
   .scanner-hint-tag {
-    font-size: 10px;
+    font-size: 9.5px;
+    padding: 3px 8px;
   }
   .status-ribbon {
-    font-size: 10px;
-    padding: 8px 14px;
-    gap: 8px;
+    font-size: 9.5px;
+    padding: 8px 10px;
+    gap: 6px;
   }
   .hanging-card-track {
-    margin: 0 auto 30px;
-    padding: 12px 0 6px;
+    margin: 0 auto 28px;
+    padding: 8px 0 6px;
   }
   .hanging-card-wrapper {
-    transform: translateX(min(92vw, 360px)) rotate(3deg);
-    max-width: 300px;
+    transform: translateX(min(50vw, 160px)) rotate(2.5deg);
+    max-width: min(285px, 92vw);
+  }
+  @keyframes rightSideEntrySwing {
+    0% {
+      opacity: 0;
+      transform: translateX(min(50vw, 160px)) rotate(2.5deg);
+    }
+    18% {
+      opacity: 1;
+    }
+    58% {
+      transform: translateX(-8px) rotate(-1.5deg);
+    }
+    76% {
+      transform: translateX(3px) rotate(0.8deg);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) rotate(0deg);
+    }
   }
   .hanging-profile-card {
     max-width: 285px;
-    padding: 18px 14px 14px;
+    padding: 16px 12px 12px;
   }
   .hanging-photo-frame {
-    width: 100px;
-    height: 100px;
+    width: 88px;
+    height: 88px;
   }
   .hanging-card-name {
-    font-size: 16px;
+    font-size: 15px;
   }
   .hanging-cord {
-    height: 34px;
+    height: 28px;
   }
-  #solarSystemSvg {
-    max-height: 480px;
-  }
-}
-
-/* --- 6. CELESTIAL SOLAR SYSTEM & TRAJECTORY HUD --- */
-.hero-solar-system {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.88;
-}
-
-#solarSystemSvg {
-  width: 100%;
-  height: 100%;
-  max-width: 1320px;
-  max-height: 640px;
-  display: block;
-  overflow: visible;
-  filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.06));
-}
-
-.orbit-guide-line {
-  fill: none;
-  stroke: rgba(0, 240, 255, 0.08);
-  stroke-width: 1;
-  stroke-dasharray: 4 6;
-}
-
-html[data-theme="light"] .orbit-guide-line {
-  stroke: rgba(0, 125, 138, 0.12);
-}
-
-.trajectory-active-line {
-  will-change: stroke-dashoffset, opacity;
-  filter: drop-shadow(0 0 6px currentColor);
-}
-
-.solar-core-glow {
-  animation: sunGlowPulse 4s ease-in-out infinite alternate;
-}
-@keyframes sunGlowPulse {
-  0% { transform: scale(0.96); opacity: 0.7; }
-  100% { transform: scale(1.06); opacity: 0.95; }
-}
-
-.planet-node {
-  will-change: transform;
-}
-
-.planet-body {
-  cursor: default;
-  transition: r 0.25s ease;
-}
-
-.planet-label {
-  font-family: var(--font-mono);
-  font-weight: 600;
-  opacity: 0.65;
-  letter-spacing: 1.5px;
-  user-select: none;
 }
 
 /* --- 7. HANGING PROFILE CARD RIGHT-SIDE SCROLL ANIMATION --- */

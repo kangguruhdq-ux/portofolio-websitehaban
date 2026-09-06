@@ -1,8 +1,10 @@
 /**
- * CELESTIAL DEEP SPACE & COSMOS ENGINE (THREE.JS)
- * Mahabbah Mahabban Romadhon — Planetary Core, Nebula Dust & Multi-Tier Starfields
+ * CELESTIAL DEEP SPACE ENGINE (THREE.JS)
+ * Mahabbah Mahabban Romadhon — Clean Atmospheric Starfield & Meteors
+ * Pure atmospheric background: multi-depth stars, nebula dust, and shooting meteors.
+ * (Big spinning/rotating planet core removed for a clean, non-intrusive mobile & desktop experience)
  */
-(function initSpaceCosmosEngine() {
+(function() {
   function webglReady() {
     if (typeof THREE === 'undefined') return false;
     try {
@@ -23,7 +25,7 @@
       const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
       camera.position.z = 4.2;
 
-      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: false, powerPreference: "high-performance" });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
@@ -31,10 +33,7 @@
       canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); contextOk = false; }, false);
       canvas.addEventListener('webglcontextrestored', () => { contextOk = true; }, false);
 
-      const cosmosGroup = new THREE.Group();
-      scene.add(cosmosGroup);
-
-      // --- Tier 1: Multi-Depth Twinkling Starfield ---
+      // --- Multi-Depth Twinkling Starfield ---
       function createStarfield(count, spread, size, color) {
         const geo = new THREE.BufferGeometry();
         const pos = new Float32Array(count * 3);
@@ -56,68 +55,21 @@
         return new THREE.Points(geo, mat);
       }
 
-      const starsDistant = createStarfield(isNarrow ? 400 : 850, 48, 0.024, 0xD4E4FF);
-      const starsMid = createStarfield(isNarrow ? 180 : 350, 32, 0.038, 0x00F0FF);
-      const nebulaDust = createStarfield(isNarrow ? 120 : 260, 24, 0.045, 0x8B5CF6);
+      const starsDistant = createStarfield(isNarrow ? 350 : 750, 48, 0.024, 0xD4E4FF);
+      const starsMid = createStarfield(isNarrow ? 150 : 300, 32, 0.038, 0x00F0FF);
+      const nebulaDust = createStarfield(isNarrow ? 100 : 220, 24, 0.045, 0x8B5CF6);
       scene.add(starsDistant, starsMid, nebulaDust);
 
-      // --- Tier 2: Planetary / Celestial Core ---
-      const coreGroup = new THREE.Group();
-      cosmosGroup.add(coreGroup);
-
-      // Wireframe celestial spheres
-      const outerCoreGeo = new THREE.IcosahedronGeometry(1.35, 1);
-      const outerCoreMat = new THREE.MeshBasicMaterial({ color: 0x00F0FF, wireframe: true, transparent: true, opacity: 0.32 });
-      const outerCore = new THREE.Mesh(outerCoreGeo, outerCoreMat);
-
-      const innerCoreGeo = new THREE.IcosahedronGeometry(0.85, 1);
-      const innerCoreMat = new THREE.MeshBasicMaterial({ color: 0x8B5CF6, wireframe: true, transparent: true, opacity: 0.26 });
-      const innerCore = new THREE.Mesh(innerCoreGeo, innerCoreMat);
-      coreGroup.add(outerCore, innerCore);
-
-      // Core vertex beacon nodes
-      const nodeMat = new THREE.PointsMaterial({ size: 0.048, color: 0x00F0FF, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending });
-      const nodePoints = new THREE.Points(outerCoreGeo, nodeMat);
-      coreGroup.add(nodePoints);
-
-      // --- Tier 3: Orbital Rings & Data Satellites ---
-      const ringA = new THREE.Mesh(
-        new THREE.TorusGeometry(2.1, 0.006, 8, 120),
-        new THREE.MeshBasicMaterial({ color: 0x00F0FF, transparent: true, opacity: 0.25 })
-      );
-      ringA.rotation.x = Math.PI / 2.3;
-
-      const ringB = new THREE.Mesh(
-        new THREE.TorusGeometry(2.65, 0.005, 8, 120),
-        new THREE.MeshBasicMaterial({ color: 0x8B5CF6, transparent: true, opacity: 0.2 })
-      );
-      ringB.rotation.x = Math.PI / 1.7;
-      ringB.rotation.y = 0.5;
-      coreGroup.add(ringA, ringB);
-
-      // Orbiting Data Nodes
-      function createSatellite(color) {
-        const geo = new THREE.SphereGeometry(0.04, 10, 10);
-        const mat = new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: 0.95 });
-        return new THREE.Mesh(geo, mat);
-      }
-      const satellites = [
-        { mesh: createSatellite(0x00F0FF), radius: 2.1, speed: 0.5, offset: 0, ring: ringA },
-        { mesh: createSatellite(0x8B5CF6), radius: 2.1, speed: 0.5, offset: Math.PI, ring: ringA },
-        { mesh: createSatellite(0x00FFA3), radius: 2.65, speed: -0.38, offset: Math.PI * 0.5, ring: ringB },
-      ];
-      satellites.forEach(s => coreGroup.add(s.mesh));
-
-      // --- Tier 4: Shooting Stars / Meteors ---
+      // --- Shooting Stars / Meteors ---
       const meteors = [];
       function spawnMeteor() {
         if (reduceMotion || !contextOk) return;
-        const count = 16;
+        const count = 14;
         const geo = new THREE.BufferGeometry();
         const pos = new Float32Array(count * 3);
-        const startX = (Math.random() - 0.5) * 14;
-        const startY = 5 + Math.random() * 4;
-        const startZ = -2 + (Math.random() - 0.5) * 6;
+        const startX = (Math.random() - 0.5) * 12;
+        const startY = 4 + Math.random() * 3;
+        const startZ = -2 + (Math.random() - 0.5) * 5;
         
         for (let i = 0; i < count; i++) {
           pos[i * 3] = startX;
@@ -126,7 +78,7 @@
         }
         geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
         const mat = new THREE.PointsMaterial({
-          size: 0.05,
+          size: 0.045,
           color: Math.random() > 0.4 ? 0x00F0FF : 0x8B5CF6,
           transparent: true,
           opacity: 1,
@@ -137,17 +89,17 @@
 
         meteors.push({
           points, geo, mat,
-          vx: -4.5 - Math.random() * 2,
-          vy: -3.5 - Math.random() * 2,
-          vz: -1.0,
+          vx: -4.0 - Math.random() * 2,
+          vy: -3.0 - Math.random() * 2,
+          vz: -0.8,
           life: 0,
-          maxLife: 0.9
+          maxLife: 0.85
         });
       }
 
       // Schedule occasional meteors
       setInterval(() => {
-        if (!document.hidden && Math.random() > 0.25) spawnMeteor();
+        if (!document.hidden && Math.random() > 0.3) spawnMeteor();
       }, 5500);
 
       // Mouse Parallax & Scroll Depth
@@ -185,47 +137,23 @@
         const dt = 0.016;
 
         if (!reduceMotion) {
-          // Slow celestial rotation
-          starsDistant.rotation.y = t * 0.008;
-          starsMid.rotation.y = -t * 0.012;
-          nebulaDust.rotation.y = t * 0.015;
-          nebulaDust.rotation.x = Math.sin(t * 0.2) * 0.05;
-
-          // Planetary core dynamics
-          innerCore.rotation.y = -t * 0.22;
-          outerCore.rotation.y = t * 0.14;
-          const pulse = 1 + Math.sin(t * 1.5) * 0.035;
-          coreGroup.scale.setScalar(pulse);
-
-          ringA.rotation.z = t * 0.28;
-          ringB.rotation.z = -t * 0.2;
-
-          // Satellites motion along orbital rings
-          satellites.forEach(s => {
-            const angle = t * s.speed + s.offset;
-            const localPos = new THREE.Vector3(Math.cos(angle) * s.radius, Math.sin(angle) * s.radius, 0);
-            localPos.applyEuler(s.ring.rotation);
-            s.mesh.position.copy(localPos);
-          });
+          // Slow serene celestial rotation
+          starsDistant.rotation.y = t * 0.006;
+          starsMid.rotation.y = -t * 0.009;
+          nebulaDust.rotation.y = t * 0.012;
+          nebulaDust.rotation.x = Math.sin(t * 0.15) * 0.04;
         }
 
         // Parallax damping
-        targetX = mouseX * 0.0008;
-        targetY = mouseY * 0.0008;
-        parallaxY += 0.05 * (targetX - parallaxY);
-        parallaxX += 0.05 * (targetY - parallaxX);
-        coreGroup.rotation.y = parallaxY;
-        coreGroup.rotation.x = parallaxX;
+        targetX = mouseX * 0.0004;
+        targetY = mouseY * 0.0004;
+        parallaxY += 0.04 * (targetX - parallaxY);
+        parallaxX += 0.04 * (targetY - parallaxX);
+        camera.rotation.y = parallaxY;
+        camera.rotation.x = parallaxX;
 
-        // Recede into deep space with scroll depth
-        coreGroup.position.z = -scrollFactor * 2.5;
-        const fade = 1 - scrollFactor * 0.85;
-        outerCoreMat.opacity = 0.32 * fade;
-        innerCoreMat.opacity = 0.26 * fade;
-        nodeMat.opacity = 0.9 * fade;
-        ringA.material.opacity = 0.25 * fade;
-        ringB.material.opacity = 0.2 * fade;
-        camera.position.y = scrollFactor * -0.45;
+        // Subtle camera elevation with scroll
+        camera.position.y = scrollFactor * -0.3;
 
         // Animate meteors
         for (let i = meteors.length - 1; i >= 0; i--) {
