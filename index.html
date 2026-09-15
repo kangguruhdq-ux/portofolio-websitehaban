@@ -220,11 +220,11 @@
   /* Navigation — Architectural Floating Glass Bar */
   .nav-wrapper {
     position: sticky; top: 16px; z-index: 100;
-    width: 100%; max-width: 1260px; margin: 0 auto; padding: 0 20px;
+    width: 100%; max-width: 1340px; margin: 0 auto; padding: 0 16px;
   }
   nav {
-    display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    padding: 12px 22px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 8px 16px;
     background: rgba(9, 13, 22, 0.84);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
@@ -232,6 +232,8 @@
     border-radius: 14px;
     box-shadow: 0 16px 36px rgba(0, 0, 0, 0.32);
     transition: all .3s var(--ease-out);
+    position: relative;
+    box-sizing: border-box;
   }
   html[data-theme="light"] nav {
     background: rgba(255, 255, 255, 0.9);
@@ -306,9 +308,9 @@
   .burger.open span:nth-child(2) { opacity: 0; }
   .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-  @media (max-width: 1120px) {
+  @media (max-width: 1280px) {
     .navlinks {
-      position: fixed; top: 76px; left: 20px; right: 20px; z-index: 100;
+      position: fixed; top: 74px; left: 16px; right: 16px; z-index: 100;
       flex-direction: column; align-items: flex-start; gap: 0;
       background: var(--bg-card);
       border: 1px solid var(--line); border-radius: 14px;
@@ -321,6 +323,8 @@
     .navlinks a { width: 100%; padding: 12px 24px; border-bottom: 1px solid var(--line); font-size: 14px; }
     .navlinks a::after { display: none; }
     .burger { display: flex; }
+  }
+  @media (max-width: 640px) {
     nav .hire-btn { display: none; }
   }
 
@@ -1216,19 +1220,19 @@
       position: relative !important;
     }
     .hanging-card-wrapper {
-      max-width: min(285px, 92vw) !important;
+      max-width: min(290px, 92vw) !important;
       width: 100% !important;
     }
-    .hanging-cord {
-      height: 26px !important;
+    .hanging-badge-assembly {
+      margin-top: 30px !important;
     }
     .hanging-grommet {
-      width: 12px !important;
-      height: 12px !important;
+      width: 13px !important;
+      height: 13px !important;
     }
     .hanging-profile-card {
       width: 100% !important;
-      max-width: 285px !important;
+      max-width: 290px !important;
       padding: 16px 12px 12px !important;
       border-radius: 14px !important;
     }
@@ -1511,6 +1515,27 @@
       padding: 16px !important;
       border-radius: 12px !important;
     }
+    .modal-box.modal-demo-active {
+      width: calc(100vw - 16px) !important;
+      padding: 14px 10px !important;
+      max-height: 94vh !important;
+    }
+    .sim-canvas-wrap {
+      min-height: 200px !important;
+      max-height: 260px !important;
+    }
+    .sim-hud-bar {
+      padding: 6px 10px !important;
+      font-size: 10px !important;
+    }
+    .cyber-radar-card {
+      max-width: min(300px, 92vw) !important;
+      padding: 14px 12px !important;
+    }
+    .radar-canvas-wrap {
+      width: min(220px, 72vw) !important;
+      height: min(220px, 72vw) !important;
+    }
     .cmdk-box {
       width: min(520px, calc(100vw - 20px)) !important;
       border-radius: 12px !important;
@@ -1581,7 +1606,28 @@
 </button>
 
 <!-- 3D Celestial Background Canvas -->
+<!-- 3D Celestial Background Canvas -->
 <canvas id="bg-canvas"></canvas>
+
+<!-- Astra Galaxy 3D Cinematic Gateway -->
+<div class="galaxy-gateway" id="galaxyGateway">
+  <canvas id="galaxy-canvas" aria-label="Simulasi galaksi kosmik 3D interaktif"></canvas>
+  <div class="cosmic-vignette" aria-hidden="true"></div>
+  <div class="galaxy-overlay-hud">
+    <div class="galaxy-edge-titles">
+      <a class="galaxy-title galaxy-left" id="galaxyTitleLeft" href="#heroSection" aria-label="Haban — Jelajahi Portofolio">HABAN</a>
+      <div class="galaxy-core-singularity" aria-hidden="true"></div>
+      <a class="galaxy-title galaxy-right" id="galaxyTitleRight" href="#heroSection">PORTOFOLIO</a>
+    </div>
+    <div class="galaxy-sub-caption mono">MACHINE LEARNING · FULL-STACK WEB &amp; APP · CYBER SECURITY</div>
+    <a class="galaxy-scroll-cue" id="galaxyScrollCue" href="#heroSection" aria-label="Masuk ke portofolio utama">
+      <span class="cue-label">JELAJAHI PORTOFOLIO</span>
+      <svg class="cue-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+    </a>
+    <span class="galaxy-interaction-hint mono" aria-hidden="true">DRAG UNTUK MEMUTAR · SCROLL UNTUK MASUK</span>
+  </div>
+</div>
+<div class="galaxy-transition" aria-hidden="true"><span></span></div>
 
 <!-- Top Architectural Navigation -->
 <div class="nav-wrapper">
@@ -1603,23 +1649,22 @@
       <a href="#contact" class="nav-link"><span class="nav-num">08.</span> <span data-i18n="nav.contact">Kontak</span></a>
     </div>
 
-    <div class="util-toggles">
-      <!-- Cosmic Audio Synthesizer Toggle -->
-      <button class="audio-toggle-btn" id="audioToggle" type="button" aria-label="Toggle cosmic audio telemetry" title="Aktifkan Audio Kosmik" aria-pressed="false">
-        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
-        <span class="audio-waves"><span class="audio-wave-bar"></span><span class="audio-wave-bar"></span><span class="audio-wave-bar"></span></span>
-      </button>
+    <div class="nav-actions">
+      <div class="util-toggles">
+        <!-- Cosmic Audio Synthesizer Toggle -->
+        <button class="audio-toggle-btn" id="audioToggle" type="button" aria-label="Toggle cosmic audio telemetry" title="Audio Kosmik" aria-pressed="false">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+          <span class="audio-waves"><span class="audio-wave-bar"></span><span class="audio-wave-bar"></span><span class="audio-wave-bar"></span></span>
+        </button>
 
-      <button class="util-btn" id="langToggle" type="button" aria-label="Switch language" title="ID / EN">EN</button>
-      <button class="util-btn" id="themeToggle" type="button" aria-label="Toggle light/dark mode" title="Light / Dark mode">
-        <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-      </button>
-      <button class="util-btn" id="printBtn" type="button" aria-label="Print or save as PDF" title="Print / Save as PDF">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a1 1 0 001-1v-4a1 1 0 00-1-1H9a1 1 0 00-1 1v4a1 1 0 001 1zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-      </button>
+        <button class="util-btn" id="langToggle" type="button" aria-label="Switch language" title="ID / EN">EN</button>
+        <button class="util-btn" id="printBtn" type="button" aria-label="Print or save as PDF" title="Print / Save as PDF">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a1 1 0 001-1v-4a1 1 0 00-1-1H9a1 1 0 00-1 1v4a1 1 0 001 1zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+        </button>
+      </div>
+
+      <a href="#contact" class="hire-btn" data-i18n="nav.hire">Mulai Diskusi</a>
     </div>
-
-    <a href="#contact" class="hire-btn" data-i18n="nav.hire">Mulai Diskusi</a>
 
     <button class="burger" id="burger" aria-label="Toggle menu">
       <span></span><span></span><span></span>
@@ -1685,6 +1730,10 @@
         <span data-i18n="hero.printpdf">Unduh Portofolio (PDF)</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"/></svg>
       </button>
+      <button class="hire-btn ghost hero-term-trigger" id="heroTermTrigger" type="button" title="Buka Cyber Terminal &amp; CTF">
+        <span class="btn-live-pulse" style="background:var(--accent); box-shadow: 0 0 8px var(--accent);"></span>
+        <span>[CLI] Terminal Cyber &amp; CTF</span>
+      </button>
       <button class="cmdk-trigger" id="cmdkTrigger" type="button">
         <span data-i18n="hero.search">Cari cepat</span> <span class="kbd">⌘K</span>
       </button>
@@ -1749,6 +1798,16 @@
         <span class="hint-icon">►</span>
       </div>
     </div>
+
+    <!-- 3D Holographic Cyber Core Module (Placed Cleanly Underneath Photo HUD) -->
+    <div class="hero-holo-container">
+      <div class="hero-holo-header">
+        <span class="dot-live"></span>
+        <span>QUANTUM CORE // 3D HARMONIC NODE</span>
+      </div>
+      <div class="hero-holo-widget" id="heroHoloWidget" title="Interactive 3D Cyber Core — Klik untuk Gelombang Kejut"></div>
+      <div class="hero-holo-footer">KLIK CORE UNTUK GELOMBANG KEJUT</div>
+    </div>
   </div>
 </section>
 
@@ -1764,35 +1823,54 @@
   <!-- Suspended Identity Card / Hanging Profile Card (Right-Side Entry on Scroll) -->
   <div class="hanging-card-track" id="hangingCardTrack">
     <div class="hanging-card-wrapper" id="hangingCardWrapper">
-      <div class="hanging-cord" aria-hidden="true"></div>
-      <div class="hanging-grommet" aria-hidden="true"></div>
+      <!-- Fixed Top Anchor Pin -->
+      <div class="hanging-anchor-pin" id="hangingAnchorPin" aria-hidden="true"></div>
       
-      <div class="hanging-profile-card" id="hangingProfileCard">
-        <div class="hanging-card-slot" aria-hidden="true"></div>
+      <!-- Unbreakable Dynamic SVG Lanyard Cord (Direct Vector Math, Zero Gap, Anti-Sever) -->
+      <svg class="hanging-lanyard-svg" id="hangingLanyardSvg" aria-hidden="true">
+        <defs>
+          <linearGradient id="lanyardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#00FFA3" stop-opacity="0.9" />
+            <stop offset="50%" stop-color="#00F0FF" stop-opacity="1" />
+            <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.9" />
+          </linearGradient>
+        </defs>
+        <line id="hangingCordGlow" x1="0" y1="0" x2="0" y2="0" stroke="rgba(0, 240, 255, 0.45)" stroke-width="5" stroke-linecap="round" />
+        <line id="hangingCordLine" x1="0" y1="0" x2="0" y2="0" stroke="url(#lanyardGrad)" stroke-width="2.5" stroke-linecap="round" />
+      </svg>
+      
+      <!-- Unified Badge Assembly (Grommet + Card permanently clipped together) -->
+      <div class="hanging-badge-assembly" id="hangingBadgeAssembly">
+        <div class="hanging-grommet" id="hangingGrommet" aria-hidden="true"></div>
         
-        <div class="hanging-card-header">
-          <span>SECURITY CLEARANCE // 01</span>
-          <span class="hanging-chip"><span class="dot-live"></span> ACTIVE</span>
-        </div>
+        <div class="hanging-profile-card" id="hangingProfileCard">
+          <div class="hanging-card-slot" aria-hidden="true"></div>
+          
+          <div class="hanging-drag-hint" id="hangingDragHint"><span class="hint-arrow">&darr;</span> TARIK KE BAWAH &amp; GOYANGKAN</div>
+          <div class="hanging-card-header">
+            <span>SECURITY CLEARANCE // 01</span>
+            <span class="hanging-chip"><span class="dot-live"></span> ACTIVE</span>
+          </div>
 
-        <div class="hanging-photo-frame">
-          <img src="images/profile.jpg" alt="Foto Profil Mahabbah Mahabban Romadhon" onerror="this.src='images/avatar-robot.jpg'">
-        </div>
+          <div class="hanging-photo-frame">
+            <img src="images/profile.jpg" alt="Foto Profil Mahabbah Mahabban Romadhon" onerror="this.src='images/avatar-robot.jpg'">
+          </div>
 
-        <div class="hanging-identity-body">
-          <h3 class="hanging-card-name">Mahabbah Mahabban Romadhon</h3>
-          <div class="hanging-card-title">AI ENGINEER · CYBER SEC · FULL-STACK</div>
-          <p class="hanging-card-creds">
-            HTB Certified Bug Bounty Hunter (CBBH)<br>
-            Deep Learning Specialization (DeepLearning.AI)<br>
-            <span style="color:var(--accent);">Yogyakarta, Indonesia</span>
-          </p>
-        </div>
+          <div class="hanging-identity-body">
+            <h3 class="hanging-card-name">Mahabbah Mahabban Romadhon</h3>
+            <div class="hanging-card-title">AI ENGINEER · CYBER SEC · FULL-STACK</div>
+            <p class="hanging-card-creds">
+              HTB Certified Bug Bounty Hunter (CBBH)<br>
+              Deep Learning Specialization (DeepLearning.AI)<br>
+              <span style="color:var(--accent);">Yogyakarta, Indonesia</span>
+            </p>
+          </div>
 
-        <div class="hanging-card-footer">
-          <span>ID: MR-7795-IDN</span>
-          <span class="hanging-barcode">||| | |||| | |||</span>
-          <span>VERIFIED [OK]</span>
+          <div class="hanging-card-footer">
+            <span>ID: MR-7795-IDN</span>
+            <span class="hanging-barcode">||| | |||| | |||</span>
+            <span>VERIFIED [OK]</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1921,7 +1999,7 @@
       <div class="term-head"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="term-title">fullstack-dev</div></div>
       <div class="term-body">
         <div><span class="prompt">$</span> npm run build --production</div>
-        <div class="type-line">✓ Compiled successfully in 4.2s (Optimized) [OK]</div>
+        <div class="type-line"> Compiled successfully in 4.2s (Optimized) [OK]</div>
         <p data-i18n="skills.web"><strong>Web Development:</strong> Membangun aplikasi web full-stack dengan performa tinggi, responsif, dan arsitektur yang scalable untuk kebutuhan bisnis modern.</p>
       </div>
     </div>
@@ -1930,7 +2008,7 @@
       <div class="term-head"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="term-title">mobile-engineer</div></div>
       <div class="term-body">
         <div><span class="prompt">$</span> flutter build apk --release --obfuscate</div>
-        <div class="type-line">✓ Built app-release.apk (18.4MB) [OK]</div>
+        <div class="type-line"> Built app-release.apk (18.4MB) [OK]</div>
         <p data-i18n="skills.app"><strong>App Development:</strong> Mengembangkan aplikasi cross-platform (Android/iOS) dengan fokus pada optimasi performa dan User Experience (UX) yang intuitif.</p>
       </div>
     </div>
@@ -1951,6 +2029,22 @@
         <div class="type-line">splice_loss: 0.02dB · OPM: -21.4dBm · LINK OK</div>
         <p data-i18n="skills.net"><strong>Jaringan &amp; Infrastruktur:</strong> Instalasi dan splicing kabel tembaga &amp; fiber optic, konfigurasi jaringan LAN dan server lokal, serta perakitan dan troubleshooting hardware PC dengan ketelitian tinggi.</p>
       </div>
+    </div>
+  </div>
+
+<!-- Feature No. 5: Active Cyber Radar Sentinel Widget -->
+  <div class="cyber-radar-card reveal">
+    <div class="radar-card-header">
+      <span class="mono" style="color:var(--accent)">SENTINEL // 360° CYBER RADAR</span>
+      <span class="sim-badge ok"><span class="btn-live-pulse"></span> HARDENED</span>
+    </div>
+    <div class="radar-canvas-wrap">
+      <canvas id="cyberRadarCanvas" width="240" height="240"></canvas>
+    </div>
+    <div class="radar-telemetry-row">
+      <div class="radar-tel-item"><span>PERIMETER:</span> <strong>HTB CBBH</strong></div>
+      <div class="radar-tel-item"><span>TRAFFIC:</span> <strong>1,842 PKT/S</strong></div>
+      <div class="radar-tel-item"><span>THREATS:</span> <strong style="color:var(--accent-3)">0 ALERTS [A+]</strong></div>
     </div>
   </div>
 </section>
@@ -1983,6 +2077,8 @@
     <div class="tech-card" data-tech="prisma" role="button" tabindex="0" aria-label="Filter proyek dengan prisma"><div class="tech-logo"><div class="tech-fallback" style="background:#8B5CF622;color:#8B5CF6;">Pr</div><img src="images/tech/prisma3d.svg" alt="Logo Prisma3D" loading="lazy" onerror="this.remove()"></div><div class="tech-name">Prisma3D</div></div>
   </div>
 </section>
+
+<div class="laser-section-divider"><span></span></div>
 
 <!-- Projects Section -->
 <section id="work">
@@ -2030,13 +2126,19 @@
           <div class="work-spec-item"><span>STREAM:</span> <strong>RTSP &amp; FFmpeg</strong></div>
           <div class="work-spec-item"><span>INFERENCE:</span> <strong>Python, C++</strong></div>
         </div>
-        <button type="button" class="work-link detail-trigger" data-i18n="work.detailBtn">
-          <span>Lihat Detail</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-        </button>
+        <div class="work-action-row">
+          <button type="button" class="work-link detail-trigger" data-i18n="work.detailBtn">
+            <span>Lihat Detail</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+          </button>
+          <button type="button" class="work-link demo-trigger" data-demo="apd" title="Buka AI APD Scanner">
+            <span class="btn-live-pulse"></span>
+            <span>AI APD Scanner</span>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Flagship Project 02: OSINT Dashboard (Reversed layout) -->
+    <!-- Flagship Project 02: Cyber Intelligence & OSINT Dashboard -->
     <div class="work-card work-card-flagship reversed" data-cat="security" tabindex="0" data-cursor="VIEW"
          data-title="Cyber Intelligence & OSINT Dashboard (Wanz Xploit)" data-tag="WEB APPLICATION · CYBERSECURITY TOOL" data-tech="python html css javascript tailwind"
          data-desc="Sistem manajemen dan dasbor analitik berbasis web yang dirancang untuk kebutuhan investigasi Open Source Intelligence (OSINT). Platform ini menyediakan antarmuka terpusat dengan fitur pengelolaan pengguna (Subscription), enkripsi API Key, dokumentasi teknis, serta Admin Dashboard berbasis dark-mode yang futuristik dan intuitif. Teknologi & Stack — Backend: Python (Flask/FastAPI), RESTful API. Frontend: HTML5, CSS3, Tailwind CSS, JavaScript (ES6+). Database & Security: PostgreSQL/SQLite, JWT Authentication, API Key Management."
@@ -2051,21 +2153,27 @@
           <span class="work-num">FEATURED // 02</span>
           <span class="work-tag" data-i18n="work.osint.tag">WEB APPLICATION · CYBERSECURITY TOOL</span>
         </div>
-        <h3 data-i18n="work.osint.title">Cyber Intelligence & OSINT Dashboard (Wanz Xploit)</h3>
+        <h3 data-i18n="work.osint.title">Cyber Intelligence &amp; OSINT Dashboard (Wanz Xploit)</h3>
         <p data-i18n="work.osint.desc">Dasbor analitik berbasis web untuk kebutuhan investigasi Open Source Intelligence (OSINT), lengkap dengan manajemen pengguna, enkripsi API Key, dan Admin Dashboard dark-mode yang futuristik.</p>
         <div class="work-spec-sheet">
-          <div class="work-spec-item"><span>BACKEND:</span> <strong>Python / FastAPI / REST</strong></div>
-          <div class="work-spec-item"><span>SECURITY:</span> <strong>JWT &amp; Key Encryption</strong></div>
-          <div class="work-spec-item"><span>FRONTEND:</span> <strong>Tailwind CSS &amp; ES6+</strong></div>
+          <div class="work-spec-item"><span>BACKEND:</span> <strong>Python Flask / FastAPI</strong></div>
+          <div class="work-spec-item"><span>SECURITY:</span> <strong>JWT &amp; API Key Encryption</strong></div>
           <div class="work-spec-item"><span>DATABASE:</span> <strong>PostgreSQL / SQLite</strong></div>
+          <div class="work-spec-item"><span>INTERFACE:</span> <strong>Tailwind Dark HUD</strong></div>
         </div>
-        <button type="button" class="work-link detail-trigger" data-i18n="work.detailBtn">
-          <span>Lihat Detail</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-        </button>
+        <div class="work-action-row">
+          <button type="button" class="work-link detail-trigger" data-i18n="work.detailBtn">
+            <span>Lihat Detail</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+          </button>
+          <button type="button" class="work-link demo-trigger" data-demo="osint" title="Buka OSINT Recon Simulator">
+            <span class="btn-live-pulse"></span>
+            <span>OSINT Recon Console</span>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Flagship Project 03: Edolus 3D -->
+    <!-- Flagship Project 03: Edolus Planetary 3D AI Experience -->
     <div class="work-card work-card-flagship" data-cat="web" tabindex="0" data-cursor="VIEW"
          data-title="Edolus — Planetary Scale AI Interactive Experience" data-tag="CREATIVE WEB DEV · IMMERSIVE 3D" data-tech="javascript react html css tailwind"
          data-desc="Situs web interaktif 3D imersif bertema futuristik (space-tech) yang dirancang untuk memberikan pengalaman naratif tingkat tinggi. Mengintegrasikan elemen visual bumi 3D beresolusi tinggi, transisi animasi cinematic, serta spatial audio interaktif (Experience with Headphones) untuk memperkenalkan platform AI berskala global secara elegan. Teknologi & Stack — 3D Graphics & Rendering: JavaScript/TypeScript, Three.js, WebGL, GLSL (Custom Shaders). Animation & Audio: GSAP (GreenSock Animation Platform), Web Audio API. Frontend & Architecture: React/Next.js, React Three Fiber (R3F), HTML5, CSS3/Tailwind CSS."
@@ -2073,7 +2181,7 @@
          data-desc-en="An immersive, futuristic (space-tech themed) interactive 3D website designed to deliver a high-level narrative experience. It integrates high-resolution 3D Earth visuals, cinematic animation transitions, and interactive spatial audio ('Experience with Headphones') to elegantly introduce a planetary-scale AI platform. Tech Stack — 3D Graphics & Rendering: JavaScript/TypeScript, Three.js, WebGL, GLSL (Custom Shaders). Animation & Audio: GSAP (GreenSock Animation Platform), Web Audio API. Frontend & Architecture: React/Next.js, React Three Fiber (R3F), HTML5, CSS3/Tailwind CSS."
          data-img="images/project-web3d.jpg">
       <div class="work-flagship-media img-loading">
-        <img src="images/project-web3d.jpg" alt="Web 3D" loading="lazy" onerror="this.style.display='none'">
+        <img src="images/project-web3d.jpg" alt="Web 3D Edolus" loading="lazy" onerror="this.style.display='none'">
       </div>
       <div class="work-flagship-content">
         <div class="work-meta-header">
@@ -2083,14 +2191,20 @@
         <h3 data-i18n="work.edolus.title">Edolus — Planetary Scale AI Interactive Experience</h3>
         <p data-i18n="work.edolus.desc">Situs web interaktif 3D imersif bertema space-tech dengan visual Bumi 3D beresolusi tinggi, animasi cinematic, dan spatial audio untuk memperkenalkan platform AI berskala global secara elegan.</p>
         <div class="work-spec-sheet">
-          <div class="work-spec-item"><span>GRAPHICS:</span> <strong>Three.js / WebGL / GLSL</strong></div>
-          <div class="work-spec-item"><span>AUDIO:</span> <strong>Spatial Web Audio API</strong></div>
-          <div class="work-spec-item"><span>MOTION:</span> <strong>GSAP Cinematic Timeline</strong></div>
-          <div class="work-spec-item"><span>STACK:</span> <strong>React / R3F / Tailwind</strong></div>
+          <div class="work-spec-item"><span>3D ENGINE:</span> <strong>Three.js / WebGL / GLSL</strong></div>
+          <div class="work-spec-item"><span>AUDIO:</span> <strong>Web Audio API Spatial</strong></div>
+          <div class="work-spec-item"><span>ANIMATION:</span> <strong>GSAP Timeline Engine</strong></div>
+          <div class="work-spec-item"><span>STACK:</span> <strong>React / Tailwind CSS</strong></div>
         </div>
-        <button type="button" class="work-link detail-trigger" data-i18n="work.detailBtn">
-          <span>Lihat Detail</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-        </button>
+        <div class="work-action-row">
+          <button type="button" class="work-link detail-trigger" data-i18n="work.detailBtn">
+            <span>Lihat Detail</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+          </button>
+          <button type="button" class="work-link demo-trigger" data-demo="globe3d" title="Buka 3D Planetary Orbit">
+            <span class="btn-live-pulse"></span>
+            <span>3D Planetary Orbit</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -2117,9 +2231,15 @@
           <div class="work-spec-item"><span>PIPELINE:</span> <strong>Character Rigging</strong></div>
           <div class="work-spec-item"><span>TECHNIQUE:</span> <strong>Pose-to-Pose Blocking</strong></div>
         </div>
-        <button type="button" class="work-link detail-trigger" data-i18n="work.watchVideo">
-          <span>Tonton Video</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-        </button>
+        <div class="work-action-row">
+          <button type="button" class="work-link detail-trigger" data-i18n="work.watchVideo">
+            <span>Tonton Video</span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+          </button>
+          <button type="button" class="work-link demo-trigger" data-demo="mesh3d" title="Buka 3D Mesh Inspector">
+            <span class="btn-live-pulse"></span>
+            <span>3D Mesh Inspector</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -2451,16 +2571,29 @@
 <!-- Project & Certificate Detail Modal -->
 <div class="modal-overlay" id="projectModal" role="dialog" aria-modal="true" aria-hidden="true">
   <div class="modal-box">
-    <button class="modal-close" id="modalClose" aria-label="Tutup">✕</button>
-    <div class="modal-thumb" id="modalThumbWrap"><img id="modalImg" src="" alt=""></div>
-    <div class="modal-video" id="modalVideoWrap" style="display:none;"><iframe id="modalVideoFrame" src="" title="Video proyek" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
-    <div class="modal-tag" id="modalTag"></div>
-    <h3 id="modalTitle"></h3>
-    <p id="modalDesc"></p>
-    <a href="#" target="_blank" rel="noopener" class="work-link" id="modalLink" style="display:none;">
-      <span id="modalLinkText">Tinjau Aplikasi</span> 
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-    </a>
+    <button class="modal-close" id="modalClose" aria-label="Tutup">&times;</button>
+    <div class="modal-tabs-bar" id="modalTabsBar" style="display:none;">
+      <button type="button" class="modal-tab-btn active" id="modalTabOverview">Spesifikasi Proyek</button>
+      <button type="button" class="modal-tab-btn" id="modalTabDemo"><span class="btn-live-pulse"></span> Live Interactive Simulator</button>
+    </div>
+    <div id="modalOverviewContent">
+      <div class="modal-thumb" id="modalThumbWrap"><img id="modalImg" src="" alt=""></div>
+      <div class="modal-video" id="modalVideoWrap" style="display:none;"><iframe id="modalVideoFrame" src="" title="Video proyek" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+      <div class="modal-tag" id="modalTag"></div>
+      <h3 id="modalTitle"></h3>
+      <p id="modalDesc"></p>
+      <div class="work-action-row" style="margin-top: 20px;">
+        <button type="button" class="work-link demo-trigger" id="modalLaunchDemoBtn" style="display:none;">
+          <span class="btn-live-pulse"></span>
+          <span id="modalLaunchDemoText">Uji Simulator Langsung</span>
+        </button>
+        <a href="#" target="_blank" rel="noopener" class="work-link" id="modalLink" style="display:none;">
+          <span id="modalLinkText">Tinjau Aplikasi</span> 
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+        </a>
+      </div>
+    </div>
+    <div id="modalDemoContainer" style="display:none;"></div>
   </div>
 </div>
 
@@ -3025,28 +3158,10 @@
     }, 1200);
   });
 
-  // --- 9. THEME TOGGLE (Dark / Light) ---
-  (function initThemeToggle() {
-    const btn = document.getElementById('themeToggle');
-    const icon = document.getElementById('themeIcon');
-    if (!btn) return;
-    let theme = localStorage.getItem('theme') || 'dark';
-
-    function apply() {
-      document.documentElement.setAttribute('data-theme', theme);
-      if (icon) {
-        icon.innerHTML = theme === 'light'
-          ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>'
-          : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>';
-      }
-    }
-
-    btn.addEventListener('click', () => {
-      theme = theme === 'light' ? 'dark' : 'light';
-      localStorage.setItem('theme', theme);
-      apply();
-    });
-    apply();
+  // --- 9. PERMANENT COSMIC DARK THEME LOCK ---
+  (function initThemeLock() {
+    localStorage.removeItem('theme');
+    document.documentElement.setAttribute('data-theme', 'dark');
   })();
 
   // --- 10. LANGUAGE SWITCHER (ID / EN) ---
@@ -3353,7 +3468,7 @@
       skills: () => { printLine('AI/ML, Web (Laravel/PHP/JS), Mobile, Cyber Security (CBBH), MikroTik/Cisco Networking.', 'ok'); },
       projects: () => { printLine('6 proyek terpublikasi — ketik "goto work" atau klik menu Portofolio.', 'ok'); document.querySelector('#work')?.scrollIntoView({ behavior: 'smooth' }); },
       contact: () => { printLine('misnosusanto97@gmail.com · github.com/kangguruhdq-ux', 'ok'); },
-      theme: () => { document.getElementById('themeToggle')?.click(); printLine('Tema diubah.', 'ok'); },
+      theme: () => { printLine('Tema kosmik gelap permanen aktif [Dark Mode Only].', 'ok'); },
       clear: () => { body.innerHTML = ''; },
       'sudo hire-me': () => {
         printLine('[sudo] password for guest: ********', 'dim');
@@ -3409,7 +3524,7 @@
       setTimeout(() => toastEl.classList.remove('show'), 3200);
     }
     function runMatrix() {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { toast('🎉 Cyber Security Mode Activated'); return; }
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { toast(' Cyber Security Mode Activated'); return; }
       let canvas = document.getElementById('matrixCanvas');
       if (!canvas) {
         canvas = document.createElement('canvas');
@@ -3423,7 +3538,7 @@
       const cols = Math.floor(canvas.width / fontSize);
       const drops = new Array(cols).fill(1);
       canvas.classList.add('active');
-      toast('🎉 Konami Code Activated — Cyber Security Mode');
+      toast(' Konami Code Activated — Cyber Security Mode');
       let frames = 0;
       const interval = setInterval(() => {
         ctx.fillStyle = 'rgba(5,6,10,0.08)';
@@ -3455,8 +3570,12 @@
 <!-- Modular Cosmic Architecture Scripts -->
 <script src="js/cosmic-audio.js"></script>
 <script src="js/space-cosmos.js"></script>
+<script src="js/galaxy-gateway.js"></script>
+<script src="js/3d-card-tilt.js"></script>
 <script src="js/avatar-scanner.js"></script>
 <script src="js/hanging-card.js"></script>
+<script src="js/project-simulators.js"></script>
+<script src="js/cosmic-stardust-cursor.js"></script>
 
 </body>
 </html>

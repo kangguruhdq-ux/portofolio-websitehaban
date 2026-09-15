@@ -64,11 +64,11 @@
       const meteors = [];
       function spawnMeteor() {
         if (reduceMotion || !contextOk) return;
-        const count = 14;
+        const count = 22;
         const geo = new THREE.BufferGeometry();
         const pos = new Float32Array(count * 3);
-        const startX = (Math.random() - 0.5) * 12;
-        const startY = 4 + Math.random() * 3;
+        const startX = (Math.random() - 0.4) * 14;
+        const startY = 5 + Math.random() * 3;
         const startZ = -2 + (Math.random() - 0.5) * 5;
         
         for (let i = 0; i < count; i++) {
@@ -77,9 +77,14 @@
           pos[i * 3 + 2] = startZ;
         }
         geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        
+        // Multi-color celestial meteors: Cyan, Diamond White, Amber Gold, Violet
+        const palette = [0x00F0FF, 0xFFFFFF, 0xFFB800, 0xA855F7, 0x00FFA3];
+        const chosenColor = palette[Math.floor(Math.random() * palette.length)];
+
         const mat = new THREE.PointsMaterial({
-          size: 0.045,
-          color: Math.random() > 0.4 ? 0x00F0FF : 0x8B5CF6,
+          size: 0.052,
+          color: chosenColor,
           transparent: true,
           opacity: 1,
           blending: THREE.AdditiveBlending
@@ -87,20 +92,31 @@
         const points = new THREE.Points(geo, mat);
         scene.add(points);
 
+        const dir = Math.random() > 0.25 ? -1 : 1;
         meteors.push({
           points, geo, mat,
-          vx: -4.0 - Math.random() * 2,
-          vy: -3.0 - Math.random() * 2,
-          vz: -0.8,
+          vx: dir * (4.2 + Math.random() * 2.8),
+          vy: -3.4 - Math.random() * 2.6,
+          vz: -0.6,
           life: 0,
-          maxLife: 0.85
+          maxLife: 0.95
         });
       }
 
-      // Schedule occasional meteors
-      setInterval(() => {
-        if (!document.hidden && Math.random() > 0.3) spawnMeteor();
-      }, 5500);
+      // Schedule frequent celestial meteors every 2.4 - 3.6 seconds
+      function scheduleMeteors() {
+        const delay = 2400 + Math.random() * 1400;
+        setTimeout(() => {
+          if (!document.hidden && contextOk) {
+            spawnMeteor();
+            if (Math.random() > 0.65) {
+              setTimeout(spawnMeteor, 300); // Double cluster
+            }
+          }
+          scheduleMeteors();
+        }, delay);
+      }
+      scheduleMeteors();
 
       // Mouse Parallax & Scroll Depth
       let mouseX = 0, mouseY = 0;
