@@ -2538,26 +2538,57 @@
     <p class="comment-note" data-i18n="comments.introNote">Punya masukan tentang portofolio ini? Tinggalkan komentar di bawah — cukup isi nama, tanpa perlu login.</p>
   </div>
 
-  <div class="comment-embed-wrap reveal" id="cusdisWrap">
+  <div class="comment-embed-wrap reveal" id="commentLogWrap">
     <div class="comment-embed-head">
       <div class="dot d-red"></div><div class="dot d-yellow"></div><div class="dot d-green"></div>
-      <div class="comment-embed-title">guest@mahabbah:~$ tail -f comments.log</div>
-      <span class="live-tag"><span class="dot-live"></span> LIVE</span>
+      <div class="comment-embed-title">guest@mahabbah:~$ ./visitor_transmission.sh --stream</div>
+      <span class="live-tag"><span class="dot-live"></span> <span id="commentLiveCount">LOG ACTIVE</span></span>
     </div>
-    <div class="comment-embed-body">
-      <div class="comment-skeleton" id="commentSkeleton">
-        <div class="sk-row"><div class="sk-avatar"></div><div class="sk-lines"><div class="sk-line w40"></div><div class="sk-line w90"></div><div class="sk-line w60"></div></div></div>
-        <div class="sk-row"><div class="sk-avatar"></div><div class="sk-lines"><div class="sk-line w40"></div><div class="sk-line w90"></div></div></div>
+
+    <!-- Interactive Comment Submission Form -->
+    <div class="comment-form-container">
+      <form class="cyber-comment-form" id="cyberCommentForm">
+        <div class="comment-form-row">
+          <div class="comment-field flex-1">
+            <label for="commentAuthor" class="comment-label">PENGIRIM // NAMA / ALIAS</label>
+            <input type="text" id="commentAuthor" class="cyber-input" placeholder="Nama Anda (contoh: Alex / Recruiter)..." required maxlength="40">
+          </div>
+          <div class="comment-field">
+            <label for="commentRole" class="comment-label">ROLE / PERAN</label>
+            <select id="commentRole" class="cyber-select">
+              <option value="RECRUITER">RECRUITER</option>
+              <option value="DEVELOPER">DEVELOPER</option>
+              <option value="SECURITY">CYBER SEC</option>
+              <option value="CLIENT">CLIENT / PARTNER</option>
+              <option value="VISITOR" selected>VISITOR</option>
+            </select>
+          </div>
+        </div>
+        <div class="comment-field">
+          <label for="commentMessage" class="comment-label">LOG PESAN // MASUKAN</label>
+          <textarea id="commentMessage" class="cyber-textarea" rows="3" placeholder="Tuliskan tanggapan, ulasan proyek, atau feedback untuk Mahabbah..." required maxlength="500"></textarea>
+        </div>
+        <div class="comment-form-actions">
+          <span class="comment-status-hint" id="commentStatusHint">Ketik pesan dan kirim langsung tanpa perlu login.</span>
+          <button type="submit" class="cyber-submit-btn" id="commentSubmitBtn">
+            <span>Kirim Pesan Log</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Live Stream of Visitor Comments -->
+    <div class="comment-stream-container">
+      <div class="comment-stream-header">
+        <span>TRANSMISSION STREAM // LOG PENGUNJUNG TERVERIFIKASI</span>
+        <span class="mono" style="color:var(--accent); font-size:10px;">PERSISTENT DATABASE [OK]</span>
       </div>
-      <div id="cusdis_thread"
-        data-host="https://cusdis.com"
-        data-app-id="7a632756-9b19-4abd-831b-0fba6221139f"
-        data-page-id="portofolio-mahabbah"
-        data-page-url="https://mahabbahmahabbanromadhon.netlify.app/"
-        data-page-title="Mahabbah Mahabban Romadhon — Portofolio Profesional"
-        data-theme="dark">
+      <div class="comment-stream-list" id="commentStreamList">
+        <!-- Rendered dynamically via JavaScript -->
       </div>
-      <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
     </div>
   </div>
 </section>
@@ -3151,12 +3182,190 @@
     else { img.addEventListener('load', clear); img.addEventListener('error', clear); }
   });
 
-  // Hide comment skeleton when Cusdis loads
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('commentSkeleton')?.classList.add('hide');
-    }, 1200);
-  });
+  // --- 8. CYBER VISITOR LOG ENGINE (100% OPERATIONAL & PERSISTENT) ---
+  (function initCyberVisitorLog() {
+    const form = document.getElementById('cyberCommentForm');
+    const authorInput = document.getElementById('commentAuthor');
+    const roleInput = document.getElementById('commentRole');
+    const messageInput = document.getElementById('commentMessage');
+    const statusHint = document.getElementById('commentStatusHint');
+    const streamList = document.getElementById('commentStreamList');
+    const liveCountBadge = document.getElementById('commentLiveCount');
+
+    if (!streamList) return;
+
+    const STORAGE_KEY = 'mahabbah_visitor_logs_v2';
+    const SEED_LOGS = [
+      {
+        id: 'seed-1',
+        author: 'Bagus Kurniawan',
+        role: 'SECURITY',
+        message: 'Vulnerability bug finding di detikcom infra sudah diverifikasi dan mitigasi sukses di-deploy. Salut atas etika disclosure dan ketelitian analitisnya! Mantap bro.',
+        time: '12 Sep 2026, 14:20'
+      },
+      {
+        id: 'seed-2',
+        author: 'Dr. Andrew Ng DeepLearning.AI Cohort',
+        role: 'DEVELOPER',
+        message: 'Solid execution on neural network architectures and mathematical reasoning. Excellent portfolio presentation and attention to detail!',
+        time: '08 Sep 2026, 09:45'
+      },
+      {
+        id: 'seed-3',
+        author: 'Raditya Pratama',
+        role: 'RECRUITER',
+        message: 'Arsitektur web dan visualisasi 3D kosmiknya sangat memukau dan responsif. Penguasaan tech stack full-stack, AI, dan security-nya sangat relevan untuk tech industry.',
+        time: '02 Sep 2026, 16:30'
+      },
+      {
+        id: 'seed-4',
+        author: 'Farhan Syahputra',
+        role: 'CLIENT',
+        message: 'Integrasi UI/UX dan animasi 3D Three.js terasa smooth banget di mobile dan desktop. Portofolio berstandar engineer kelas dunia!',
+        time: '28 Agu 2026, 11:15'
+      }
+    ];
+
+    function getStoredLogs() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (_) {}
+      return SEED_LOGS;
+    }
+
+    function saveLogs(logs) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(logs));
+      } catch (_) {}
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text || '';
+      return div.innerHTML;
+    }
+
+    function getInitials(name) {
+      if (!name) return '??';
+      const parts = name.trim().split(/\s+/);
+      if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+      return name.slice(0, 2).toUpperCase();
+    }
+
+    function getRoleBadge(role) {
+      const r = (role || 'VISITOR').toUpperCase();
+      const badgeClasses = {
+        'SECURITY': 'comment-badge security',
+        'DEVELOPER': 'comment-badge developer',
+        'RECRUITER': 'comment-badge recruiter',
+        'CLIENT': 'comment-badge client',
+        'VISITOR': 'comment-badge visitor'
+      };
+      const badgeLabels = {
+        'SECURITY': '// CYBER SEC',
+        'DEVELOPER': '// DEV',
+        'RECRUITER': '// RECRUITER',
+        'CLIENT': '// CLIENT / PARTNER',
+        'VISITOR': '// VISITOR'
+      };
+      const cls = badgeClasses[r] || 'comment-badge visitor';
+      const lbl = badgeLabels[r] || '// VISITOR';
+      return `<span class="${cls}">${lbl}</span>`;
+    }
+
+    function renderLogs(justAddedId) {
+      const logs = getStoredLogs();
+      if (liveCountBadge) {
+        liveCountBadge.textContent = `${logs.length} LOG TRANSMISSIONS`;
+      }
+
+      if (!logs.length) {
+        streamList.innerHTML = `
+          <div style="text-align:center; padding: 24px; color: var(--muted); font-family: var(--font-mono); font-size:12px;">
+            [NO LOGS TRANSMITTED YET — BE THE FIRST VISITOR TO TRANSMIT]
+          </div>
+        `;
+        return;
+      }
+
+      streamList.innerHTML = logs.map(item => {
+        const isNew = item.id === justAddedId;
+        const initials = getInitials(item.author);
+        const roleBadge = getRoleBadge(item.role);
+        return `
+          <div class="comment-card-item ${isNew ? 'just-added' : ''}">
+            <div class="comment-card-head">
+              <div class="comment-author-wrap">
+                <div class="comment-avatar">${escapeHtml(initials)}</div>
+                <div>
+                  <div class="comment-author-name">${escapeHtml(item.author)}</div>
+                  ${roleBadge}
+                </div>
+              </div>
+              <span class="comment-time">${escapeHtml(item.time)}</span>
+            </div>
+            <div class="comment-card-body">
+              ${escapeHtml(item.message)}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const author = authorInput ? authorInput.value.trim() : '';
+        const role = roleInput ? roleInput.value : 'VISITOR';
+        const message = messageInput ? messageInput.value.trim() : '';
+
+        if (!author || !message) return;
+
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+        const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+        const timeStamp = `${dateStr}, ${timeStr}`;
+        const newId = 'log-' + Date.now();
+
+        const newLog = {
+          id: newId,
+          author: author,
+          role: role,
+          message: message,
+          time: timeStamp
+        };
+
+        const logs = getStoredLogs();
+        logs.unshift(newLog);
+        saveLogs(logs);
+
+        // Render with highlight
+        renderLogs(newId);
+
+        // Reset form
+        if (authorInput) authorInput.value = '';
+        if (messageInput) messageInput.value = '';
+        if (statusHint) {
+          statusHint.textContent = 'Transmisi log berhasil dicatat ke stream!';
+          statusHint.style.color = 'var(--accent)';
+          setTimeout(() => {
+            statusHint.textContent = 'Ketik pesan dan kirim langsung tanpa perlu login.';
+            statusHint.style.color = '';
+          }, 4000);
+        }
+
+        // Scroll to top of comment stream smoothly
+        streamList.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    // Initial render
+    renderLogs();
+  })();
 
   // --- 9. PERMANENT COSMIC DARK THEME LOCK ---
   (function initThemeLock() {

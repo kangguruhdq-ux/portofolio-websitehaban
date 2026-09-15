@@ -280,16 +280,24 @@
     function resize() {
       width = gateway.clientWidth; height = gateway.clientHeight;
       if (!width || !height) return;
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, width < 768 ? 1.25 : 1.75);
+      const isMobile = width < 768;
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 1.75);
       renderer.setPixelRatio(pixelRatio);
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      // Fit the full diameter on narrow screens, with room around both spiral arms.
-      distance = Math.max(86, 41 / (Math.tan(camera.fov * Math.PI / 360) * camera.aspect));
+      
+      // On mobile / Android portrait, bring camera closer (distance ~95-100) so galaxy core
+      // and spiral arms appear grand, prominent, and fill the mobile viewport.
+      if (isMobile) {
+        distance = Math.min(100, Math.max(86, 36 / (Math.tan(camera.fov * Math.PI / 360) * Math.max(camera.aspect, 0.72))));
+      } else {
+        distance = Math.max(86, 41 / (Math.tan(camera.fov * Math.PI / 360) * camera.aspect));
+      }
       camera.far = distance + 500;
       camera.updateProjectionMatrix();
-      uniforms.uPixelScale.value = height * pixelRatio / (2 * Math.tan(camera.fov * Math.PI / 360));
+
+      const mobileBoost = isMobile ? 1.5 : 1.0;
+      uniforms.uPixelScale.value = (height * pixelRatio / (2 * Math.tan(camera.fov * Math.PI / 360))) * mobileBoost;
       updateScroll();
     }
     draw = dt => {
@@ -306,10 +314,13 @@
       bulge.uniforms.uOpacity.value = 0.6 * (1 - progress);
       nebula.uniforms.uOpacity.value = 0.45 * (1 - progress);
       background.uniforms.uOpacity.value = 0.65 * (1 - progress * 0.7);
-      coreMaterial.opacity = 0.85 * Math.max(0, 1 - progress * 1.5);
+      coreMaterial.opacity = (width < 768 ? 0.95 : 0.85) * Math.max(0, 1 - progress * 1.5);
       const pulse = reducedMotion ? 1 : 1 + Math.sin(elapsed * 0.7) * 0.025;
-      core.scale.set(22 * pulse, 8 * pulse, 1);
-      camera.position.set(0, distance * 0.24, distance * (1 - spread * 0.08));
+      const coreX = (width < 768 ? 32 : 22) * pulse;
+      const coreY = (width < 768 ? 13 : 8) * pulse;
+      core.scale.set(coreX, coreY, 1);
+      const camY = distance * (width < 768 ? 0.28 : 0.24);
+      camera.position.set(0, camY, distance * (1 - spread * 0.08));
       camera.lookAt(0, 0, 0);
     };
     const observer = new IntersectionObserver(entries => {
