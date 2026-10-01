@@ -1,0 +1,225 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  username     String   @unique
+  passwordHash String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Profile {
+  id           String   @id @default("profile_default")
+  name         String
+  title        String
+  kicker       String
+  bio          String   @db.Text
+  shortBio     String   @db.Text
+  avatarUrl    String
+  heroImageUrl String?
+  location     String
+  email        String
+  phone        String?
+  availability String
+  resumeUrl    String
+  ctaText      String
+  ctaLink      String
+  githubUrl    String
+  linkedinUrl  String
+  instagramUrl String
+  updatedAt    DateTime @updatedAt
+}
+
+model Project {
+  id             String   @id @default(cuid())
+  title          String
+  slug           String   @unique
+  kicker         String?
+  description    String   @db.Text
+  longDescription String  @db.Text
+  thumbnail      String
+  gallery        String[]
+  category       String
+  technologies   String[]
+  githubUrl      String?
+  liveUrl        String?
+  simulatorKey   String?
+  specifications Json?
+  featured       Boolean  @default(false)
+  published      Boolean  @default(true)
+  projectDate    String?
+  sortOrder      Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Skill {
+  id          String   @id @default(cuid())
+  name        String
+  category    String
+  icon        String?
+  proficiency Int      @default(90)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Experience {
+  id          String   @id @default(cuid())
+  company     String
+  role        String
+  description String   @db.Text
+  startDate   String
+  endDate     String?
+  current     Boolean  @default(false)
+  location    String?
+  logo        String?
+  verified    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Education {
+  id          String   @id @default(cuid())
+  institution String
+  program     String
+  description String   @db.Text
+  startDate   String
+  endDate     String?
+  logo        String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Certificate {
+  id            String   @id @default(cuid())
+  title         String
+  issuer        String
+  issueDate     String
+  credentialId  String?
+  credentialUrl String?
+  image         String
+  description   String   @db.Text
+  skills        String[]
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Media {
+  id        String   @id @default(cuid())
+  filename  String
+  mimeType  String
+  size      Int
+  url       String
+  alt       String?
+  width     Int?
+  height    Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SocialLink {
+  id        String   @id @default(cuid())
+  platform  String
+  username  String
+  url       String
+  icon      String
+  active    Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Navigation {
+  id         String   @id @default(cuid())
+  label      String
+  url        String
+  isExternal Boolean  @default(false)
+  visible    Boolean  @default(true)
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model SeoSetting {
+  id              String   @id @default("seo_default")
+  siteTitle       String
+  metaDescription String   @db.Text
+  keywords        String
+  ogTitle         String
+  ogDescription   String   @db.Text
+  ogImage         String?
+  favicon         String?
+  updatedAt       DateTime @updatedAt
+}
+
+model VisitorLog {
+  id         String   @id @default(cuid())
+  author     String
+  role       String   @default("VISITOR")
+  message    String   @db.Text
+  ipHash     String?
+  isApproved Boolean  @default(true)
+  createdAt  DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model TechStack {
+  id        String   @id @default(cuid())
+  name      String
+  category  String
+  logo      String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TerminalCommand {
+  id          String   @id @default(cuid())
+  command     String   @unique
+  description String?
+  response    String   @db.Text
+  category    String   @default("CUSTOM")
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String
+  category  String   @default("SYSTEM") // VISITOR, AUTH, CRUD, SECURITY, SYSTEM
+  status    String   @default("SUCCESS") // SUCCESS, FAILED, BLOCKED, WARNING
+  ip        String   @default("127.0.0.1")
+  userAgent String?
+  path      String?
+  method    String?  @default("GET")
+  actor     String?  @default("GUEST")
+  details   String?  @db.Text
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([category])
+  @@index([ip])
+}
