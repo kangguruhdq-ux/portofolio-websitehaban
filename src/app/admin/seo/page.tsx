@@ -137,7 +137,18 @@ export default function AdminSeoPage() {
                 value={formData.favicon}
                 onChange={(url) => setFormData({ ...formData, favicon: url })}
                 accept="image/*"
+                placeholder="/favicon.svg"
+                helpText="Ikon tab browser (mendukung SVG, PNG, ICO, Data URL)"
               />
+              <div className="flex items-center gap-2 mt-2">
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, favicon: '/favicon.svg' })}
+                  className="px-2.5 py-1 rounded bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 font-mono text-[10px] flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <span>&gt;_ Set Logo Termux (/favicon.svg)</span>
+                </button>
+              </div>
             </div>
           </div>
 

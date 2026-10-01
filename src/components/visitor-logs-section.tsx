@@ -179,14 +179,10 @@ export function VisitorLogsSection({ initialLogs }: { initialLogs: VisitorLogIte
         <div className="space-y-3 max-h-[460px] overflow-y-auto pr-1">
           {logs.map((item) => {
             const initials = item.author.slice(0, 2).toUpperCase();
-            const dateText =
-              typeof item.createdAt === 'string'
-                ? item.createdAt
-                : new Date(item.createdAt).toLocaleDateString('id-ID', {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric',
-                  });
+            const d = new Date(item.createdAt);
+            const dateText = !isNaN(d.getTime())
+              ? `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`
+              : String(item.createdAt);
 
             return (
               <div
@@ -209,7 +205,7 @@ export function VisitorLogsSection({ initialLogs }: { initialLogs: VisitorLogIte
                       </span>
                     </div>
                   </div>
-                  <span className="text-[10px] font-mono text-slate-400 whitespace-nowrap pt-1">
+                  <span suppressHydrationWarning className="text-[10px] font-mono text-slate-400 whitespace-nowrap pt-1">
                     {dateText}
                   </span>
                 </div>

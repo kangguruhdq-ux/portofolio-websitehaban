@@ -63,7 +63,8 @@ export function TechStackFilter({
               <div className="relative w-7 h-7 sm:w-9 sm:h-9 flex items-center justify-center">
                 <Image
                   src={item.logo}
-                  alt={item.name}
+                  alt=""
+                  aria-hidden="true"
                   width={36}
                   height={36}
                   className="object-contain group-hover:scale-110 transition-transform duration-300"

@@ -39,7 +39,7 @@ export async function POST(request: Request) {
 
     if (file.size > MAX_FILE_SIZE) {
       return NextResponse.json(
-        { error: 'File size exceeds 10MB limit.' },
+        { error: 'Ukuran file melebihi batas maksimal 4.5MB.' },
         { status: 400 }
       );
     }
@@ -47,15 +47,27 @@ export async function POST(request: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const ext = path.extname(file.name).toLowerCase() || '.jpg';
-    const randomName = `${Date.now()}-${crypto.randomBytes(4).toString('hex')}${ext}`;
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+    let publicUrl = '';
+    const base64Data = buffer.toString('base64');
+    const dataUri = `data:${file.type};base64,${base64Data}`;
 
-    await mkdir(uploadDir, { recursive: true });
-    const filePath = path.join(uploadDir, randomName);
-    await writeFile(filePath, buffer);
-
-    const publicUrl = `/uploads/${randomName}`;
+    // On Vercel / serverless runtimes, filesystem is read-only and ephemeral.
+    // Storing data URI in PostgreSQL guarantees 100% persistence without 404 or EROFS errors.
+    if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+      publicUrl = dataUri;
+    } else {
+      try {
+        const ext = path.extname(file.name).toLowerCase() || '.jpg';
+        const randomName = `${Date.now()}-${crypto.randomBytes(4).toString('hex')}${ext}`;
+        const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+        await mkdir(uploadDir, { recursive: true });
+        const filePath = path.join(uploadDir, randomName);
+        await writeFile(filePath, buffer);
+        publicUrl = `/uploads/${randomName}`;
+      } catch {
+        publicUrl = dataUri;
+      }
+    }
 
     const mediaRecord = await prisma.media.create({
       data: {

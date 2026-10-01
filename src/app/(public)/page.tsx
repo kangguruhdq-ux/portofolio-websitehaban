@@ -21,9 +21,9 @@ const GalaxyGateway = dynamic(
             <span>ASTRA // COSMIC GATEWAY 3.0 · [7.7956° S, 110.3695° E]</span>
           </div>
         </div>
-        <div className="absolute top-[48%] -translate-y-1/2 left-0 right-0 w-full px-6 sm:px-14 flex items-center justify-between">
-          <span className="text-[clamp(2.5rem,7.5vw,7.5rem)] font-black tracking-[-0.03em] uppercase text-white font-mono">HABAN</span>
-          <span className="text-[clamp(2.5rem,7.5vw,7.5rem)] font-black tracking-[-0.03em] uppercase text-white font-mono">PORTOFOLIO</span>
+        <div className="absolute top-[48%] -translate-y-1/2 left-0 right-0 w-full px-6 sm:px-12 md:px-20 lg:px-28 flex items-center justify-between pointer-events-none">
+          <span className="text-[32px] sm:text-[54px] md:text-[68px] lg:text-[84px] font-medium tracking-[-0.045em] text-[#edf3ff]">HABAN</span>
+          <span className="text-[32px] sm:text-[54px] md:text-[68px] lg:text-[84px] font-medium tracking-[-0.045em] text-[#edf3ff]">PORTOFOLIO</span>
         </div>
       </div>
     ),
@@ -378,7 +378,7 @@ export default async function HomePage() {
                       </div>
                     )}
                     <div>
-                      <h4 className="text-base font-bold text-white">{edu.institution}</h4>
+                      <h3 className="text-base font-bold text-white">{edu.institution}</h3>
                       <div className="text-xs font-mono text-cyan-400">
                         {edu.program} | {edu.startDate} &ndash; {edu.endDate || 'Sekarang'}
                       </div>
@@ -403,7 +403,7 @@ export default async function HomePage() {
                     />
                   </div>
                   <div>
-                    <h4 className="text-base font-bold text-white">SMKN 3 Yogyakarta</h4>
+                    <h3 className="text-base font-bold text-white">SMKN 3 Yogyakarta</h3>
                     <div className="text-xs font-mono text-cyan-400">
                       Teknik Komputer dan Jaringan | 2024 &ndash; 2027
                     </div>
@@ -444,7 +444,7 @@ export default async function HomePage() {
                 <div key={exp.id} className="p-6 rounded-2xl bg-[#070B12]/90 border border-white/[0.08] space-y-3">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <h4 className="text-base font-bold text-white">{exp.role}</h4>
+                      <h3 className="text-base font-bold text-white">{exp.role}</h3>
                       <div className="text-xs font-mono text-cyan-400">
                         {exp.company} | {exp.startDate} &ndash; {exp.endDate || (exp.current ? 'Sekarang' : '')}
                       </div>
@@ -465,7 +465,7 @@ export default async function HomePage() {
                 {/* Job 1: PT Imersa Solusi Teknologi */}
                 <div className="p-6 rounded-2xl bg-[#070B12]/90 border border-white/[0.08] space-y-3">
                   <div>
-                    <h4 className="text-base font-bold text-white">Visual Designer</h4>
+                    <h3 className="text-base font-bold text-white">Visual Designer</h3>
                     <div className="text-xs font-mono text-cyan-400">
                       PT Imersa Solusi Teknologi | 2026 &ndash; 2027
                     </div>
@@ -481,9 +481,9 @@ export default async function HomePage() {
                 {/* Job 2: Teknisi Fiber Optic */}
                 <div className="p-6 rounded-2xl bg-[#070B12]/90 border border-white/[0.08] space-y-3">
                   <div>
-                    <h4 className="text-base font-bold text-white">
+                    <h3 className="text-base font-bold text-white">
                       Teknisi Instalasi &amp; Splicing Jaringan Fiber Optic
-                    </h4>
+                    </h3>
                     <div className="text-xs font-mono text-cyan-400">
                       Jaringan &amp; Infrastruktur Internet Pelanggan
                     </div>
@@ -712,9 +712,9 @@ export default async function HomePage() {
                 <span className="text-[10px] font-mono text-cyan-400 font-bold block">
                   PENGEMBANGAN GIM · ALGORITMA
                 </span>
-                <h4 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
                   Web-Based Pacman Engine
-                </h4>
+                </h3>
                 <p className="text-xs text-slate-300 leading-relaxed line-clamp-3">
                   Rekreasi gim klasik Pacman menggunakan Vanilla JavaScript murni. Proyek ini mendemonstrasikan pemahaman mendalam terkait manipulasi Canvas, collision detection, dan logika pergerakan entitas.
                 </p>
@@ -746,9 +746,9 @@ export default async function HomePage() {
                 <span className="text-[10px] font-mono text-cyan-400 font-bold block">
                   WEB APP · MEDIA API
                 </span>
-                <h4 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
                   Virtual Photo Booth
-                </h4>
+                </h3>
                 <p className="text-xs text-slate-300 leading-relaxed line-clamp-3">
                   Aplikasi web interaktif yang memanfaatkan WebRTC API untuk mengakses kamera pengguna secara aman, mengaplikasikan filter, dan menangkap gambar langsung dari browser.
                 </p>
@@ -780,9 +780,9 @@ export default async function HomePage() {
                 <span className="text-[10px] font-mono text-cyan-400 font-bold block">
                   3D RENDERING · THREE.JS
                 </span>
-                <h4 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
                   Earth 3D Simulation
-                </h4>
+                </h3>
                 <p className="text-xs text-slate-300 leading-relaxed line-clamp-3">
                   Simulasi model planet Bumi 3D interaktif yang di-render secara real-time di web. Sebuah eksperimen optimalisasi mesh dan pencahayaan dinamis pada lingkungan WebGL.
                 </p>
@@ -840,9 +840,9 @@ export default async function HomePage() {
                       VERIFIED
                     </span>
                   </div>
-                  <h4 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                  <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
                     {cert.title}
-                  </h4>
+                  </h3>
                   <div className="text-xs font-mono text-slate-400">Otoritas: {cert.issuer}</div>
                   <p className="text-xs text-slate-300 leading-relaxed line-clamp-3">
                     {cert.description}
@@ -876,9 +876,9 @@ export default async function HomePage() {
                     <span>CERT // 01</span>
                     <span className="px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30 font-bold">VERIFIED</span>
                   </div>
-                  <h4 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                  <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
                     CBBH — Certified Bug Bounty Hunter
-                  </h4>
+                  </h3>
                   <div className="text-xs font-mono text-slate-400">Otoritas: Hack The Box</div>
                   <p className="text-xs text-slate-300 leading-relaxed line-clamp-3">
                     Kredensial profesional tingkat lanjut di bidang keamanan siber praktis, mengesahkan kemampuan dalam melakukan identifikasi, eksploitasi, dan pelaporan celah keamanan sistem informasi. Disahkan oleh Charalampos Pyarinos (CEO).
@@ -899,9 +899,9 @@ export default async function HomePage() {
                     <span>CERT // 02</span>
                     <span className="px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30 font-bold">VERIFIED</span>
                   </div>
-                  <h4 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                  <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
                     Deep Learning Specialization
-                  </h4>
+                  </h3>
                   <div className="text-xs font-mono text-slate-400">Otoritas: DeepLearning.AI (Coursera)</div>
                   <p className="text-xs text-slate-300 leading-relaxed line-clamp-3">
                     Program spesialisasi intensif di bawah bimbingan Andrew Ng. Menguasai arsitektur Neural Networks, Hyperparameter Tuning, implementasi CNNs (Visual Data), dan Sequence Models (NLP/Audio).
@@ -922,9 +922,9 @@ export default async function HomePage() {
                     <span>CERT // 03</span>
                     <span className="px-2 py-0.5 rounded bg-purple-500/10 border border-purple-500/30 font-bold text-purple-300">HALL OF FAME</span>
                   </div>
-                  <h4 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                  <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
                     Penghargaan Pelaporan Kerentanan Sistem
-                  </h4>
+                  </h3>
                   <div className="text-xs font-mono text-slate-400">Otoritas: detikcom IT Security Division</div>
                   <p className="text-xs text-slate-300 leading-relaxed line-clamp-3">
                     Sertifikat apresiasi resmi (Hall of Fame) yang diterbitkan oleh Bagus Setiawan (Direktur IT detikcom) atas dedikasi dan tanggung jawab dalam menemukan serta melaporkan celah keamanan krusial pada platform detikcom.
@@ -945,9 +945,9 @@ export default async function HomePage() {
                     <span>CERT // 04</span>
                     <span className="px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30 font-bold">CLOUD CERTIFIED</span>
                   </div>
-                  <h4 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                  <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
                     Professional Machine Learning Engineer
-                  </h4>
+                  </h3>
                   <div className="text-xs font-mono text-slate-400">Otoritas: Google Cloud · ID: J8M0K</div>
                   <p className="text-xs text-slate-300 leading-relaxed line-clamp-3">
                     Sertifikasi profesional industri yang mengesahkan keahlian tingkat lanjut dalam merancang, membangun, dan memproduksi model Machine Learning di atas infrastruktur Google Cloud.
@@ -968,9 +968,9 @@ export default async function HomePage() {
                     <span>CERT // 05</span>
                     <span className="px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30 font-bold">COURSE COMPLETE</span>
                   </div>
-                  <h4 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                  <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
                     Neural Networks and Deep Learning
-                  </h4>
+                  </h3>
                   <div className="text-xs font-mono text-slate-400">Otoritas: DeepLearning.AI (Coursera) · ID: KL349UPMCLWW</div>
                   <p className="text-xs text-slate-300 leading-relaxed line-clamp-3">
                     Sertifikat penyelesaian kursus yang berfokus pada konsep dasar jaringan saraf tiruan (neural networks) dan deep learning. Ditandatangani oleh Andrew Ng.
@@ -991,9 +991,9 @@ export default async function HomePage() {
                     <span>CERT // 06</span>
                     <span className="px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30 font-bold">TECHNICAL TRAINING</span>
                   </div>
-                  <h4 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                  <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
                     Thermodynamics of Refrigeration
-                  </h4>
+                  </h3>
                   <div className="text-xs font-mono text-slate-400">Otoritas: The Training Center (EPA)</div>
                   <p className="text-xs text-slate-300 leading-relaxed line-clamp-3">
                     Sertifikat penyelesaian pelatihan teknik yang mengonfirmasi pemahaman tentang teori dasar perpindahan panas dan siklus pendinginan untuk industri HVAC. Ditandatangani oleh Rob Roy.

@@ -35,8 +35,8 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto mt-8 pt-6 border-t border-white/[0.04] text-center text-[11px] font-mono text-slate-500">
-        © {new Date().getFullYear()} Mahabbah Mahabban Romadhon — Engineered with craftsmanship & anti-slop principles.
+      <div className="max-w-7xl mx-auto mt-8 pt-6 border-t border-white/[0.08] text-center text-[12px] font-mono text-slate-300" suppressHydrationWarning>
+        © <span suppressHydrationWarning>{new Date().getFullYear()}</span> Mahabbah Mahabban Romadhon — Engineered with craftsmanship & anti-slop principles.
       </div>
     </footer>
   );

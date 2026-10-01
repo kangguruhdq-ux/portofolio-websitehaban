@@ -22,10 +22,10 @@ export function CosmicBackground() {
         canvas,
         alpha: true,
         antialias: false,
-        powerPreference: 'high-performance',
+        powerPreference: 'low-power',
       });
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      renderer.setPixelRatio(isNarrow ? 1.0 : Math.min(window.devicePixelRatio, 1.25));
     } catch {
       return;
     }

@@ -178,6 +178,7 @@ export function ProjectCarousel({ projects }: { projects: ProjectData[] }) {
                   <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between gap-4 flex-wrap">
                     <a
                       href={`/projects/${project.slug}`}
+                      aria-label={`Lihat Detail Lengkap: ${project.title}`}
                       className="inline-flex items-center gap-2 text-xs font-mono font-bold text-cyan-400 hover:text-cyan-300 group/link"
                     >
                       <span>Lihat Detail Lengkap</span>

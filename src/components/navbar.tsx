@@ -24,11 +24,21 @@ export function Navbar({ navItems }: { navItems: NavItem[] }) {
       return;
     }
 
+    let lastState = false;
+    let ticking = false;
+
     const handleScroll = () => {
-      // Gateway is 100vh. Only show navbar once user scrolls past 280px.
-      // Hide immediately when scrolling back to the top.
-      const shouldShow = window.scrollY > 280;
-      setShowNavbar(shouldShow);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const shouldShow = window.scrollY > 280;
+          if (shouldShow !== lastState) {
+            lastState = shouldShow;
+            setShowNavbar(shouldShow);
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     handleScroll();

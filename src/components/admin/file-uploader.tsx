@@ -62,7 +62,8 @@ export function FileUploader({
     value.endsWith('.png') ||
     value.endsWith('.webp') ||
     value.endsWith('.svg') ||
-    value.includes('/uploads/')
+    value.includes('/uploads/') ||
+    value.startsWith('data:image/')
   );
 
   return (
@@ -78,13 +79,21 @@ export function FileUploader({
         {/* Preview thumbnail if image */}
         {value && isImage ? (
           <div className="relative w-14 h-14 rounded-lg overflow-hidden border border-white/[0.15] bg-black/60 flex-shrink-0 group">
-            <Image
-              src={value}
-              alt="Preview"
-              fill
-              sizes="56px"
-              className="object-cover"
-            />
+            {value.startsWith('data:image/') || value.endsWith('.svg') ? (
+              <img
+                src={value}
+                alt="Preview"
+                className="w-full h-full object-contain p-1"
+              />
+            ) : (
+              <Image
+                src={value}
+                alt="Preview"
+                fill
+                sizes="56px"
+                className="object-cover"
+              />
+            )}
             <button
               type="button"
               onClick={() => onChange('')}

@@ -189,12 +189,13 @@ export function GalaxyGateway() {
       return material;
     }
 
+    const isMobile = width < 640;
     const isCompact = width < 768;
-    const dust = particleLayer(isCompact ? 9000 : 36000, 'dust');
-    const mist = particleLayer(isCompact ? 450 : 1800, 'mist');
-    const bulge = particleLayer(isCompact ? 1200 : 3600, 'bulge');
-    const nebula = particleLayer(isCompact ? 120 : 360, 'nebula');
-    const background = particleLayer(isCompact ? 350 : 1000, 'background');
+    const dust = particleLayer(isMobile ? 4500 : isCompact ? 9000 : 36000, 'dust');
+    const mist = particleLayer(isMobile ? 250 : isCompact ? 450 : 1800, 'mist');
+    const bulge = particleLayer(isMobile ? 600 : isCompact ? 1200 : 3600, 'bulge');
+    const nebula = particleLayer(isMobile ? 60 : isCompact ? 120 : 360, 'nebula');
+    const background = particleLayer(isMobile ? 180 : isCompact ? 350 : 1000, 'background');
 
     // Central core texture
     const textureCanvas = document.createElement('canvas');
@@ -276,7 +277,7 @@ export function GalaxyGateway() {
       height = container.clientHeight;
       if (!width || !height) return;
       const isMobile = width < 768;
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 1.75);
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, isMobile ? 1.0 : 1.75);
       renderer.setPixelRatio(pixelRatio);
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
