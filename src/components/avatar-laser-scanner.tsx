@@ -135,7 +135,7 @@ export function AvatarLaserScanner({
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
-          className="relative w-48 h-48 sm:w-56 sm:h-56 mx-auto rounded-full overflow-hidden border-2 border-cyan-500/40 shadow-[0_0_25px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(0,0,0,0.8)] cursor-ew-resize touch-none group"
+          className="relative w-48 h-48 sm:w-56 sm:h-56 mx-auto rounded-full overflow-hidden border-2 border-cyan-500/40 shadow-[0_0_25px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(0,0,0,0.8)] cursor-ew-resize touch-pan-y group"
         >
           {/* Base Layer: Human Portrait */}
           <div className="absolute inset-0 w-full h-full bg-slate-950">

@@ -236,6 +236,8 @@ export function GalaxyGateway() {
 
     const onPointerDown = (e: PointerEvent) => {
       if (prefersReducedMotion || !e.isPrimary) return;
+      // CRITICAL FOR MOBILE: On touch devices, do not capture or intercept touch so the browser scrolls the page natively and smoothly
+      if (e.pointerType === 'touch') return;
       if (e.pointerType === 'mouse' && e.button !== 0) return;
       dragId = e.pointerId;
       previousX = e.clientX;
@@ -246,7 +248,7 @@ export function GalaxyGateway() {
     };
 
     const onPointerMove = (e: PointerEvent) => {
-      if (e.pointerId !== dragId) return;
+      if (dragId === null || e.pointerId !== dragId) return;
       turn += (e.clientX - previousX) * 0.005;
       tilt = Math.max(0.65, Math.min(1.25, tilt + (e.clientY - previousY) * 0.003));
       previousX = e.clientX;
@@ -254,7 +256,7 @@ export function GalaxyGateway() {
     };
 
     const endDrag = (e?: PointerEvent) => {
-      if (dragId !== null && e && canvas.hasPointerCapture(dragId)) {
+      if (dragId !== null && e && canvas && canvas.hasPointerCapture(dragId)) {
         try {
           canvas.releasePointerCapture(dragId);
         } catch (_) {}
@@ -410,14 +412,14 @@ export function GalaxyGateway() {
     <div
       ref={containerRef}
       id="galaxyGateway"
-      className="relative w-full h-[100vh] min-h-[580px] overflow-hidden bg-[#05060A] text-[#edf3ff] select-none flex items-center justify-center isolate"
+      className="relative w-full h-[100dvh] min-h-[540px] md:h-screen overflow-hidden bg-[#05060A] text-[#edf3ff] select-none flex items-center justify-center isolate touch-pan-y"
     >
-      {/* 3D WebGL Galaxy Canvas with Grab Cursor & Full Touch/Pointer Support */}
+      {/* 3D WebGL Galaxy Canvas with Grab Cursor on desktop and full native scroll on mobile */}
       <canvas
         ref={canvasRef}
         id="galaxy-canvas"
-        className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing z-0 touch-none"
-        style={{ touchAction: 'none' }}
+        className="absolute inset-0 w-full h-full md:cursor-grab md:active:cursor-grabbing z-0 pointer-events-none md:pointer-events-auto touch-pan-y"
+        style={{ touchAction: 'pan-y' }}
         aria-label="Simulasi galaksi kosmik 3D interaktif"
       />
 
@@ -501,7 +503,8 @@ export function GalaxyGateway() {
         {/* Bottom Interaction Hint */}
         <div className="absolute bottom-[2%] sm:bottom-[2.5%] w-full text-center pointer-events-none">
           <span className="font-mono text-[8px] sm:text-[8.5px] tracking-[0.2em] text-[#718099] uppercase">
-            DRAG UNTUK MEMUTAR · SCROLL UNTUK MASUK
+            <span className="inline sm:hidden">SCROLL KE BAWAH UNTUK JELAJAHI</span>
+            <span className="hidden sm:inline">DRAG UNTUK MEMUTAR · SCROLL UNTUK MASUK</span>
           </span>
         </div>
 

@@ -13,7 +13,7 @@ const GalaxyGateway = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="relative w-full h-[100vh] min-h-[580px] bg-[#05060A] text-[#edf3ff] flex items-center justify-center overflow-hidden">
+      <div className="relative w-full h-[100dvh] min-h-[540px] md:h-screen bg-[#05060A] text-[#edf3ff] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_48%_48%,rgba(24,40,68,0.35)_0%,transparent_55%)]" />
         <div className="absolute top-[8%] sm:top-[7%] w-full px-6 text-center">
           <div className="inline-flex items-center gap-2 font-mono text-[9px] sm:text-[10px] tracking-[0.25em] text-[#a8b8d0] uppercase">
